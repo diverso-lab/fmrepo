@@ -18,6 +18,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
     ];
@@ -40,4 +41,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\Role');
+    }
+
+    public function has_role($rol_param): bool
+    {
+        try {
+            foreach ($this->roles as $rol) {
+                if ($rol->rol == $rol_param) {
+                    return true;
+                }
+            }
+        }catch(\Exception $e){
+
+        }
+        return false;
+    }
 }

@@ -8,7 +8,7 @@
     <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
 
     <!-- Page Title  -->
-    <title>Login | DashLite Admin Template</title>
+    <title>Login | FMREPO</title>
 
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{ asset('css/dashlite.css?ver=2.4.0')}}">
@@ -33,7 +33,7 @@
                                 <div class="nk-block-head-content">
                                     <h5 class="nk-block-title">Sign-In</h5>
                                     <div class="nk-block-des">
-                                        <p>Access the DashLite panel using your email and passcode.</p>
+                                        <p>Access the FMREPO panel using your email and passcode.</p>
                                     </div>
                                 </div>
                             </div><!-- .nk-block-head -->
@@ -79,7 +79,7 @@
                                     <button class="btn btn-lg btn-primary btn-block">Sign in</button>
                                 </div>
                             </form><!-- form -->
-                            <div class="form-note-s2 pt-4"> New on our platform? <a href="html/pages/auths/auth-register.html">Create an account</a>
+                            <div class="form-note-s2 pt-4"> New on our platform? <a href="{{route('register')}}">Create an account</a>
                             </div>
                             <div class="text-center pt-4 pb-3">
                                 <h6 class="overline-title overline-title-sap"><span>OR</span></h6>

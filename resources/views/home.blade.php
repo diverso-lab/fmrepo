@@ -8,6 +8,28 @@
 
     <div class="nk-block">
         <div class="row g-gs">
+
+            @if(!Auth::user()->has_role('RESEARCHER'))
+
+            <div class="col-lg-7 col-xxl-6">
+                <a href="#" class="btn btn-primary">Register as a researcher</a>
+            </div>
+
+            @endif
+
+            @if(!Auth::user()->has_role('DEVELOPER'))
+
+                <div class="col-lg-7 col-xxl-6">
+                    <a href="#" class="btn btn-primary">Register as a developer</a>
+                </div>
+
+            @endif
+
+        </div>
+    </div>
+
+    <div class="nk-block">
+        <div class="row g-gs">
             <div class="col-lg-7 col-xxl-6">
                 <div class="card card-bordered h-100">
                     <div class="card-inner">

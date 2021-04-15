@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" class="js">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -41,44 +41,30 @@
                             <div class="nk-header-menu-inner">
                                 <!-- Menu -->
                                 <ul class="nk-menu nk-menu-main">
+
+                                    @if(!Auth::user()->has_role('RESEARCHER'))
                                     <li class="nk-menu-item">
                                         <a href="html/index.html" class="nk-menu-link">
-                                            <span class="nk-menu-text">Overview</span>
+                                            <span class="nk-menu-text">Register as a researcher</span>
                                         </a>
                                     </li>
-                                    <li class="nk-menu-item">
-                                        <a href="html/components.html" class="nk-menu-link">
-                                            <span class="nk-menu-text">Components</span>
-                                        </a>
-                                    </li>
-                                    <li class="nk-menu-item has-sub">
-                                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                                            <span class="nk-menu-text">Use-Case Panel</span>
-                                        </a>
-                                        <ul class="nk-menu-sub">
-                                            <li class="nk-menu-item">
-                                                <a href="/demo2/ecommerce/index.html" class="nk-menu-link"><span class="nk-menu-text">eCommerce Panel</span></a>
-                                            </li>
-                                            <li class="nk-menu-item">
-                                                <a href="/demo3/apps/file-manager.html" class="nk-menu-link"><span class="nk-menu-text">File Manangement Panel</span></a>
-                                            </li>
-                                            <li class="nk-menu-item">
-                                                <a href="/demo4/subscription/index.html" class="nk-menu-link"><span class="nk-menu-text">Subscription Panel</span></a>
-                                            </li>
-                                            <li class="nk-menu-item">
-                                                <a href="/demo5/crypto/index.html" class="nk-menu-link"><span class="nk-menu-text">Crypto Buy Sell Panel</span></a>
-                                            </li>
-                                            <li class="nk-menu-item">
-                                                <a href="/demo6/invest/index.html" class="nk-menu-link"><span class="nk-menu-text">HYIP Investment Panel</span></a>
-                                            </li>
-                                        </ul><!-- .nk-menu-sub -->
-                                    </li><!-- .nk-menu-item -->
+                                    @endif
+
+                                    @if(!Auth::user()->has_role('DEVELOPER'))
+                                        <li class="nk-menu-item">
+                                            <a href="html/index.html" class="nk-menu-link">
+                                                <span class="nk-menu-text">Register as a developer</span>
+                                            </a>
+                                        </li>
+                                    @endif
+
                                 </ul>
                                 <!-- Menu -->
                             </div>
                         </div>
                         <div class="nk-header-tools">
                             <ul class="nk-quick-nav">
+                                {{--
                                 <li class="dropdown chats-dropdown hide-mb-xs">
                                     <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
                                         <div class="icon-status icon-status-na"><em class="icon ni ni-comments"></em></div>
@@ -340,6 +326,7 @@
                                         </div><!-- .nk-dropdown-body -->
                                     </div>
                                 </li>
+                                --}}
                                 <li class="dropdown user-dropdown">
                                     <a href="#" class="dropdown-toggle mr-n1" data-toggle="dropdown">
                                         <div class="user-toggle">
@@ -352,7 +339,7 @@
                                         <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                             <div class="user-card">
                                                 <div class="user-avatar">
-                                                    <span>DR</span>
+                                                    <span>{{StringUtilities::get_acronym(Auth::user()->name." ".Auth::user()->surname)}}</span>
                                                 </div>
                                                 <div class="user-info">
                                                     <span class="lead-text"><div class="name">{{ Auth::user()->name  }} {{ Auth::user()->surname  }}</div></span>
@@ -364,7 +351,6 @@
                                             <ul class="link-list">
                                                 <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
                                                 <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
-                                                <li><a href="html/user-profile-activity.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li>
                                                 <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
                                             </ul>
                                         </div>

@@ -33,7 +33,8 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "app/Zenodo.php"
+            "app/Zenodo.php",
+            "app/helpers.php"
         ]
     },
     "scripts": {

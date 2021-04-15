@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role');
     }
 
+    public function zenodo_token()
+    {
+        return $this->hasOne('App\Models\ZenodoToken');
+    }
+
     public function has_role($rol_param): bool
     {
         try {

@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class ZenodoToken extends Model
 {
     use HasFactory;
 
+    protected $table = "zenodo_tokens";
+
     protected $fillable = [
-        'rol',
-        'slug',
-        'email',
-        'password',
+        'token',
+        'user_id',
     ];
 
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsTo('\App\Models\User');
     }
 }

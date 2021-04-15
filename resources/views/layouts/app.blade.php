@@ -33,8 +33,8 @@
                                 <em class="icon ni ni-dashlite bg-purple-dim"></em>
                             </div>
                             <div class="nk-header-app-info">
-                                <span class="sub-text">DashLite</span>
-                                <span class="lead-text">Dashboard</span>
+                                <span class="sub-text">FM</span>
+                                <span class="lead-text">REPO</span>
                             </div>
                         </div>
                         <div class="nk-header-menu is-light">
@@ -44,7 +44,7 @@
 
                                     @if(!Auth::user()->has_role('RESEARCHER'))
                                     <li class="nk-menu-item">
-                                        <a href="html/index.html" class="nk-menu-link">
+                                        <a href="{{route('register.researcher')}}" class="nk-menu-link">
                                             <span class="nk-menu-text">Register as a researcher</span>
                                         </a>
                                     </li>
@@ -382,15 +382,19 @@
             <!-- main header @e -->
             <div class="nk-sidebar" data-content="sidebarMenu">
                 <div class="nk-sidebar-inner" data-simplebar>
+
                     <ul class="nk-menu nk-menu-md">
                         <li class="nk-menu-heading">
                             <h6 class="overline-title text-primary-alt">Menu</h6>
-                        </li><!-- .nk-menu-heading -->
+                        </li>
 
-                        <x-li name="Prueba" route="home" icon="ni ni-dashboard"/>
-                        <x-li name="Prueba" route="prueba" icon="ni ni-dashboard"/>
+                        <x-li name="Home" route="home" icon="ni ni-home"/>
 
-                    </ul><!-- .nk-menu -->
+                        <x-menu_researcher/>
+
+                    </ul>
+
+
                 </div>
             </div>
             <!-- content @s -->

@@ -33,7 +33,7 @@
                                 <div class="nk-block-head-content">
                                     <h5 class="nk-block-title">Sign-In</h5>
                                     <div class="nk-block-des">
-                                        <p>Access the FMREPO panel using your email and passcode.</p>
+                                        <p>Access the FMREPO panel using your email and password.</p>
                                     </div>
                                 </div>
                             </div><!-- .nk-block-head -->
@@ -41,11 +41,11 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="form-label-group">
-                                        <label class="form-label" for="default-01">Email or Username</label>
+                                        <label class="form-label" for="default-01">Email</label>
                                         <a class="link link-primary link-sm" tabindex="-1" href="#">Need Help?</a>
                                     </div>
 
-                                    <input autofocus type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" id="default-01" placeholder="Enter your email address or username">
+                                    <input autofocus type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" id="default-01" placeholder="Enter your email address">
 
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">

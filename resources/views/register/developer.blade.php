@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Home
+    Register as a developer
 @endsection
 
 @section('content')

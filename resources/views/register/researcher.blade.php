@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Home
+    Register as a researcher
 @endsection
 
 @section('content')
@@ -19,7 +19,14 @@
                             </div>
                         </div>
 
-                        Description
+                        <form method="POST" action="{{route('register.researcher.p')}}">
+
+                            @csrf
+
+                            <button class="btn  btn-primary">I want to be a researcher</button>
+
+                        </form>
+
                     </div>
                 </div>
             </div>

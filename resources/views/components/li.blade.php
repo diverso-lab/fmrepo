@@ -3,12 +3,12 @@
     @isset($secondaries)
         @foreach(explode(',', $secondaries) as $secondary)
             @if(Route::currentRouteName() == $secondary)
-                    active
+                active current-page
             @endif
         @endforeach
     @endisset
 
-    {{ (Route::currentRouteName() == $route) ? 'active' : '' }}
+    {{ (Route::currentRouteName() == $route) ? 'active current-page' : '' }}
 
 ">
     <a href="{{ route($route) }}" class="nk-menu-link">

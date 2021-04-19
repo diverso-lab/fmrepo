@@ -1,16 +1,19 @@
 <?php
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 
 class Zenodo
 {
 
-    public $access_token = "OVUdfpefTBMqhGYF8eWkQSjb0QWSPDvYvyg17mEHK61TBt41VPbRB4vi277t";
+    //public $access_token = "OVUdfpefTBMqhGYF8eWkQSjb0QWSPDvYvyg17mEHK61TBt41VPbRB4vi277t";
+    public $access_token = null;
     private $client = null;
     private $instance = false;
 
     function __construct() {
         $this->client();
+        $this->access_token = Auth::user()->zenodo_token?->token;
     }
 
     private function client()
@@ -30,6 +33,19 @@ class Zenodo
         // singleton
         $this->client = $client;
         $this->instance = true;
+    }
+
+    // TEST CONNECTION
+    public function test_connection($token)
+    {
+        try {
+            $response = $this->client->request('GET', '/api/deposit/depositions',[ 'query' => ['access_token' => $token] ]);
+            return $response->getStatusCode();
+        }catch (Exception $e)
+        {
+            return 401;
+        }
+
     }
 
     // API HTTP VERBS

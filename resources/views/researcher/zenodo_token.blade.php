@@ -29,21 +29,17 @@
 
                         <form method="POST" action="{{ route('researcher.zenodo.token.p') }}">
                             @csrf
-                            <div class="form-group">
 
-                                <label class="form-label">Save token</label>
-                                <input autofocus type="text" class="form-control @error('token') is-invalid @enderror" name="token" value="{{Auth::user()->zenodo_token->token}}" placeholder="Enter your Zenodo token">
-
-                                @error('token')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-
+                            <div class="row">
+                                <x-input col="12" label="Save token" attr="token" placeholder="Enter your Zenodo token" value="{{Auth::user()->zenodo_token->token ?? ''}}"/>
                             </div>
 
-                            <div class="form-group">
-                                <button class="btn btn-primary ">Save token</button>
+                            <div class="row mt-4">
+
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary ">Save token</button>
+                                </div>
+
                             </div>
 
                         </form>

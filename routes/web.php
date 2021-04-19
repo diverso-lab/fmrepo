@@ -27,8 +27,6 @@ Route::get('register/researcher', [RegisterResearcherController::class, 'registe
 Route::post('register/researcher/p', [RegisterResearcherController::class, 'register_p'])->name('register.researcher.p');
 
 // Researcher routes
-
-
 Route::prefix('researcher')->group(function () {
 
     Route::middleware(['checkroles:RESEARCHER'])->group(function () {

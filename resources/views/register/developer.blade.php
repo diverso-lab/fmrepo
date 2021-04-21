@@ -19,11 +19,18 @@
                             </div>
                         </div>
 
-                        Description
+                        <form method="POST" action="{{route('register.developer.p')}}">
+
+                            @csrf
+
+                            <button class="btn  btn-primary">I want to be a developer</button>
+
+                        </form>
+
                     </div>
                 </div>
             </div>
-        </div><!-- .row -->
-    </div><!-- .nk-block -->
+        </div>
+    </div>
 
 @endsection

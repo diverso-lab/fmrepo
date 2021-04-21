@@ -52,7 +52,7 @@
 
                                     @if(!Auth::user()->has_role('DEVELOPER'))
                                         <li class="nk-menu-item">
-                                            <a href="html/index.html" class="nk-menu-link">
+                                            <a href="{{route('register.developer')}}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Register as a developer</span>
                                             </a>
                                         </li>
@@ -391,6 +391,8 @@
                         <x-li name="Home" route="home" icon="ni ni-home"/>
 
                         <x-menu_researcher/>
+
+                        <x-menu_developer/>
 
                     </ul>
 

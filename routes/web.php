@@ -22,21 +22,29 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Register
-Route::get('register/researcher', [RegisterResearcherController::class, 'register'])->name('register.researcher');
-Route::post('register/researcher/p', [RegisterResearcherController::class, 'register_p'])->name('register.researcher.p');
+// Register researcher and developer
+Route::prefix('register')->group(function () {
+
+    Route::get('researcher', [RegisterResearcherController::class, 'register'])->name('register.researcher');
+    Route::post('researcher/p', [RegisterResearcherController::class, 'register_p'])->name('register.researcher.p');
+
+    Route::get('developer', [RegisterDeveloperController::class, 'register'])->name('register.developer');
+    Route::post('developer/p', [RegisterDeveloperController::class, 'register_p'])->name('register.developer.p');
+});
+
 
 // Researcher routes
-Route::prefix('researcher')->group(function () {
 
-    Route::middleware(['checkroles:RESEARCHER'])->group(function () {
+Route::middleware(['checkroles:RESEARCHER'])->group(function () {
+    Route::prefix('researcher')->group(function () {
+
         Route::get('zenodo/token', [ResearcherController::class, 'zenodo_token'])->name('researcher.zenodo.token');
         Route::post('zenodo/token/p', [ResearcherController::class, 'zenodo_token_p'])->name('researcher.zenodo.token.p');
+
     });
-
-
-
 });
+
+
 
 // Developer routes
 

@@ -52,7 +52,6 @@ class DepositionController extends Controller
                     'upload_type' => $deposition['metadata']['upload_type']
                 ]);
 
-                // TODO: add deposition files
                 $files = $zenodo->get_files_by_deposition($new_deposition->record_id);
                 foreach($files as $file)
                 {
@@ -92,4 +91,12 @@ class DepositionController extends Controller
 
         //var_dump($depositions);
     }
+
+    public function list()
+    {
+        $depositions = Auth::user()->depositions;
+        return view('researcher.deposition_list', ['depositions' => $depositions]);
+
+    }
+
 }

@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="author" content="DiversoLab">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,6 +14,9 @@
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{ asset('css/dashlite.css?ver=2.4.0')}}">
     <link rel="stylesheet" href="{{ asset('css/theme.css?ver=2.4.0')}}">
+
+    @livewireStyles
+
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">
@@ -466,6 +470,8 @@
     });
 
 </script>
+
+@livewireScripts
 
 </body>
 

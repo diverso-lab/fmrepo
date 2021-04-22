@@ -38,8 +38,14 @@ Route::prefix('register')->group(function () {
 Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
+        // Zenodo token
         Route::get('zenodo/token', [ResearcherController::class, 'zenodo_token'])->name('researcher.zenodo.token');
         Route::post('zenodo/token/p', [ResearcherController::class, 'zenodo_token_p'])->name('researcher.zenodo.token.p');
+
+        // Depositions
+            // API
+        Route::get('deposition/api/load', [DepositionController::class, 'load'])->name('researcher.deposition.api.load');
+        Route::get('deposition/list', [DepositionController::class, 'list'])->name('researcher.deposition.list');
 
     });
 });

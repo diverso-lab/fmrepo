@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\ZenodoToken');
     }
 
+    public function depositions()
+    {
+        return $this->hasMany('App\Models\Deposition');
+    }
+
     public function has_role($rol_param): bool
     {
         try {

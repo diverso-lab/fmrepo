@@ -5,5 +5,6 @@
     </li>
 
     <x-li name="Zenodo token" route="researcher.zenodo.token" icon="fas fa-cogs"/>
+    <x-li name="Depositions" route="researcher.deposition.list" icon="fas fa-cogs"/>
 
 @endif

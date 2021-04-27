@@ -56,8 +56,8 @@
                                 </div><!-- .foem-group -->
                                 <div class="form-group">
                                     <div class="form-label-group">
-                                        <label class="form-label" for="password">Passcode</label>
-                                        <a class="link link-primary link-sm" tabindex="-1" href="html/pages/auths/auth-reset.html">Forgot Code?</a>
+                                        <label class="form-label" for="password">Password</label>
+                                        <a class="link link-primary link-sm" tabindex="-1" href="html/pages/auths/auth-reset.html">Forgot password?</a>
                                     </div>
                                     <div class="form-control-wrap">
                                         <a tabindex="-1" href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
@@ -65,7 +65,7 @@
                                             <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                         </a>
 
-                                        <input type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" id="password" placeholder="Enter your passcode">
+                                        <input type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" id="password" placeholder="Enter your password">
 
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Services\DepositionService;
 use App\Models\Deposition;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -9,16 +10,18 @@ use Livewire\Component;
 class DepositionList extends Component
 {
 
-    //public $depositions = Auth::user()->depositions;
-    public $prueba = 'antes';
+    public $depositions;
+
+    public function mount()
+    {
+        $this->depositions = Auth::user()->depositions;
+    }
 
     public function load()
     {
-
-        $this->prueba = 123456;
-        $this->pruea = 'despues';
-
-        //var_dump($depositions);
+        $service = new DepositionService();
+        $service->load();
+        $this->depositions = Auth::user()->depositions;
     }
 
     public function render()

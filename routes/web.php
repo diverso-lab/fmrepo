@@ -47,12 +47,23 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
         Route::get('deposition/api/load', [DepositionController::class, 'load'])->name('researcher.deposition.api.load');
         Route::get('deposition/list', [DepositionController::class, 'list'])->name('researcher.deposition.list');
 
+        // Models
+        Route::get('model/upload',[FeatureModelController::class,'upload'])->name('researcher.model.upload');
+
     });
 });
 
 
-
 // Developer routes
+
+Route::middleware(['checkroles:DEVELOPER'])->group(function () {
+    Route::prefix('developer')->group(function () {
+
+        // API token
+        Route::get('token/get', [ResearcherController::class, 'zenodo_token'])->name('developer.token.get');
+
+    });
+});
 
 Route::get('/prueba', [PruebaController::class, 'prueba'])->name('prueba');
 

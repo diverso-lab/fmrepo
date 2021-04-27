@@ -10,7 +10,12 @@ class DepositionService extends Service
 
     public function __construct()
     {
+        parent::__construct(Deposition::class);
 
+        parent::set_validation_rules([
+            'title' => 'required',
+            'description' => 'required'
+        ]);
     }
 
     public function load()
@@ -25,7 +30,7 @@ class DepositionService extends Service
         {
 
             // does this deposition exist?
-            $dep = Deposition::where('conceptrecid',$deposition['conceptrecid'])->first();
+            $dep = Deposition::where(['conceptrecid' => $deposition['conceptrecid']])->first();
 
             if($dep == null) // it doesn't exist
             {

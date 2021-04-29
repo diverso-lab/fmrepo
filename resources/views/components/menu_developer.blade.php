@@ -4,6 +4,6 @@
         <h6 class="overline-title text-primary-alt">Developer</h6>
     </li>
 
-    <x-li name="Get an API Token" route="developer.token.get" icon="fas fa-cogs"/>
+    <x-li name="Get an API Token" route="developer.token.get" icon="ni ni-clipboad-check-fill"/>
 
 @endif

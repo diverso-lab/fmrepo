@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Auth;
 class Zenodo
 {
 
-    //public $access_token = "OVUdfpefTBMqhGYF8eWkQSjb0QWSPDvYvyg17mEHK61TBt41VPbRB4vi277t";
-    public $access_token = null;
-    private $client = null;
-    private $instance = false;
+    public string $access_token;
+    private Client $client;
+    private bool $instance = false;
 
     function __construct() {
         $this->client();
         $this->access_token = Auth::user()->zenodo_token?->token;
     }
 
-    private function client()
+    private function client(): void
     {
         if($this->instance) {
-            return $this->client;
+            return;
         }
         $headers = [
             'Content-Type' => 'application/json',
@@ -49,23 +48,74 @@ class Zenodo
     }
 
     // API HTTP VERBS
-    private function get($url = '')
+    private function get($url)
     {
-        $response = $this->client->request('GET', $url,[ 'query' => ['access_token' => $this->access_token] ]);
-        return json_decode($response->getBody(), true);
+        try {
+            $response = $this->client->request('GET', $url, ['query' => ['access_token' => $this->access_token]]);
+            return json_decode($response->getBody(), true);
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            return $e->getMessage();
+        }
     }
 
+    private function post($url, $data)
+    {
+        try {
+            $response = $this->client->request('POST', $url, [
+                'query' => ['access_token' => $this->access_token],
+                'json' => $data
+            ]);
+            return json_decode($response->getBody(), true);
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    private function post_file($url,$data,$file)
+    {
+        try {
+            $response = $this->client->request('POST', $url, [
+                'headers' => ['Content-Type' => 'multipart/form-data'],
+                'query' => ['access_token' => $this->access_token],
+
+                'multipart' => [
+                    [
+                        'name'     => 'file',
+                        'contents' => $file,
+                    ]
+                ],
+            ]);
+            return json_decode($response->getBody(), true);
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    // DEPOSITIONS
     public function get_depositions()
     {
         return $this->get($url =
             '/api/deposit/depositions');
     }
 
+    public function post_deposition($data)
+    {
+        return $this->post($url = 'api/deposit/depositions',$data);
+    }
+
+    // DEPOSITION FILES
     public function get_files_by_deposition($deposition)
     {
         return $this->get($url =
             '/api/deposit/depositions/'.$deposition.'/files');
     }
+
+    public function post_file_in_deposition($deposition,$data,$file)
+    {
+        return $this->post_file($url =
+        'api/deposit/depositions/'.$deposition.'/files',$data,$file);
+    }
+
 
 }
 

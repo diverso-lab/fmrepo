@@ -75,6 +75,8 @@ class DepositionService extends Service
                     $dep->submitted = $deposition['submitted'];
 
                     // update metadata
+                    $dep->doi = $deposition['doi'];
+                    $dep->doi_url = $deposition['doi_url'];
                     $dep->access_right = $deposition['metadata']['access_right'];
                     $dep->title = $deposition['metadata']['title'];
                     $dep->description = $deposition['metadata']['description'];

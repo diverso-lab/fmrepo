@@ -67,7 +67,5 @@ Route::middleware(['checkroles:DEVELOPER'])->group(function () {
     });
 });
 
-Route::get('/prueba', [PruebaController::class, 'prueba'])->name('prueba');
-
 Auth::routes();
 

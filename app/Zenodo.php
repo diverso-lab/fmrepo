@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Zenodo
 {
@@ -74,14 +75,22 @@ class Zenodo
     private function post_file($url,$data,$file)
     {
         try {
-            $response = $this->client->request('POST', $url, [
-                'headers' => ['Content-Type' => 'multipart/form-data'],
-                'query' => ['access_token' => $this->access_token],
+            $headers = [
+                'Content-Type' => 'multipart/form-data',
+            ];
 
+            $client = new Client([
+                'headers' => $headers,
+                'base_uri' => 'https://zenodo.org/api'
+            ]);
+
+            $response = $this->client->request('POST', $url, [
+                'query' => ['access_token' => $this->access_token],
                 'multipart' => [
                     [
                         'name'     => 'file',
                         'contents' => $file,
+                        'filename' => 'harrypotter5.jpg'
                     ]
                 ],
             ]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\DepositionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +24,7 @@ class FeatureModelController extends Controller
 
         $zenodo = new \Zenodo();
 
-       /* $deposition_data = [
+        $deposition_data = [
             'metadata' => [
                 'upload_type' => 'software',
                 'publication_date' => '2021-04-28',
@@ -37,23 +38,44 @@ class FeatureModelController extends Controller
             ]
 
         ];
+
+        // publish deposition
         $response = $zenodo->post_deposition($deposition_data);
 
-
+        // upload files to Zenodo
         $deposition_id = $response['id'];
+        $user = Auth::user();
+        $token = $request->session()->token();
+        $tmp = '/tmp/'.$user->username.'/'.$token.'/';
 
-       */
+        foreach (Storage::files($tmp) as $filename) {
 
-        // TODO: Una vez que tenemos el deposito subido, iteramos
-        // sobre cada archivo y vamos haciendo post
+            $name = pathinfo($filename, PATHINFO_FILENAME);
+            $type = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $size = Storage::size($filename);
+            $old_directory = $filename;
+            $new_directory = '/models/'.$user->username.'/deposition_'.$deposition_id.'/'.$name.'.'.$type;
 
-        $file_data = ['name' => 'nombre de prueba de archivo'];
-        $file = Storage::get('public/harrypotter.jpg');
+            $file = Storage::get($filename);
+            $file_data = ['name' => $name];
 
-        //$file = fopen("/Users/davidromeroorganvidez/Desktop/fmrepo/storage/app/public/harrypotter.jpg", "a");
+            try{
+                // move
+                Storage::move($old_directory, $new_directory);
 
-        $response = $zenodo->post_file_in_deposition('4724865',$file_data,$file);
+                $response = $zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
 
-        return $response;
+                // TODO: Saving deposition file
+            } catch (\Exception $e) {
+
+            }
+
+        }
+
+        $service = new DepositionService();
+        $service->load();
+
+        return redirect()->route('researcher.deposition.list')->with('success','Deposition created successfully');
+
     }
 }

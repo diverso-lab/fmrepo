@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DepositionController extends Controller
 {
-    /*public function token()
-    {
-        $token = "zd3JCJs58v8zJeHX4kl8ypNvqHMT1MdrgT6de3e6jDL79GIHGhIf3tXrlggo";
-    }*/
 
     public function __construct()
     {

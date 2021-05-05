@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="{{ asset('css/dashlite.css?ver=2.4.0')}}">
     <link rel="stylesheet" href="{{ asset('css/theme.css?ver=2.4.0')}}">
 
+    <!-- Filepond -->
+    <link rel="stylesheet" href="{{ asset('css/filepond.css') }}" >
+
     @livewireStyles
 
 </head>
@@ -33,12 +36,8 @@
                             <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a>
                         </div>
                         <div class="nk-header-app-name">
-                            <div class="nk-header-app-logo">
-                                <em class="icon ni ni-dashlite bg-purple-dim"></em>
-                            </div>
                             <div class="nk-header-app-info">
-                                <span class="sub-text">FM</span>
-                                <span class="lead-text">REPO</span>
+                                <span class="lead-text">FM REPO</span>
                             </div>
                         </div>
                         <div class="nk-header-menu is-light">
@@ -470,6 +469,10 @@
     });
 
 </script>
+
+<script src="{{asset('js/filepond-plugin-file-validate-size.js')}}"></script>
+<script src="{{asset('js/filepond-plugin-file-validate-type.js')}}"></script>
+<script src="{{asset('js/filepond.js')}}"></script>
 
 @yield('scripts')
 

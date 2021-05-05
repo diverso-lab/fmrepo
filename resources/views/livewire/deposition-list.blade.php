@@ -1,7 +1,7 @@
 <div class="col-lg-12">
 <button class="btn btn-primary" href="#" wire:click="load" wire:loading.attr="disabled">Load depositions and files from Zenodo</button>
 
-    <button class="btn btn-primary" href="#"><em class="icon ni ni-upload"></em>  New deposition</button>
+    <button disabled class="btn btn-primary" href="#"><em class="icon ni ni-upload"></em>  New deposition</button>
 
     <br><br>
 

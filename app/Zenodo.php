@@ -72,7 +72,7 @@ class Zenodo
         }
     }
 
-    private function post_file($url,$data,$file)
+    private function post_file($url,$file_data,$file)
     {
         try {
             $headers = [
@@ -90,7 +90,7 @@ class Zenodo
                     [
                         'name'     => 'file',
                         'contents' => $file,
-                        'filename' => 'harrypotter5.jpg'
+                        'filename' => $file_data['name']
                     ]
                 ],
             ]);

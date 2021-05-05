@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function depositions()
     {
-        return $this->hasMany('App\Models\Deposition');
+        return $this->hasMany('App\Models\Deposition')->orderByDesc('modified');;
     }
 
     public function has_role($rol_param): bool

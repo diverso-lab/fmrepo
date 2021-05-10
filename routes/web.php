@@ -63,7 +63,7 @@ Route::middleware(['checkroles:DEVELOPER'])->group(function () {
     Route::prefix('developer')->group(function () {
 
         // API token
-        Route::get('token/get', [ResearcherController::class, 'zenodo_token'])->name('developer.token.get');
+        Route::get('token/get', [DeveloperController::class, 'get_token'])->name('developer.token.get');
 
     });
 });

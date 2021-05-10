@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Deposition')->orderByDesc('modified');;
     }
 
+    public function developer_tokens()
+    {
+        return $this->hasMany('App\Models\DeveloperToken');
+    }
+
     public function has_role($rol_param): bool
     {
         try {

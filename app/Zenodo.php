@@ -75,14 +75,6 @@ class Zenodo
     private function post_file($url,$file_data,$file)
     {
         try {
-            $headers = [
-                'Content-Type' => 'multipart/form-data',
-            ];
-
-            $client = new Client([
-                'headers' => $headers,
-                'base_uri' => 'https://zenodo.org/api'
-            ]);
 
             $response = $this->client->request('POST', $url, [
                 'query' => ['access_token' => $this->access_token],

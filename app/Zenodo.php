@@ -13,7 +13,7 @@ class Zenodo
 
     function __construct() {
         $this->client();
-        $this->access_token = Auth::user()->zenodo_token?->token;
+        $this->access_token = $this->get_random_token();
     }
 
     private function client(): void
@@ -46,6 +46,22 @@ class Zenodo
             return 401;
         }
 
+    }
+
+    // GET RANDOM TOKEN
+    public function get_random_token() : string
+    {
+        $tokens = array();
+        $fp = fopen(base_path('.tokens'), "r");
+        while (!feof($fp)){
+            $token = fgets($fp);
+            array_push($tokens, $token);
+        }
+        fclose($fp);
+        echo "tokens <br>";
+        echo var_dump($tokens);
+        //return "zG6vpYvVcj7IDokanuYhKR0HySdJ7SuM1A4u5g0Us5c3rhnSNp38UviP6ZEX";
+        return $tokens[array_rand($tokens, 1)];
     }
 
     // API HTTP VERBS

@@ -54,13 +54,17 @@ class Zenodo
         $tokens = array();
         $fp = fopen(base_path('.tokens'), "r");
         while (!feof($fp)){
+
+            // Read token from file
             $token = fgets($fp);
+
+            // Strip whitespace (or other characters) from the end of a string
+            $token = rtrim($token);
+
+            // Add token to array
             array_push($tokens, $token);
         }
         fclose($fp);
-        echo "tokens <br>";
-        echo var_dump($tokens);
-        //return "zG6vpYvVcj7IDokanuYhKR0HySdJ7SuM1A4u5g0Us5c3rhnSNp38UviP6ZEX";
         return $tokens[array_rand($tokens, 1)];
     }
 

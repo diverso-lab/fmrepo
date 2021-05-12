@@ -16,10 +16,8 @@ class DepositionController extends Controller
 
     public function list()
     {
-        $zenodo = new \Zenodo();
-        echo $zenodo->access_token;
-        //$depositions = Auth::user()->depositions;
-        //return view('researcher.deposition_list', ['depositions' => $depositions]);
+        $depositions = Auth::user()->depositions;
+        return view('researcher.deposition_list', ['depositions' => $depositions]);
     }
 
 }

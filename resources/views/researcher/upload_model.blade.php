@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Upload Model
+    Upload Feature Model
 @endsection
 
 @section('content')

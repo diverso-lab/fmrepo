@@ -27,9 +27,9 @@ class Deposition extends Model
         'user_id'
     ];
 
-    public function user()
+    public function feature_model()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\FeatureModel');
     }
 
     public function files()

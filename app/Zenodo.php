@@ -58,7 +58,7 @@ class Zenodo
             // Read token from file
             $token = fgets($fp);
 
-            // Strip whitespace (or other characters) from the end of a string
+            // Strip whitespace (or other characters like "\n") from the end of a string
             $token = rtrim($token);
 
             // Add token to array

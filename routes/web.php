@@ -48,10 +48,12 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
         Route::get('deposition/list', [DepositionController::class, 'list'])->name('researcher.deposition.list');
 
         // Models
+        Route::get('model/list', [DepositionController::class, 'list'])->name('researcher.model.list');
         Route::get('model/upload',[FeatureModelController::class,'upload'])->name('researcher.model.upload');
         Route::post('model/upload/p',[FeatureModelController::class,'upload_p'])->name('researcher.model.upload.p');
         Route::post('model/upload/file',[UploadController::class,'process'])->name('researcher.model.upload.file');
 
+        // Solo para el paper
 
     });
 });

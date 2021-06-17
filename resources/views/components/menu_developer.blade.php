@@ -5,5 +5,6 @@
     </li>
 
     <x-li name="Get an API Token" route="developer.token.get" icon="ni ni-clipboad-check-fill"/>
+    <x-li name="API Docs" route="developer.token.get" icon="ni ni-file-docs"/>
 
 @endif

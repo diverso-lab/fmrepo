@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class FeatureModelController extends Controller
 {
+    public function list()
+    {
+        $depositions = Auth::user()->depositions;
+        return view('researcher.deposition_list', ['depositions' => $depositions]);
+    }
+
     public function upload()
     {
         return view('researcher.upload_model');

@@ -37,7 +37,7 @@
                         </div>
                         <div class="nk-header-app-name">
                             <div class="nk-header-app-info">
-                                <span class="lead-text">FM REPO</span>
+                                <span class="lead-text">FEATURE MODELS REPOSITORY</span>
                             </div>
                         </div>
                         <div class="nk-header-menu is-light">
@@ -392,6 +392,7 @@
                         </li>
 
                         <x-li name="Home" route="home" icon="ni ni-home"/>
+                        <x-li name="About" route="home" icon="ni ni-folders-fill"/>
 
                         <x-menu_researcher/>
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Depositions
+    Models
 @endsection
 
 @section('content')

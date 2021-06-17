@@ -27,6 +27,20 @@
                             <div class="row mt-2">
 
                                 <div class="form-group col-lg-12">
+                                    You can choose to describe the feature model in XML format. <a href="blablabla">More information</a>
+                                </div>
+
+                                <x-textarea col="12" label="XML Feature Model" attr="xml" placeholder="blablabla" value="{{old('aaa')}}"/>
+                            </div>
+
+                            <div class="row mt-2">
+
+                                <div class="form-group col-lg-12">
+                                    <label class="form-label" for="xml">Upload model</label>
+                                </div>
+
+
+                                <div class="form-group col-lg-12">
                                     <input type="file" name="files[]" id="files" multiple>
                                 </div>
 

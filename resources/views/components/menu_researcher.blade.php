@@ -6,7 +6,7 @@
 
     <x-li name="My models" route="researcher.model.list" icon="ni ni-network"/>
 
-    <x-li name="Upload Model" route="researcher.model.upload" icon="ni ni-upload"/>
+
 
     <x-li name="Communities" route="researcher.community.list" icon="ni ni-users-fill"/>
 

@@ -4975,7 +4975,7 @@ a:hover .btn-trigger:before { opacity: 1; height: 120%; width: 120%; }
 
 .form-control.focus, .dual-listbox .focus.dual-listbox__search { border-color: #559bfb; box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1); }
 
-.form-control-simple { border: none; padding: 0; }
+.form-control-simple {}
 
 .form-control-simple:focus { box-shadow: none; }
 

@@ -3795,7 +3795,7 @@
         labelThousandsSeparator: [getThousandsSeparator(), Type.STRING], // Default is locale separator
 
         labelIdle: [
-            'Arrastra & suelta o <span class="filepond--label-action">examina tu equipo</span>',
+            'Drag & drop  or <span class="filepond--label-action">browse</span>',
             Type.STRING,
         ],
         labelInvalidField: ['El campo contiene archivos inválidos', Type.STRING],

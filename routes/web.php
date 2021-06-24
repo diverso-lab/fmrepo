@@ -38,22 +38,14 @@ Route::prefix('register')->group(function () {
 Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
-        // Zenodo token
-        Route::get('zenodo/token', [ResearcherController::class, 'zenodo_token'])->name('researcher.zenodo.token');
-        Route::post('zenodo/token/p', [ResearcherController::class, 'zenodo_token_p'])->name('researcher.zenodo.token.p');
-
-        // Depositions
-            // API
-        Route::get('deposition/api/load', [DepositionController::class, 'load'])->name('researcher.deposition.api.load');
-        Route::get('deposition/list', [DepositionController::class, 'list'])->name('researcher.deposition.list');
-
-        // Models
-        Route::get('model/list', [DepositionController::class, 'list'])->name('researcher.model.list');
+        // Feature Models
+        Route::get('model/list', [FeatureModelController::class, 'list'])->name('researcher.model.list');
         Route::get('model/upload',[FeatureModelController::class,'upload'])->name('researcher.model.upload');
         Route::post('model/upload/p',[FeatureModelController::class,'upload_p'])->name('researcher.model.upload.p');
         Route::post('model/upload/file',[UploadController::class,'process'])->name('researcher.model.upload.file');
 
-        // Solo para el paper
+        // Communities
+        Route::get('community/list',[CommunityController::class,'list'])->name('researcher.community.list');
 
     });
 });

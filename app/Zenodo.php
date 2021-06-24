@@ -48,7 +48,7 @@ class Zenodo
 
     }
 
-    // GET RANDOM TOKEN
+    // GET RANDOM TOKEN FROM ZENODO
     public function get_random_token() : string
     {
         $tokens = array();

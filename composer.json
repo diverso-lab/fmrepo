@@ -37,7 +37,8 @@
         "files": [
             "app/Zenodo.php",
             "app/helpers.php",
-            "app/Http/Services/DepositionService.php"
+            "app/Http/Services/DepositionService.php",
+            "app/Http/Services/CommunityService.php"
         ]
     },
     "scripts": {

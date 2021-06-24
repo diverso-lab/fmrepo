@@ -392,7 +392,6 @@
                         </li>
 
                         <x-li name="Home" route="home" icon="ni ni-home"/>
-                        <x-li name="About" route="home" icon="ni ni-folders-fill"/>
 
                         <x-menu_researcher/>
 

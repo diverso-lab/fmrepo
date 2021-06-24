@@ -28,7 +28,7 @@ class RegisterResearcherController extends Controller
 
         $user->roles()->attach($role->id);
 
-        return redirect()->route('researcher.zenodo.token');
+        return redirect()->route('home');
 
     }
 }

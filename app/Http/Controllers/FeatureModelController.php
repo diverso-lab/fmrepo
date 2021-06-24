@@ -12,8 +12,8 @@ class FeatureModelController extends Controller
 {
     public function list()
     {
-        $depositions = Auth::user()->depositions;
-        return view('researcher.deposition_list', ['depositions' => $depositions]);
+        $feature_models = Auth::user()->feature_models();
+        return view('researcher.model.list', ['feature_models' => $feature_models]);
     }
 
     public function upload()
@@ -24,7 +24,7 @@ class FeatureModelController extends Controller
     public function upload_p(Request $request)
     {
 
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required',
             'description' => 'required'
         ]);
@@ -48,6 +48,8 @@ class FeatureModelController extends Controller
 
         // upload deposition
         $uploaded_deposition = $zenodo->post_deposition($deposition_data);
+
+        return $uploaded_deposition->response;
 
         // create Feature Model into FMPREPO
         $feature_model = Auth::user()->feature_models()->create([]);

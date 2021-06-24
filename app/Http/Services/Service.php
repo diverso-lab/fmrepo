@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,7 +19,7 @@ abstract class Service
         $this->request = Request::capture();
     }
 
-    public function validate()
+    public function validate(): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($this->request->all(), $this->validation_rules);
 
@@ -29,7 +30,7 @@ abstract class Service
         }
     }
 
-    public function set_validation_rules($array)
+    protected function set_validation_rules($array)
     {
         $this->validation_rules = $array;
     }

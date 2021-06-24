@@ -46,6 +46,25 @@
 
                             </div>
 
+                            <div class="row mt-2">
+
+                                <div class="form-group col-lg-12">
+                                    Captcha
+                                    {!! NoCaptcha::renderJs() !!}
+                                    {!! NoCaptcha::display() !!}
+
+                                    @if ($errors->has('g-recaptcha-response'))
+                                        <span class="feedbak-error">
+                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                        </span>
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+
+
                             <div class="row mt-4">
 
                                 <div class="col-lg-6">
@@ -53,6 +72,8 @@
                                 </div>
 
                             </div>
+
+
 
                         </form>
 

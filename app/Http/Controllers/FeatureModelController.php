@@ -26,7 +26,8 @@ class FeatureModelController extends Controller
 
         $request->validate([
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
 
         $zenodo = new \Zenodo();
@@ -41,15 +42,20 @@ class FeatureModelController extends Controller
                 ],
                 'description' => $request->input('description'),
                 'access_right' => 'open',
+                'license' => 'cc-zero',
                 'prereserve_doi' => true
             ]
 
         ];
 
+        //return json_encode($deposition_data);
+
+        //return var_dump($deposition_data);
+
         // upload deposition
         $uploaded_deposition = $zenodo->post_deposition($deposition_data);
 
-        return $uploaded_deposition->response;
+        return $uploaded_deposition;
 
         // create Feature Model into FMPREPO
         $feature_model = Auth::user()->feature_models()->create([]);

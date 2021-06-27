@@ -50,23 +50,27 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabItem1">
 
+                                <form action="{{route('researcher.model.upload.computer')}}" method="POST" id="computer">
+                                    @csrf
 
-                                <div class="form-group">
-                                    <input type="file" name="files[]" id="files" multiple>
-                                </div>
+                                    <div class="form-group">
+                                        <input type="file" name="files[]" id="files" multiple>
+                                    </div>
 
-                                {!! NoCaptcha::renderJs() !!}
-                                {!! NoCaptcha::display() !!}
+                                    {!! NoCaptcha::renderJs() !!}
+                                    {!! NoCaptcha::display() !!}
 
-                                @if ($errors->has('g-recaptcha-response'))
-                                    <span class="feedbak-error">
-                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                        </span>
-                                @endif
+                                    @if ($errors->has('g-recaptcha-response'))
+                                        <span class="feedbak-error">
+                                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                            </span>
+                                    @endif
 
-                                <br>
+                                    <br>
 
-                                <button class="btn btn-primary ">Upload dataset</button>
+                                    <button type="submit" class="btn btn-primary ">Upload dataset</button>
+
+                                </form>
 
 
                             </div>
@@ -133,7 +137,29 @@
 
                             </div>
                             <div class="tab-pane" id="tabItem4">
-                                <p>Panel 4</p>
+                                <div class="row g-gs mt-12">
+                                    <x-textarea col="12" label="Dataset description" attr="description" placeholder="Enter your description to your dataset" value="{{old('description')}}"/>
+                                </div>
+
+                                <div class="row g-gs">
+
+                                    <div class="col-lg-12">
+                                        {!! NoCaptcha::renderJs() !!}
+                                        {!! NoCaptcha::display() !!}
+
+                                        @if ($errors->has('g-recaptcha-response'))
+                                            <span class="feedbak-error">
+                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                        </span>
+                                        @endif
+
+                                        <br>
+
+                                        <button class="btn btn-primary ">Upload dataset</button>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
@@ -149,6 +175,12 @@
 @section('scripts')
 
     <script>
+
+        $("#computer").submit(function(e){
+           e.preventDefault();
+           console.log("aa");
+           $(this).submit();
+        });
 
         setInterval(function () {
             $(".filepond--file-info-main").each(function() {

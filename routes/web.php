@@ -41,7 +41,11 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
         // Feature Models
         Route::get('model/list', [FeatureModelController::class, 'list'])->name('researcher.model.list');
         Route::get('model/upload',[FeatureModelController::class,'upload'])->name('researcher.model.upload');
-        Route::post('model/upload/p',[FeatureModelController::class,'upload_p'])->name('researcher.model.upload.p');
+
+        // Upload dataset
+        Route::post('model/upload/computer',[FeatureModelController::class,'upload_computer'])->name('researcher.model.upload.computer');
+
+        // Upload and download files from local storage
         Route::post('model/upload/file',[UploadController::class,'process'])->name('researcher.model.upload.file');
 
         // Communities

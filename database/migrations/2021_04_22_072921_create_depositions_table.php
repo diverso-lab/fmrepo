@@ -20,6 +20,7 @@ class CreateDepositionsTable extends Migration
             $table->string('conceptrecid');
             $table->string('doi');
             $table->string('doi_url');
+            $table->string('prereserve_doi');
             $table->timestamp('created')->nullable();
             $table->timestamp('modified')->nullable();
             $table->bigInteger('owner');

@@ -44,6 +44,8 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
 
         // Upload dataset
         Route::post('model/upload/computer',[FeatureModelController::class,'upload_computer'])->name('researcher.model.upload.computer');
+        Route::post('model/upload/github',[FeatureModelController::class,'upload_github'])->name('researcher.model.upload.github');
+
 
         // Upload and download files from local storage
         Route::post('model/upload/file',[UploadController::class,'process'])->name('researcher.model.upload.file');

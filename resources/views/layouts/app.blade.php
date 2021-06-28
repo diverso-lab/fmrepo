@@ -392,7 +392,8 @@
                         </li>
 
                         <x-li name="Home" route="home" icon="ni ni-home"/>
-                        <x-li name="Upload" route="researcher.model.upload" icon="ni ni-upload"/>
+                        <x-li name="Models" route="researcher.model.list" icon="ni ni-network"/>
+                        <x-li name="Upload dataset" route="researcher.model.upload" icon="ni ni-upload"/>
 
                         <x-menu_researcher/>
 

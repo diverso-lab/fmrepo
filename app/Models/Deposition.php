@@ -13,6 +13,7 @@ class Deposition extends Model
         'conceptrecid',
         'doi',
         'doi_url',
+        'prereserve_doi',
         'created',
         'modified',
         'owner',

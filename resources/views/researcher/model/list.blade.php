@@ -19,6 +19,8 @@
                                 <thead>
                                 <tr>
                                     <th>DOI</th>
+                                    <th>DOI URL</th>
+                                    <th>Prerreserved DOI</th>
                                     <th>Title</th>
                                     <th>State</th>
                                 </tr>
@@ -27,9 +29,11 @@
 
                                 @foreach($feature_models as $feature_model)
                                     <tr>
-                                        <td>{{$feature_model->deposition->doi}}</td>
-                                        <td>{{$feature_model->deposition->title}}</td>
-                                        <td>{{$feature_model->deposition->state}}</td>
+                                        <td>{{$feature_model->deposition->doi ?? ''}}</td>
+                                        <td>{{$feature_model->deposition->doi_url ?? ''}}</td>
+                                        <td>{{$feature_model->deposition->prereserve_doi ?? ''}}</td>
+                                        <td>{{$feature_model->deposition->title ?? ''}}</td>
+                                        <td>{{$feature_model->deposition->state ?? ''}}</td>
                                     </tr>
                                 @endforeach
 

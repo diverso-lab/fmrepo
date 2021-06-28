@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Upload
+    Upload dataset
 @endsection
 
 @section('content')
@@ -75,29 +75,35 @@
 
                             </div>
                             <div class="tab-pane" id="tabItem2">
-                                <div class="row g-gs">
-                                    <x-input col="12" label="GitHub repository" attr="github" placeholder="Enter your GitHub repository to clone" value="{{old('title')}}"/>
-                                </div>
 
-                                <div class="row g-gs">
+                                <form action="{{route('researcher.model.upload.computer')}}" method="POST" id="computer">
+                                    @csrf
 
-                                    <div class="col-lg-12">
-                                        {!! NoCaptcha::renderJs() !!}
-                                        {!! NoCaptcha::display() !!}
+                                    <div class="row g-gs">
+                                        <x-input col="12" label="GitHub repository" attr="github" placeholder="Enter your GitHub repository to clone" value="{{old('title')}}"/>
+                                    </div>
 
-                                        @if ($errors->has('g-recaptcha-response'))
-                                            <span class="feedbak-error">
-                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                        </span>
-                                        @endif
+                                    <div class="row g-gs">
 
-                                        <br>
+                                        <div class="col-lg-12">
+                                            {!! NoCaptcha::renderJs() !!}
+                                            {!! NoCaptcha::display() !!}
 
-                                        <button class="btn btn-primary ">Upload dataset</button>
+                                            @if ($errors->has('g-recaptcha-response'))
+                                                <span class="feedbak-error">
+                                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                            </span>
+                                            @endif
+
+                                            <br>
+
+                                            <button class="btn btn-primary ">Upload dataset</button>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                </form>
 
 
                             </div>

@@ -13,7 +13,7 @@ class FeatureModelController extends Controller
 {
     public function list()
     {
-        $feature_models = Auth::user()->feature_models();
+        $feature_models = FeatureModel::all();
         return view('researcher.model.list', ['feature_models' => $feature_models]);
     }
 
@@ -54,9 +54,9 @@ class FeatureModelController extends Controller
         // upload deposition to Zenodo through API REST
         $uploaded_deposition = $zenodo->post_deposition($deposition_data);
 
+        return $uploaded_deposition;
+
         // create Feature Model into FMPREPO
-        //FeatureModel::create();
-        //$feature_model = Auth::user()->feature_models()->create([]);
 
         $new_feature_model = FeatureModel::create();
         $new_feature_model->save();
@@ -67,6 +67,7 @@ class FeatureModelController extends Controller
             'modified' => $uploaded_deposition['modified'],
             'doi' => $uploaded_deposition['doi'],
             'doi_url' => $uploaded_deposition['doi_url'],
+            'prereserve_doi' => $uploaded_deposition['metadata']['prereserve_doi']['doi'],
             'owner' => $uploaded_deposition['owner'],
             'record_id' => $uploaded_deposition['record_id'],
             'state' => $uploaded_deposition['state'],
@@ -117,10 +118,23 @@ class FeatureModelController extends Controller
 
         }
 
-        //$service = new DepositionService();
-        //$service->load();
-
-        //return redirect()->route('researcher.deposition.list')->with('success','Deposition created successfully');
+        return redirect()->route('researcher.model.list')->with('success','Deposition created successfully');
 
     }
+
+    public function upload_github(Request $request){
+
+        $request->validate([
+            'title' => '',
+            'description' => '',
+            'g-recaptcha-response' => 'required|captcha',
+        ]);
+
+        $zenodo = new \Zenodo();
+        $github_repo = $request->input('github');
+
+        shell_exec(('cd ./storage/app/ & git clone '.$github_repo));
+
+    }
+
 }

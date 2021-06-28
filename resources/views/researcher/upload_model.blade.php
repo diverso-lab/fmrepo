@@ -176,11 +176,11 @@
 
     <script>
 
-        $("#computer").submit(function(e){
+        /*$("#computer").submit(function(e){
            e.preventDefault();
            console.log("aa");
            $(this).submit();
-        });
+        });*/
 
         setInterval(function () {
             $(".filepond--file-info-main").each(function() {

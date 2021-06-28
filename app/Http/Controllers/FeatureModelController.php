@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\DepositionService;
 use App\Models\Deposition;
+use App\Models\FeatureModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,12 +22,12 @@ class FeatureModelController extends Controller
         return view('researcher.upload_model');
     }
 
-    public function upload_p(Request $request)
+    public function upload_computer(Request $request)
     {
 
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => '',
+            'description' => '',
             'g-recaptcha-response' => 'required|captcha',
         ]);
 
@@ -36,11 +37,13 @@ class FeatureModelController extends Controller
             'metadata' => [
                 'upload_type' => 'software',
                 'publication_date' => '2021-04-28',
-                'title' => $request->input('title'),
+                //'title' => $request->input('title'),
+                'title' => 'new title',
+                //'description' => $request->input('description'),
+                'description' => 'new description',
                 'creators' => [
-                    ['name' => Auth::user()->name.' '.Auth::user()->surname]
+                    ['name' => 'anonymous']
                 ],
-                'description' => $request->input('description'),
                 'access_right' => 'open',
                 'license' => 'cc-zero',
                 'prereserve_doi' => true
@@ -48,20 +51,17 @@ class FeatureModelController extends Controller
 
         ];
 
-        //return json_encode($deposition_data);
-
-        //return var_dump($deposition_data);
-
-        // upload deposition
+        // upload deposition to Zenodo through API REST
         $uploaded_deposition = $zenodo->post_deposition($deposition_data);
 
-        return $uploaded_deposition;
-
         // create Feature Model into FMPREPO
-        $feature_model = Auth::user()->feature_models()->create([]);
+        //FeatureModel::create();
+        //$feature_model = Auth::user()->feature_models()->create([]);
 
-        $new_deposition = $feature_model->deposition()->create([
+        $new_feature_model = FeatureModel::create();
+        $new_feature_model->save();
 
+        $new_deposition = Deposition::create([
             'conceptrecid' => $uploaded_deposition['conceptrecid'],
             'created' => $uploaded_deposition['created'],
             'modified' => $uploaded_deposition['modified'],
@@ -75,21 +75,22 @@ class FeatureModelController extends Controller
             'title' => $uploaded_deposition['metadata']['title'],
             'description' => $uploaded_deposition['metadata']['description'],
             'license' => $uploaded_deposition['metadata']['license'] ?? '',
-            'upload_type' => $uploaded_deposition['metadata']['upload_type']
+            'upload_type' => $uploaded_deposition['metadata']['upload_type'],
+            'feature_model_id' => $new_feature_model->id
         ]);
+        $new_deposition->save();
 
         // upload files to Zenodo
         $deposition_id = $uploaded_deposition['id'];
-        $user = Auth::user();
         $token = $request->session()->token();
-        $tmp = '/tmp/'.$user->username.'/'.$token.'/';
+        $tmp = '/tmp/'.$token.'/';
 
         foreach (Storage::files($tmp) as $filename) {
 
             $name = pathinfo($filename, PATHINFO_FILENAME);
             $type = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $old_directory = $filename;
-            $new_directory = '/featuremodels/'.$user->username.'/deposition_'.$deposition_id.'/'.$name.'.'.$type;
+            $new_directory = '/featuremodels/deposition_'.$deposition_id.'/'.$name.'.'.$type;
 
             $file = Storage::get($filename);
             $file_data = ['name' => $name];

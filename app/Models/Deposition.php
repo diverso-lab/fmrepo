@@ -24,7 +24,8 @@ class Deposition extends Model
         'description',
         'license',
         'upload_type',
-        'user_id'
+        'user_id',
+        'feature_model_id'
     ];
 
     public function feature_model()

@@ -16,7 +16,7 @@ class CreateFeaturemodelTable extends Migration
         Schema::create('featuremodels', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId("user_id");
+            $table->foreignId("user_id")->nullable();
         });
     }
 
@@ -27,6 +27,6 @@ class CreateFeaturemodelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('featuremodel');
+        Schema::dropIfExists('featuremodels');
     }
 }

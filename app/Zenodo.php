@@ -124,6 +124,11 @@ class Zenodo
         return $this->post($url = 'api/deposit/depositions',$data);
     }
 
+    public function publish_deposition($deposition)
+    {
+        return $this->post($url = 'api/deposit/depositions/' . $deposition . '/actions/publish',[]);
+    }
+
     // DEPOSITION FILES
     public function get_files_by_deposition($deposition)
     {

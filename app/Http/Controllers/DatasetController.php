@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\DatasetService;
+use App\Http\Services\DepositionService;
 use App\Models\Deposition;
 use App\Models\Dataset;
 use Illuminate\Http\Request;
@@ -22,91 +24,32 @@ class DatasetController extends Controller
 
     public function upload_computer(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'g-recaptcha-response' => 'required|captcha',
-        ]);
 
-        $zenodo = new \Zenodo();
+        $service = new DepositionService();
 
-        $deposition_data = [
-            'metadata' => [
-                'upload_type' => 'software',
-                'publication_date' => '2021-04-28',
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'creators' => [
-                    ['name' => 'anonymous']
-                ],
-                'access_right' => 'open',
-                'license' => 'cc-zero',
-                'prereserve_doi' => true
-            ]
+        $service->validate();
 
-        ];
+        // basic deposition data
+        $deposition_data = $service->create_deposition_data($request);
 
-        // upload deposition to Zenodo through API REST
-        $uploaded_deposition = $zenodo->post_deposition($deposition_data);
+        // upload deposition to Zenodo through REST API
+        $zenodo_deposition = $service->post_deposition_to_zenodo($deposition_data);
 
-        // create Dataset into FMPREPO
-        $new_dataset = Dataset::create();
-
-        $new_deposition = Deposition::create([
-            'conceptrecid' => $uploaded_deposition['conceptrecid'],
-            'created' => $uploaded_deposition['created'],
-            'modified' => $uploaded_deposition['modified'],
-            'doi' => $uploaded_deposition['doi'],
-            'doi_url' => $uploaded_deposition['doi_url'],
-            'prereserve_doi' => $uploaded_deposition['metadata']['prereserve_doi']['doi'],
-            'owner' => $uploaded_deposition['owner'],
-            'record_id' => $uploaded_deposition['record_id'],
-            'state' => $uploaded_deposition['state'],
-            'submitted' => $uploaded_deposition['submitted'],
-            'access_right' => $uploaded_deposition['metadata']['access_right'],
-            'title' => $uploaded_deposition['metadata']['title'],
-            'description' => $uploaded_deposition['metadata']['description'],
-            'license' => $uploaded_deposition['metadata']['license'] ?? '',
-            'upload_type' => $uploaded_deposition['metadata']['upload_type'],
-            'dataset_id' => $new_dataset->id
-        ]);
+        // upload deposition to REPO
+        $repo_deposition = $service->post_deposition_to_repo($zenodo_deposition);
 
         // upload files to Zenodo
-        $deposition_id = $uploaded_deposition['id'];
         $token = $request->session()->token();
-        $tmp = '/tmp/'.$token.'/';
+        $service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
 
-        foreach (Storage::files($tmp) as $filename) {
+        // publish deposition in Zenodo
+        $service->publish($repo_deposition);
 
-            $name = pathinfo($filename, PATHINFO_FILENAME);
-            $type = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $old_directory = $filename;
-            $new_directory = '/dataset/deposition_'.$deposition_id.'/'.$name.'.'.$type;
-
-            $file = Storage::get($filename);
-            $file_data = ['name' => $name];
-
-            try{
-
-                $new_file = $zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
-
-                $new_deposition->files()->create([
-                    'checksum' => $new_file['checksum'],
-                    'filename' => $new_file['filename'],
-                    'filesize' => $new_file['filesize'],
-                    'file_id' => $new_file['id'],
-                    'download_link' => $new_file['links']['download'],
-                    'self_link' => $new_file['links']['self']
-                ]);
-
-                // move into local storage
-                Storage::move($old_directory, $new_directory);
-
-            } catch (\Exception $e) {
-
-            }
-
-        }
+        // request for review
+        $dataset = $repo_deposition->dataset;
+        $data = ['email' => $request->input('email')];
+        $dataset_service = new DatasetService();
+        $dataset_service->create_request_for_review($dataset,$data);
 
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
 

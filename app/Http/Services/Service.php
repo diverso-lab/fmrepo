@@ -19,7 +19,7 @@ abstract class Service
         $this->request = Request::capture();
     }
 
-    public function validate(): \Illuminate\Http\RedirectResponse
+    public function validate()
     {
         $validator = Validator::make($this->request->all(), $this->validation_rules);
 

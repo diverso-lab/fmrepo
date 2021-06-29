@@ -23,5 +23,10 @@ class RoleSeeder extends Seeder
             'rol' => 'DEVELOPER',
             'slug' => 'Developer',
         ]);
+
+        DB::table('roles')->insert([
+            'rol' => 'REVIEWER',
+            'slug' => 'Reviewer',
+        ]);
     }
 }

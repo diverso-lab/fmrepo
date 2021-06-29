@@ -30,7 +30,7 @@
                                 @foreach($datasets as $dataset)
                                     <tr>
                                         <td>{{$dataset->deposition->doi ?? ''}}</td>
-                                        <td>{{$dataset->deposition->doi_url ?? ''}}</td>
+                                        <td><a target="_blank" href="{{$dataset->deposition->doi_url ?? ''}}">{{$dataset->deposition->doi_url ?? ''}}</a></td>
                                         <td>{{$dataset->deposition->prereserve_doi ?? ''}}</td>
                                         <td>{{$dataset->deposition->title ?? ''}}</td>
                                         <td>{{$dataset->deposition->state ?? ''}}</td>

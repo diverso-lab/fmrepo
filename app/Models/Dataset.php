@@ -24,4 +24,9 @@ class Dataset extends Model
     {
         return $this->hasOne('App\Models\Deposition')->orderByDesc('modified');
     }
+
+    public function request_review()
+    {
+        return $this->hasOne('App\Model\RequestReview');
+    }
 }

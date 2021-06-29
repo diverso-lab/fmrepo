@@ -2,11 +2,16 @@
 
 namespace App\Http\Services;
 
+use App\Models\Dataset;
 use App\Models\Deposition;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DepositionService extends Service
 {
+
+    private $zenodo;
 
     public function __construct()
     {
@@ -14,8 +19,11 @@ class DepositionService extends Service
 
         parent::set_validation_rules([
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
+
+        $this->zenodo = new \Zenodo();
     }
 
     public function load()
@@ -92,4 +100,104 @@ class DepositionService extends Service
         }
 
     }
+
+    public function create_deposition_data($request)
+    {
+        return [
+            'metadata' => [
+                'upload_type' => 'software',
+                'publication_date' => '2021-04-28',
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'creators' => [
+                    ['name' => 'anonymous']
+                ],
+                'access_right' => 'open',
+                'license' => 'cc-zero',
+                'prereserve_doi' => true
+            ]
+
+        ];
+    }
+
+    public function post_deposition_to_zenodo($deposition_data)
+    {
+        return $this->zenodo->post_deposition($deposition_data);
+    }
+
+    public function post_deposition_to_repo($zenodo_deposition)
+    {
+        // create Dataset into FMPREPO
+        $new_dataset = Dataset::create();
+
+        $repo_deposition = Deposition::create([
+            'conceptrecid' => $zenodo_deposition['conceptrecid'],
+            'created' => $zenodo_deposition['created'],
+            'modified' => $zenodo_deposition['modified'],
+            'doi' => $zenodo_deposition['doi'],
+            'doi_url' => $zenodo_deposition['doi_url'],
+            'prereserve_doi' => $zenodo_deposition['metadata']['prereserve_doi']['doi'],
+            'owner' => $zenodo_deposition['owner'],
+            'record_id' => $zenodo_deposition['record_id'],
+            'state' => $zenodo_deposition['state'],
+            'submitted' => $zenodo_deposition['submitted'],
+            'access_right' => $zenodo_deposition['metadata']['access_right'],
+            'title' => $zenodo_deposition['metadata']['title'],
+            'description' => $zenodo_deposition['metadata']['description'],
+            'license' => $zenodo_deposition['metadata']['license'] ?? '',
+            'upload_type' => $zenodo_deposition['metadata']['upload_type'],
+            'dataset_id' => $new_dataset->id
+        ]);
+
+        return $repo_deposition;
+    }
+
+    public function upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token)
+    {
+        $deposition_id = $zenodo_deposition['id'];
+        $tmp = '/tmp/'.$token.'/';
+
+        foreach (Storage::files($tmp) as $filename) {
+
+            $name = pathinfo($filename, PATHINFO_FILENAME);
+            $type = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $old_directory = $filename;
+            $new_directory = '/dataset/deposition_'.$deposition_id.'/'.$name.'.'.$type;
+
+            $file = Storage::get($filename);
+            $file_data = ['name' => $name];
+
+            try{
+
+                $new_file = $this->zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
+
+                $repo_deposition->files()->create([
+                    'checksum' => $new_file['checksum'],
+                    'filename' => $new_file['filename'],
+                    'filesize' => $new_file['filesize'],
+                    'file_id' => $new_file['id'],
+                    'download_link' => $new_file['links']['download'],
+                    'self_link' => $new_file['links']['self']
+                ]);
+
+                // move into local storage
+                Storage::move($old_directory, $new_directory);
+
+            } catch (\Exception $e) {
+
+            }
+
+        }
+    }
+
+    public function publish($deposition)
+    {
+        $new_deposition_published = $this->zenodo->publish_deposition($deposition->record_id);
+        $deposition->doi = $new_deposition_published['doi'];
+        $deposition->doi_url = $new_deposition_published['doi_url'];
+        $deposition->state = $new_deposition_published['state'];
+        $deposition->save();
+        return $deposition;
+    }
+
 }

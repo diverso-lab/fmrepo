@@ -15,7 +15,7 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->enum('rol', ['RESEARCHER', 'DEVELOPER']);
+            $table->enum('rol', ['RESEARCHER', 'DEVELOPER', 'REVIEWER']);
             $table->string('slug')->nullable();
             $table->timestamps();
         });

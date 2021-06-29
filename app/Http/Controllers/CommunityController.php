@@ -13,6 +13,6 @@ class CommunityController extends Controller
 
         $service = new CommunityService();
         $communities = $service->all();
-        return view('researcher.community.list');
+        return view('community.list');
     }
 }

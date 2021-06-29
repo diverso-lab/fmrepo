@@ -50,7 +50,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabItem1">
 
-                                <form action="{{route('researcher.model.upload.computer')}}" method="POST" id="computer">
+                                <form action="{{route('model.upload.computer')}}" method="POST" id="computer">
                                     @csrf
 
                                     <div class="form-group">
@@ -76,7 +76,7 @@
                             </div>
                             <div class="tab-pane" id="tabItem2">
 
-                                <form action="{{route('researcher.model.upload.computer')}}" method="POST" id="computer">
+                                <form action="{{route('model.upload.computer')}}" method="POST" id="computer">
                                     @csrf
 
                                     <div class="row g-gs">
@@ -182,19 +182,6 @@
 
     <script>
 
-        /*$("#computer").submit(function(e){
-           e.preventDefault();
-           console.log("aa");
-           $(this).submit();
-        });*/
-
-        setInterval(function () {
-            $(".filepond--file-info-main").each(function() {
-                var uri = $(this).text();
-                $( this ).text(decodeURI(uri));
-            });
-        },1);
-
         // plugins de interés
         FilePond.registerPlugin(FilePondPluginFileValidateSize);
         FilePond.registerPlugin(FilePondPluginFileValidateType);
@@ -210,37 +197,17 @@
                 labelMaxTotalFileSize: 'El tamaño máximo total es de {filesize}',
                 labelFileTypeNotAllowed: 'Tipo de archivo no válido',
                 server: {
-                    url: '{{route('researcher.model.upload.file')}}',
+                    url: '{{route('model.upload.file')}}',
                     process: '/',
-                    load: (source, load, error, progress, abort, headers) => {
-
-                        var request = new Request(decodeURI(source));
-                        fetch(request).then(function(response) {
-
-                            response.blob().then(function(myBlob) {
-
-                                load(myBlob);
-
-                                $(".filepond--file-info-main").each(function() {
-                                    var uri = $(this).text();
-                                    $( this ).text(decodeURI(uri));
-                                });
-
-                            });
-                        });
-
-                        $(".filepond--file-info-main").each(function() {
-                            var uri = $(this).text();
-                            $( this ).text(decodeURI(uri));
-                        });
-
-                    },
                     remove: function(source, load, errorCallback) {
+                        alert("eee");
                         var filename = source.split('/').pop()
-                        var url = 'http://evidentia.test/21/evidence/upload/remove/' + filename;
+                        var url =  window.location.protocol + "//" + window.location.host + "/model/upload/remove/" + filename;
+                        alert(url);
                         var request = new Request(url);
 
                         fetch(request).then(function(response) {
+                            console.log("respuesta");
                             console.log(response);
                         });
 

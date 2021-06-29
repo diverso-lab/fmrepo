@@ -6,7 +6,7 @@
 
 
 
-    <x-li name="Communities" route="researcher.community.list" icon="ni ni-users-fill"/>
+    <x-li name="Communities" route="community.list" icon="ni ni-users-fill"/>
 
 
 @endif

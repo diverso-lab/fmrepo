@@ -14,7 +14,7 @@ class FeatureModelController extends Controller
     public function list()
     {
         $feature_models = FeatureModel::all();
-        return view('researcher.model.list', ['feature_models' => $feature_models]);
+        return view('model.list', ['feature_models' => $feature_models]);
     }
 
     public function upload()
@@ -118,7 +118,7 @@ class FeatureModelController extends Controller
 
         }
 
-        return redirect()->route('researcher.model.list')->with('success','Deposition created successfully');
+        return redirect()->route('model.list')->with('success','Deposition created successfully');
 
     }
 

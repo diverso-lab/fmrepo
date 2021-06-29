@@ -32,6 +32,17 @@ Route::prefix('register')->group(function () {
     Route::post('developer/p', [RegisterDeveloperController::class, 'register_p'])->name('register.developer.p');
 });
 
+// Feature Models
+Route::get('model/list', [FeatureModelController::class, 'list'])->name('model.list');
+Route::get('model/upload',[FeatureModelController::class,'upload'])->name('model.upload');
+
+// Upload dataset
+Route::post('model/upload/computer',[FeatureModelController::class,'upload_computer'])->name('model.upload.computer');
+Route::post('model/upload/github',[FeatureModelController::class,'upload_github'])->name('model.upload.github');
+
+// Upload and download files from local storage
+Route::post('model/upload/file',[UploadController::class,'process'])->name('model.upload.file');
+Route::delete('model/upload/file',[UploadController::class,'delete'])->name('model.upload.remove');
 
 // Researcher routes
 
@@ -39,19 +50,12 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
         // Feature Models
-        Route::get('model/list', [FeatureModelController::class, 'list'])->name('researcher.model.list');
-        Route::get('model/upload',[FeatureModelController::class,'upload'])->name('researcher.model.upload');
-
-        // Upload dataset
-        Route::post('model/upload/computer',[FeatureModelController::class,'upload_computer'])->name('researcher.model.upload.computer');
-        Route::post('model/upload/github',[FeatureModelController::class,'upload_github'])->name('researcher.model.upload.github');
 
 
-        // Upload and download files from local storage
-        Route::post('model/upload/file',[UploadController::class,'process'])->name('researcher.model.upload.file');
+
 
         // Communities
-        Route::get('community/list',[CommunityController::class,'list'])->name('researcher.community.list');
+        Route::get('community/list',[CommunityController::class,'list'])->name('community.list');
 
     });
 });

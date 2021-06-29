@@ -28,6 +28,8 @@
 
         >
 
+        <small class="form-text text-muted">{{ $description }}</small>
+
         @error($attr)
         <span class="invalid-feedback d-block" role="alert">
         <strong>{{ $message }}</strong>

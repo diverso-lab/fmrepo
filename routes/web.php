@@ -32,17 +32,17 @@ Route::prefix('register')->group(function () {
     Route::post('developer/p', [RegisterDeveloperController::class, 'register_p'])->name('register.developer.p');
 });
 
-// Feature Models
-Route::get('model/list', [FeatureModelController::class, 'list'])->name('model.list');
-Route::get('model/upload',[FeatureModelController::class,'upload'])->name('model.upload');
+// Dataset
+Route::get('dataset/list', [DatasetController::class, 'list'])->name('dataset.list');
+Route::get('dataset/upload',[DatasetController::class,'upload'])->name('dataset.upload');
 
 // Upload dataset
-Route::post('model/upload/computer',[FeatureModelController::class,'upload_computer'])->name('model.upload.computer');
-Route::post('model/upload/github',[FeatureModelController::class,'upload_github'])->name('model.upload.github');
+Route::post('dataset/upload/computer',[DatasetController::class,'upload_computer'])->name('dataset.upload.computer');
+Route::post('dataset/upload/github',[DatasetController::class,'upload_github'])->name('dataset.upload.github');
 
 // Upload and download files from local storage
-Route::post('model/upload/file',[UploadController::class,'process'])->name('model.upload.file');
-Route::delete('model/upload/file',[UploadController::class,'delete'])->name('model.upload.remove');
+Route::post('dataset/upload/file',[UploadController::class,'process'])->name('dataset.upload.file');
+Route::delete('dataset/upload/file',[UploadController::class,'delete'])->name('dataset.upload.remove');
 
 // Researcher routes
 

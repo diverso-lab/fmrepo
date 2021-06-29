@@ -26,12 +26,12 @@ class Deposition extends Model
         'license',
         'upload_type',
         'user_id',
-        'feature_model_id'
+        'dataset_id'
     ];
 
-    public function feature_model()
+    public function dataset()
     {
-        return $this->belongsTo('App\Models\FeatureModel');
+        return $this->belongsTo('App\Models\Dataset');
     }
 
     public function files()

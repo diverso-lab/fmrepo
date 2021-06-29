@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeaturemodelTable extends Migration
+class CreateDatasetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFeaturemodelTable extends Migration
      */
     public function up()
     {
-        Schema::create('featuremodels', function (Blueprint $table) {
+        Schema::create('datasets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId("user_id")->nullable();
@@ -27,6 +27,6 @@ class CreateFeaturemodelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('featuremodels');
+        Schema::dropIfExists('datasets');
     }
 }

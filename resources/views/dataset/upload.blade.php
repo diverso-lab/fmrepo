@@ -16,11 +16,15 @@
                     <div class="card-inner">
 
                         <div class="row g-gs">
-                            <x-input col="12" label="Title" attr="title" placeholder="Enter your dataset title" value="{{old('title')}}"/>
+                            <x-input col="12" label="Title" id="title" attr="title" placeholder="Enter your dataset title" value="{{old('title')}}"/>
                         </div>
 
                         <div class="row g-gs mt-12">
-                            <x-textarea col="12" label="Dataset description" attr="description" placeholder="Enter your description to your dataset" value="{{old('description')}}"/>
+                            <x-textarea col="12" label="Dataset description" id="description" attr="description" placeholder="Enter your description to your dataset" value="{{old('description')}}"/>
+                        </div>
+
+                        <div class="row g-gs">
+                            <x-input col="12" label="Email (optional)" id="email" description="Your dataset will be reviewed by our work team. If you want us to notify you of its acceptance, tell us your email." attr="Email" placeholder="Enter your email" value="{{old('email')}}"/>
                         </div>
 
                     </div>
@@ -50,8 +54,12 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabItem1">
 
-                                <form action="{{route('model.upload.computer')}}" method="POST" id="computer">
+                                <form action="{{route('dataset.upload.computer')}}" method="POST" class="request_form">
                                     @csrf
+
+                                    <input class="hidden_title" type="hidden" name="title" value="" required="">
+                                    <input class="hidden_description" type="hidden" name="description" value="" required="">
+                                    <input class="hidden_email" type="hidden" name="email" value="" required="">
 
                                     <div class="form-group">
                                         <input type="file" name="files[]" id="files" multiple>
@@ -68,7 +76,7 @@
 
                                     <br>
 
-                                    <button type="submit" class="btn btn-primary ">Upload dataset</button>
+                                    <button type="submit" class="btn btn-primary">Upload dataset</button>
 
                                 </form>
 
@@ -76,7 +84,7 @@
                             </div>
                             <div class="tab-pane" id="tabItem2">
 
-                                <form action="{{route('model.upload.computer')}}" method="POST" id="computer">
+                                <form action="{{route('dataset.upload.github')}}" method="POST" class="request_form">
                                     @csrf
 
                                     <div class="row g-gs">
@@ -97,7 +105,7 @@
 
                                             <br>
 
-                                            <button class="btn btn-primary ">Upload dataset</button>
+                                            <button type="submit" class="btn btn-primary">Upload dataset</button>
 
                                         </div>
 
@@ -134,7 +142,7 @@
 
                                         <br>
 
-                                        <button class="btn btn-primary ">Upload dataset</button>
+                                        <button type="submit" class="btn btn-primary">Upload dataset</button>
 
                                     </div>
 
@@ -161,7 +169,7 @@
 
                                         <br>
 
-                                        <button class="btn btn-primary ">Upload dataset</button>
+                                        <button type="submit" class="btn btn-primary">Upload dataset</button>
 
                                     </div>
 
@@ -182,7 +190,22 @@
 
     <script>
 
-        // plugins de interés
+        // this is to add the title, description, email, etc, to the form
+        $(document).ready(function () {
+            var form = $(".request_form");
+
+            form.submit(function (event){
+
+                $(".hidden_title").val($("#title").val());
+                $(".hidden_description").val($("#description").val());
+                $(".hidden_email").val($("#email").val());
+
+                return true;
+
+            });
+        });
+
+        // plugins
         FilePond.registerPlugin(FilePondPluginFileValidateSize);
         FilePond.registerPlugin(FilePondPluginFileValidateType);
 
@@ -191,28 +214,8 @@
             {
                 maxFileSize: 50000000,
                 maxTotalFileSize: 200000000,
-                labelMaxTotalFileSizeExceeded: 'Tamaño total máximo excedido',
-                labelMaxFileSizeExceeded: 'El archivo es demasiado grande',
-                labelMaxFileSize: 'El tamaño máximo es de {filesize}',
-                labelMaxTotalFileSize: 'El tamaño máximo total es de {filesize}',
-                labelFileTypeNotAllowed: 'Tipo de archivo no válido',
                 server: {
-                    url: '{{route('model.upload.file')}}',
-                    process: '/',
-                    remove: function(source, load, errorCallback) {
-                        alert("eee");
-                        var filename = source.split('/').pop()
-                        var url =  window.location.protocol + "//" + window.location.host + "/model/upload/remove/" + filename;
-                        alert(url);
-                        var request = new Request(url);
-
-                        fetch(request).then(function(response) {
-                            console.log("respuesta");
-                            console.log(response);
-                        });
-
-                        load();
-                    },
+                    url: '{{route('dataset.upload.file')}}',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
@@ -220,8 +223,6 @@
 
             }
         );
-
-
 
     </script>
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Models
+    Datasets
 @endsection
 
 @section('content')
@@ -27,13 +27,13 @@
                                 </thead>
                                 <tbody>
 
-                                @foreach($feature_models as $feature_model)
+                                @foreach($datasets as $dataset)
                                     <tr>
-                                        <td>{{$feature_model->deposition->doi ?? ''}}</td>
-                                        <td>{{$feature_model->deposition->doi_url ?? ''}}</td>
-                                        <td>{{$feature_model->deposition->prereserve_doi ?? ''}}</td>
-                                        <td>{{$feature_model->deposition->title ?? ''}}</td>
-                                        <td>{{$feature_model->deposition->state ?? ''}}</td>
+                                        <td>{{$dataset->deposition->doi ?? ''}}</td>
+                                        <td>{{$dataset->deposition->doi_url ?? ''}}</td>
+                                        <td>{{$dataset->deposition->prereserve_doi ?? ''}}</td>
+                                        <td>{{$dataset->deposition->title ?? ''}}</td>
+                                        <td>{{$dataset->deposition->state ?? ''}}</td>
                                     </tr>
                                 @endforeach
 

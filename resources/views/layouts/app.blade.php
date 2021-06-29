@@ -28,7 +28,7 @@
     <div class="nk-main ">
         <!-- wrap @s -->
         <div class="nk-wrap ">
-            <!-- main header @s -->
+
             <div class="nk-header nk-header-fixed is-light">
                 <div class="container-fluid">
                     <div class="nk-header-wrap">
@@ -101,7 +101,7 @@
                                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
                                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                                 <div class="user-card">
-                                                    ssss
+                                                    You are currently as a guest
                                                 </div>
                                             </div>
                                             <div class="dropdown-inner">
@@ -166,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            <!-- main header @e -->
+
             <div class="nk-sidebar" data-content="sidebarMenu">
                 <div class="nk-sidebar-inner" data-simplebar>
 
@@ -176,10 +176,10 @@
                         </li>
 
                         <x-li name="Home" route="home" icon="ni ni-home"/>
-                        <x-li name="Models" route="model.list" icon="ni ni-network"/>
-                        <x-li name="Upload dataset" route="model.upload" icon="ni ni-upload"/>
+                        <x-li name="Datasets" route="dataset.list" icon="ni ni-network"/>
+                        <x-li name="Upload dataset" route="dataset.upload" icon="ni ni-upload"/>
 
-                        @if(\Illuminate\Support\Facades\Auth::check())
+                        @if(Auth::check())
 
                             <x-menu_researcher/>
 
@@ -192,7 +192,7 @@
 
                 </div>
             </div>
-            <!-- content @s -->
+
             <div class="nk-content ">
                 <div class="container-fluid">
                     <div class="nk-content-inner">
@@ -237,7 +237,7 @@
                     </div>
                 </div>
             </div>
-            <!-- content @e -->
+
         </div>
         <!-- wrap @e -->
     </div>

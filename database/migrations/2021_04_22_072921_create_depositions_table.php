@@ -36,7 +36,7 @@ class CreateDepositionsTable extends Migration
             $table->string('upload_type');
 
             // foreign id
-            $table->foreignId('feature_model_id')->nullable();
+            $table->foreignId('dataset_id')->nullable();
         });
     }
 

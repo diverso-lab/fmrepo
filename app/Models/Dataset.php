@@ -27,6 +27,6 @@ class Dataset extends Model
 
     public function request_review()
     {
-        return $this->hasOne('App\Model\RequestReview');
+        return $this->hasOne('App\Models\RequestReview');
     }
 }

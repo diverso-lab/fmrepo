@@ -40,7 +40,9 @@
             "app/helpers.php",
             "app/Http/Services/DepositionService.php",
             "app/Http/Services/DatasetService.php",
-            "app/Http/Services/CommunityService.php"
+            "app/Http/Services/CommunityService.php",
+            "app/Http/Services/ReviewService.php",
+            "app/Http/Services/RequestReviewService.php"
         ]
     },
     "scripts": {

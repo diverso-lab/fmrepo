@@ -4,6 +4,17 @@
     Datasets
 @endsection
 
+@section('breadcrumb')
+
+    <nav>
+        <ul class="breadcrumb breadcrumb-arrow">
+            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+            <li class="breadcrumb-item active">Datasets</li>
+        </ul>
+    </nav>
+
+@endsection
+
 @section('content')
 
     <div class="nk-block">
@@ -20,9 +31,8 @@
                                 <tr>
                                     <th>DOI</th>
                                     <th>DOI URL</th>
-                                    <th>Prerreserved DOI</th>
                                     <th>Title</th>
-                                    <th>State</th>
+                                    <th>Options</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -31,9 +41,14 @@
                                     <tr>
                                         <td>{{$dataset->deposition->doi ?? ''}}</td>
                                         <td><a target="_blank" href="{{$dataset->deposition->doi_url ?? ''}}">{{$dataset->deposition->doi_url ?? ''}}</a></td>
-                                        <td>{{$dataset->deposition->prereserve_doi ?? ''}}</td>
                                         <td>{{$dataset->deposition->title ?? ''}}</td>
-                                        <td>{{$dataset->deposition->state ?? ''}}</td>
+                                        <td>
+
+                                            <div class="tb-odr-btns d-none d-md-inline">
+                                                <a href="{{route('dataset.view',$dataset->id)}}" class="btn btn-sm btn-primary">View</a>
+                                            </div>
+
+                                        </td>
                                     </tr>
                                 @endforeach
 

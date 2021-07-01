@@ -33,6 +33,7 @@ Route::prefix('register')->group(function () {
 });
 
 // Dataset
+Route::get('dataset/view/{id}', [DatasetController::class, 'view'])->name('dataset.view');
 Route::get('dataset/list', [DatasetController::class, 'list'])->name('dataset.list');
 Route::get('dataset/upload',[DatasetController::class,'upload'])->name('dataset.upload');
 
@@ -49,17 +50,11 @@ Route::delete('dataset/upload/file',[UploadController::class,'delete'])->name('d
 Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
-        // Feature Models
-
-
-
-
         // Communities
         Route::get('community/list',[CommunityController::class,'list'])->name('community.list');
 
     });
 });
-
 
 // Developer routes
 
@@ -71,6 +66,20 @@ Route::middleware(['checkroles:DEVELOPER'])->group(function () {
 
     });
 });
+
+// Reviewer routes
+
+Route::middleware(['checkroles:REVIEWER'])->group(function () {
+    Route::prefix('reviewer')->group(function () {
+
+        Route::get('review/request', [ReviewController::class, 'list'])->name('reviewer.review.request');
+        Route::get('review/request/verificate/{request_id}', [ReviewController::class, 'verificate'])->name('reviewer.review.request.verificate');
+
+
+    });
+});
+
+
 
 Auth::routes();
 

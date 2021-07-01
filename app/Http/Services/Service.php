@@ -58,6 +58,11 @@ abstract class Service
         return $this->model::find($id);
     }
 
+    public function find_or_fail($id)
+    {
+        return $this->model::findOrFail($id);
+    }
+
     public function find_by($array)
     {
         return $this->model::where($array)->first();

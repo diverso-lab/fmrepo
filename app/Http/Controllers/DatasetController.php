@@ -11,10 +11,25 @@ use Illuminate\Support\Facades\Storage;
 
 class DatasetController extends Controller
 {
+    private $dataset_service;
+    private $deposition_service;
+
+    public function __construct()
+    {
+        $this->dataset_service = new DatasetService();
+        $this->deposition_service = new DepositionService();
+    }
+
     public function list()
     {
-        $datasets = Dataset::all();
+        $datasets = $this->dataset_service->all();
         return view('dataset.list', ['datasets' => $datasets]);
+    }
+
+    public function view($id)
+    {
+        $dataset = $this->dataset_service->find_or_fail($id);
+        return view('dataset.view',['dataset' => $dataset]);
     }
 
     public function upload()
@@ -25,31 +40,28 @@ class DatasetController extends Controller
     public function upload_computer(Request $request)
     {
 
-        $service = new DepositionService();
-
-        $service->validate();
+        $this->deposition_service->validate();
 
         // basic deposition data
-        $deposition_data = $service->create_deposition_data($request);
+        $deposition_data = $this->deposition_service->create_deposition_data($request);
 
         // upload deposition to Zenodo through REST API
-        $zenodo_deposition = $service->post_deposition_to_zenodo($deposition_data);
+        $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
 
         // upload deposition to REPO
-        $repo_deposition = $service->post_deposition_to_repo($zenodo_deposition);
+        $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
 
         // upload files to Zenodo
         $token = $request->session()->token();
-        $service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
+        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
 
         // publish deposition in Zenodo
-        $service->publish($repo_deposition);
+        $this->deposition_service->publish($repo_deposition);
 
         // request for review
         $dataset = $repo_deposition->dataset;
         $data = ['email' => $request->input('email')];
-        $dataset_service = new DatasetService();
-        $dataset_service->create_request_for_review($dataset,$data);
+        $this->dataset_service->create_request_for_review($dataset,$data);
 
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
 

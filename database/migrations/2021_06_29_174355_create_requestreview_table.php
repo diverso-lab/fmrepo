@@ -16,7 +16,7 @@ class CreateRequestreviewTable extends Migration
         Schema::create('reviewrequests', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->foreignId('dataset_id');
         });
     }

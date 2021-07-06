@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\RequestReviewService;
 use App\Http\Services\ReviewService;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -28,5 +29,15 @@ class ReviewController extends Controller
     {
         $request_review = $this->request_service->find_or_fail($id);
         return view('reviewer.review.verificate',['request_review' => $request_review]);
+    }
+
+    public function verificate_p(Request $request)
+    {
+        $review = Review::create([
+            'request_review_id' => $request->input('request_review_id'),
+            'verificate' => true
+        ]);
+
+        return $review;
     }
 }

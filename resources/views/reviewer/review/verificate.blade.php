@@ -30,27 +30,36 @@
                     <div class="card card-preview">
                         <div class="card-inner">
 
-                            <div class="form-group row">
+                            <form method="POST" action="{{route('reviewer.review.request.verificate_p')}}">
 
-                                <div class="col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Option 1</label>
+                                @csrf
+
+                                <input type="hidden" name="request_review_id" value="{{$request_review->id}}" />
+
+                                <div class="form-group row">
+
+                                    <div class="col-12">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Option 1</label>
+                                        </div>
                                     </div>
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="form-group row">
-
-                                <div class="col-lg-12">
-                                    <button class="btn btn-success" type="submit" value="Verificate">Verificate</button>
 
                                 </div>
 
-                            </div>
+
+
+                                <div class="form-group row">
+
+                                    <div class="col-lg-12">
+                                        <button class="btn btn-success" type="submit" value="Verificate">Verificate</button>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
                             <p>
                             </p>
 

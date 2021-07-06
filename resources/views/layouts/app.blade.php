@@ -21,6 +21,9 @@
     <!-- Filepond -->
     <link rel="stylesheet" href="{{ asset('css/filepond.css') }}" >
 
+    <!-- Summernote -->
+    <link rel="stylesheet" href="{{ asset('css/editors/summernote.css') }}" >
+
     @livewireStyles
 
 </head>
@@ -279,6 +282,8 @@
 <script src="{{asset('js/filepond-plugin-file-validate-size.js')}}"></script>
 <script src="{{asset('js/filepond-plugin-file-validate-type.js')}}"></script>
 <script src="{{asset('js/filepond.js')}}"></script>
+<script src="{{asset('js/libs/editors/summernote.js')}}"></script>
+<script src="{{asset('js/editors.js')}}"></script>
 
 @yield('scripts')
 

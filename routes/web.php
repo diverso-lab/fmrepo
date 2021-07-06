@@ -74,6 +74,7 @@ Route::middleware(['checkroles:REVIEWER'])->group(function () {
 
         Route::get('review/request', [ReviewController::class, 'list'])->name('reviewer.review.request');
         Route::get('review/request/verificate/{request_id}', [ReviewController::class, 'verificate'])->name('reviewer.review.request.verificate');
+        Route::post('review/request/verificate_p', [ReviewController::class, 'verificate_p'])->name('reviewer.review.request.verificate_p');
 
 
     });

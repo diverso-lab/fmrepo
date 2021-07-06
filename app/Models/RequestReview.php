@@ -26,4 +26,9 @@ class RequestReview extends Model
     {
         $review_service = new ReviewService();
     }
+
+    public function review()
+    {
+        return $this->hasOne('App\Models\Review');
+    }
 }

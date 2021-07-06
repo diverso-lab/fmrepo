@@ -29,6 +29,7 @@
                             <table id="depositions" class="datatable-init table">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>DOI</th>
                                     <th>DOI URL</th>
                                     <th>Title</th>
@@ -39,6 +40,17 @@
 
                                 @foreach($datasets as $dataset)
                                     <tr>
+                                        <td>
+
+                                            @if(isset($dataset->request_review->review))
+
+                                                @if($dataset->request_review->review->verificate)
+                                                    <i class="far fa-check-circle"></i>
+                                                @endif
+
+                                            @endif
+
+                                        </td>
                                         <td>{{$dataset->deposition->doi ?? ''}}</td>
                                         <td><a target="_blank" href="{{$dataset->deposition->doi_url ?? ''}}">{{$dataset->deposition->doi_url ?? ''}}</a></td>
                                         <td>{{$dataset->deposition->title ?? ''}}</td>

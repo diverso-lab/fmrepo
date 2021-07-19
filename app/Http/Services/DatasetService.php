@@ -19,7 +19,8 @@ class DatasetService extends Service
     {
         $request_review = RequestReview::create([
             'dataset_id' => $dataset->id,
-            'email' => $data['email']
+            'email' => $data['email'],
+            'doi_url' => $data['doi_url']
         ]);
         return $request_review;
     }

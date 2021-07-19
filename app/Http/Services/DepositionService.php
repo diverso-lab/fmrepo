@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Dataset;
 use App\Models\Deposition;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -101,20 +102,39 @@ class DepositionService extends Service
 
     }
 
+    private function array_push_assoc($array, $key, $value){
+        $array[$key] = $value;
+        return $array;
+    }
+
     public function create_deposition_data($request)
     {
+        // TODO: Hay que iterar sobre los autores con un splitter (;)
+        // TODO: No va lo de poner el publisher de "FMREPO" con references, mirar API R.
+
+        $authors = $request->input('authors');
+        $authors_array = explode(";", $authors);
+        $authors_associative_array = array();
+
+        foreach ($authors_array as $value){
+            //$array = array("name" => $value);
+            //array_push($authors_associative_array, $array);
+            $this->array_push_assoc($authors_associative_array,"name",$value);
+        }
+
         return [
             'metadata' => [
                 'upload_type' => 'software',
-                'publication_date' => '2021-04-28',
+                'publication_date' => Carbon::now()->format('Y-m-d'),
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'creators' => [
-                    ['name' => 'anonymous']
+                    ["name" => "Doe, John"]
                 ],
                 'access_right' => 'open',
                 'license' => 'cc-zero',
-                'prereserve_doi' => true
+                'prereserve_doi' => true,
+                'references' => ["Doe J (2014). Title. FMREPO. DOI", "Smith J (2014). Title. RMREPO. DOI"]
             ]
 
         ];

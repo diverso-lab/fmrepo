@@ -14,6 +14,7 @@ class RequestReview extends Model
 
     protected $fillable = [
         'email',
+        'doi_url',
         'dataset_id'
     ];
 

@@ -1,8 +1,8 @@
-<div class="form-group col-lg-{{ $col }}">
+<div class="form-group col-lg-{{ $col }} {{$class}}">
         <label class="form-label" for="{{ $attr }}">{!!  $label  !!}</label>
         <input id="{{ $id }}" type="{{ $type }}"
 
-               class="form-control"
+               class="form-control "
 
                placeholder="{{ $placeholder }}"
                @error($attr) is-invalid @enderror

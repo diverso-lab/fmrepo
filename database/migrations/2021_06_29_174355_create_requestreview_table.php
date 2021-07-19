@@ -17,6 +17,7 @@ class CreateRequestreviewTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('email')->nullable();
+            $table->string('doi_url')->nullable();
             $table->foreignId('dataset_id');
         });
     }

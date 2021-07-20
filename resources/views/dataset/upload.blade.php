@@ -249,7 +249,7 @@
                                     <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
 
                                     <div class="row g-gs mt-12">
-                                        <x-textarea col="6" label="Dataset description" attr="description" placeholder="Enter your description to your dataset" value="{{old('description')}}"/>
+                                        <x-textarea col="6" label="Feature model description" attr="description" placeholder="Enter your Feature Model in a text format" value="{{old('description')}}"/>
                                     </div>
 
                                     <div class="row g-gs">

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class DepositionService extends Service
 {
@@ -31,9 +32,7 @@ class DepositionService extends Service
     {
 
         $user = Auth::user();
-
-        $zenodo = new \Zenodo();
-        $depositions = $zenodo->get_depositions();
+        $depositions = $this->zenodo->get_depositions();
 
         foreach($depositions as $deposition)
         {
@@ -61,7 +60,7 @@ class DepositionService extends Service
                     'upload_type' => $deposition['metadata']['upload_type']
                 ]);
 
-                $files = $zenodo->get_files_by_deposition($new_deposition->record_id);
+                $files = $this->zenodo->get_files_by_deposition($new_deposition->record_id);
                 foreach($files as $file)
                 {
                     $new_deposition->files()->create([
@@ -171,8 +170,9 @@ class DepositionService extends Service
         return $repo_deposition;
     }
 
-    public function upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token)
+    public function upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$request)
     {
+        $token = $request->session()->token();
         $deposition_id = $zenodo_deposition['id'];
         $tmp = '/tmp/'.$token.'/';
 
@@ -217,6 +217,29 @@ class DepositionService extends Service
         $deposition->state = $new_deposition_published['state'];
         $deposition->save();
         return $deposition;
+    }
+
+    public function unzip($request)
+    {
+        $token = $request->session()->token();
+        $zip_file = $request->file('zip');
+        $path = Storage::putFileAs('/tmp/'.$token.'/', $zip_file, $zip_file->getClientOriginalName());
+
+        try {
+            $zip = new ZipArchive;
+            if ($zip->open($zip_file) === TRUE) {
+                $zip->extractTo(storage_path('app/tmp').'/'.$token);
+                $zip->close();
+                echo 'ok';
+            } else {
+                echo 'failed';
+            }
+        }catch(\Exception $e){
+            echo $e;
+        }
+
+        // delete Zip folder
+        Storage::delete($path);
     }
 
 }

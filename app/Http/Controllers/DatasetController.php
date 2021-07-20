@@ -44,6 +44,8 @@ class DatasetController extends Controller
 
         $this->deposition_service->validate();
 
+        return "stop";
+
         // basic deposition data
         $deposition_data = $this->deposition_service->create_deposition_data($request);
 
@@ -54,8 +56,7 @@ class DatasetController extends Controller
         $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
 
         // upload files to Zenodo
-        $token = $request->session()->token();
-        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
+        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$request);
 
         // publish deposition in Zenodo
         $this->deposition_service->publish($repo_deposition);
@@ -103,27 +104,10 @@ class DatasetController extends Controller
         $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
 
         // upload files to Zenodo
-        $token = $request->session()->token();
-        $zip_file = $request->file('zip');
-        $path = Storage::putFileAs('/tmp/'.$token.'/', $zip_file, $zip_file->getClientOriginalName());
+        $this->deposition_service->unzip($request);
 
-        try {
-            $zip = new ZipArchive;
-            if ($zip->open($zip_file) === TRUE) {
-                $zip->extractTo(storage_path('app/tmp').'/'.$token);
-                $zip->close();
-                echo 'ok';
-            } else {
-                echo 'failed';
-            }
-        }catch(\Exception $e){
-            echo $e;
-        }
 
-        // delete Zip folder
-        Storage::delete($path);
-
-        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
+        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$request);
 
         // publish deposition in Zenodo
         $this->deposition_service->publish($repo_deposition);

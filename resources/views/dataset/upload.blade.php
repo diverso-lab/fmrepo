@@ -155,6 +155,12 @@
                                 <form action="{{route('dataset.upload.github')}}" method="POST" class="request_form">
                                     @csrf
 
+                                    <input class="hidden_title" type="hidden" name="title" value="" required="">
+                                    <input class="hidden_description" type="hidden" name="description" value="" required="">
+                                    <input class="hidden_email" type="hidden" name="email" value="" required="">
+                                    <input class="hidden_authors" type="hidden" name="authors" value="" required="">
+                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
+
                                     <div class="row g-gs">
                                         <x-input col="6" label="GitHub repository" attr="github" placeholder="Enter your GitHub repository to clone" value="{{old('title')}}"/>
                                     </div>
@@ -187,6 +193,12 @@
 
                                 <form action="{{route('dataset.upload.zip')}}" method="POST" class="request_form" enctype="multipart/form-data">
                                     @csrf
+
+                                    <input class="hidden_title" type="hidden" name="title" value="" required="">
+                                    <input class="hidden_description" type="hidden" name="description" value="" required="">
+                                    <input class="hidden_email" type="hidden" name="email" value="" required="">
+                                    <input class="hidden_authors" type="hidden" name="authors" value="" required="">
+                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
 
                                     <div class="row g-gs">
                                         <div class="form-group">
@@ -229,6 +241,12 @@
                                 <form action="{{route('dataset.upload.textplain')}}" method="POST" class="request_form">
 
                                     @csrf
+
+                                    <input class="hidden_title" type="hidden" name="title" value="" required="">
+                                    <input class="hidden_description" type="hidden" name="description" value="" required="">
+                                    <input class="hidden_email" type="hidden" name="email" value="" required="">
+                                    <input class="hidden_authors" type="hidden" name="authors" value="" required="">
+                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
 
                                     <div class="row g-gs mt-12">
                                         <x-textarea col="6" label="Dataset description" attr="description" placeholder="Enter your description to your dataset" value="{{old('description')}}"/>

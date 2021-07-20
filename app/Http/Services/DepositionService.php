@@ -133,8 +133,7 @@ class DepositionService extends Service
                 ],
                 'access_right' => 'open',
                 'license' => 'cc-zero',
-                'prereserve_doi' => true,
-                'references' => ["Doe J (2014). Title. FMREPO. DOI", "Smith J (2014). Title. RMREPO. DOI"]
+                'prereserve_doi' => true
             ]
 
         ];
@@ -177,7 +176,7 @@ class DepositionService extends Service
         $deposition_id = $zenodo_deposition['id'];
         $tmp = '/tmp/'.$token.'/';
 
-        foreach (Storage::files($tmp) as $filename) {
+        foreach (Storage::allFiles($tmp) as $filename) {
 
             $name = pathinfo($filename, PATHINFO_FILENAME);
             $type = strtolower(pathinfo($filename, PATHINFO_EXTENSION));

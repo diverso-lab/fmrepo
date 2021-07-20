@@ -9,6 +9,7 @@ use App\Models\Dataset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use ZanySoft\Zip\Zip;
+use ZipArchive;
 
 class DatasetController extends Controller
 {
@@ -46,12 +47,8 @@ class DatasetController extends Controller
         // basic deposition data
         $deposition_data = $this->deposition_service->create_deposition_data($request);
 
-        //return dd($deposition_data);
-
         // upload deposition to Zenodo through REST API
         $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
-
-        //return $zenodo_deposition;
 
         // upload deposition to REPO
         $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
@@ -94,22 +91,51 @@ class DatasetController extends Controller
      */
     public function upload_zip(Request $request)
     {
+        $this->deposition_service->validate();
+
+        // basic deposition data
+        $deposition_data = $this->deposition_service->create_deposition_data($request);
+
+        // upload deposition to Zenodo through REST API
+        $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
+
+        // upload deposition to REPO
+        $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
+
+        // upload files to Zenodo
         $token = $request->session()->token();
         $zip_file = $request->file('zip');
         $path = Storage::putFileAs('/tmp/'.$token.'/', $zip_file, $zip_file->getClientOriginalName());
 
         try {
-
+            $zip = new ZipArchive;
+            if ($zip->open($zip_file) === TRUE) {
+                $zip->extractTo(storage_path('app/tmp').'/'.$token);
+                $zip->close();
+                echo 'ok';
+            } else {
+                echo 'failed';
+            }
         }catch(\Exception $e){
             echo $e;
         }
 
-        $zip = Zip::open($path);
+        // delete Zip folder
+        Storage::delete($path);
 
-        return "ok";
+        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$token);
 
-        $zip->extract('/tmp/'.$token.'/');
+        // publish deposition in Zenodo
+        $this->deposition_service->publish($repo_deposition);
 
-        echo "ok";
+        // TODO: Send new upload to email
+
+        // request for review
+        $dataset = $repo_deposition->dataset;
+        $data = ['email' => $request->input('email'), 'doi_url' => $request->input('doi_url')];
+        $this->dataset_service->create_request_for_review($dataset,$data);
+
+        return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
+
     }
 }

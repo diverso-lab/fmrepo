@@ -27,7 +27,7 @@ class Zenodo
 
         $client = new Client([
             'headers' => $headers,
-            'base_uri' => 'https://zenodo.org/api'
+            'base_uri' => 'https://sandbox.zenodo.org/api'
         ]);
 
         // singleton

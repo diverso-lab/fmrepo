@@ -17,7 +17,14 @@ class CreateRequestreviewTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('email')->nullable();
-            $table->string('doi_url')->nullable();
+            $table->boolean('type_journal')->nullable();
+            $table->boolean('type_conference')->nullable();
+            $table->boolean('type_workshop')->nullable();
+            $table->boolean('type_tool')->nullable();
+            $table->string('doi_journal')->nullable();
+            $table->string('doi_conference')->nullable();
+            $table->string('doi_workshop')->nullable();
+            $table->string('doi_tool')->nullable();
             $table->foreignId('dataset_id');
         });
     }

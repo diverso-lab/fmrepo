@@ -20,7 +20,14 @@ class DatasetService extends Service
         $request_review = RequestReview::create([
             'dataset_id' => $dataset->id,
             'email' => $data['email'],
-            'doi_url' => $data['doi_url']
+            'type_journal' => $data['type_journal'],
+            'type_conference' => $data['type_conference'],
+            'type_workshop' => $data['type_workshop'],
+            'type_tool' => $data['type_tool'],
+            'doi_journal' => $data['doi_journal'],
+            'doi_conference' => $data['doi_conference'],
+            'doi_workshop' => $data['doi_workshop'],
+            'doi_tool' => $data['doi_tool']
         ]);
         return $request_review;
     }

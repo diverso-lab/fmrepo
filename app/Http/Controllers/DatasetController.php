@@ -44,8 +44,6 @@ class DatasetController extends Controller
 
         $this->deposition_service->validate();
 
-        return "stop";
-
         // basic deposition data
         $deposition_data = $this->deposition_service->create_deposition_data($request);
 
@@ -63,9 +61,12 @@ class DatasetController extends Controller
 
         // TODO: Send new upload to email
 
+        // delete temporary folder
+        $this->deposition_service->delete_tmp_folder($request);
+
         // request for review
         $dataset = $repo_deposition->dataset;
-        $data = ['email' => $request->input('email'), 'doi_url' => $request->input('doi_url')];
+        $data = $request->all();
         $this->dataset_service->create_request_for_review($dataset,$data);
 
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
@@ -87,9 +88,6 @@ class DatasetController extends Controller
 
     }
 
-    /**
-     * @throws \Exception
-     */
     public function upload_zip(Request $request)
     {
         $this->deposition_service->validate();
@@ -103,20 +101,24 @@ class DatasetController extends Controller
         // upload deposition to REPO
         $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
 
-        // upload files to Zenodo
-        $this->deposition_service->unzip($request);
+        // save ZIP in REPO
+        $zip_path = $this->deposition_service->save_zip($request);
 
+        // upload ZIP to Zenodo
+        $this->deposition_service->upload_zip_to_zenodo($zenodo_deposition, $zip_path);
 
-        $this->deposition_service->upload_files_to_zenodo_and_repo($zenodo_deposition,$repo_deposition,$request);
+        // extract ZIP
+        $this->deposition_service->unzip($zenodo_deposition, $request);
 
         // publish deposition in Zenodo
         $this->deposition_service->publish($repo_deposition);
 
-        // TODO: Send new upload to email
+        // delete temporary folder
+        $this->deposition_service->delete_tmp_folder($request);
 
         // request for review
         $dataset = $repo_deposition->dataset;
-        $data = ['email' => $request->input('email'), 'doi_url' => $request->input('doi_url')];
+        $data = $request->all();
         $this->dataset_service->create_request_for_review($dataset,$data);
 
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');

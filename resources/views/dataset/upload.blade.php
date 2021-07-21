@@ -55,10 +55,76 @@
 
                         <h5 class="mb-3">Verification (optional)</h5>
 
+                        <p>
+                            We can verify the models uploaded to the repository. To do this, select one or more options and their corresponding DOI urls:
+                        </p>
+
+                        <div class="row g-gs">
+
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="type_journal" id="type_journal" value="type_journal" onclick="toggle('doi_journal')">
+                                    <label class="custom-control-label" for="customCheck1">Journal paper</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-8">
+                                <input id="doi_journal" type="text" class="form-control " placeholder="Enter DOI url" name="doi_journal" value="" required="" autocomplete="Email" autofocus=""  style="display: none">
+                            </div>
+
+                        </div>
+
+                        <div class="row g-gs">
+
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="type_conference" id="type_conference" onclick="toggle('doi_conference')">
+                                    <label class="custom-control-label" for="customCheck2">Conference paper</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-8">
+                                <input id="doi_conference" type="text" class="form-control " placeholder="Enter DOI url" name="doi_conference" value="" required="" autocomplete="Email" autofocus=""  style="display: none">
+                            </div>
+
+                        </div>
+
+                        <div class="row g-gs">
+
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="type_workshop" id="type_workshop" onclick="toggle('doi_workshop')">
+                                    <label class="custom-control-label" for="customCheck3">Workshop paper</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-8">
+                                <input id="doi_workshop" type="text" class="form-control " placeholder="Enter DOI url" name="doi_workshop" value="" required="" autocomplete="Email" autofocus=""  style="display: none">
+                            </div>
+
+                        </div>
+
+                        <div class="row g-gs">
+
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="type_tool" id="type_tool" onclick="toggle('doi_tool')">
+                                    <label class="custom-control-label" for="customCheck4">Tool paper</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-8">
+                                <input id="doi_tool" type="text" class="form-control " placeholder="Enter DOI url" name="doi_tool" value="" required="" autocomplete="Email" autofocus=""  style="display: none">
+                            </div>
+
+                        </div>
+
                         <div class="row g-gs">
                             <x-input col="6" label="Email" id="email" description="Your dataset will be reviewed by our work team. If you want us to notify you of its acceptance, tell us your email." attr="Email" placeholder="Enter your email" value="{{old('email')}}"/>
-                            <x-input col="6" label="DOI url" id="doi_url" description="If you provide us with a url of your DOI, we can speed up the verification process." attr="Email" placeholder="Enter your DOI url" value="{{old('doi_url')}}"/>
                         </div>
+
+
+
 
                     </div>
                 </div>
@@ -118,7 +184,16 @@
                                     <input class="hidden_description" type="hidden" name="description" value="" required="">
                                     <input class="hidden_email" type="hidden" name="email" value="" required="">
                                     <input class="hidden_authors" type="hidden" name="authors" value="" required="">
-                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
+
+                                    <input class="hidden_type_journal" type="hidden" name="type_journal" value="" required="">
+                                    <input class="hidden_type_conference" type="hidden" name="type_conference" value="" required="">
+                                    <input class="hidden_type_workshop" type="hidden" name="type_workshop" value="" required="">
+                                    <input class="hidden_type_tool" type="hidden" name="type_tool" value="" required="">
+
+                                    <input class="hidden_doi_journal" type="hidden" name="doi_journal" value="" required="">
+                                    <input class="hidden_doi_conference" type="hidden" name="doi_conference" value="" required="">
+                                    <input class="hidden_doi_workshop" type="hidden" name="doi_workshop" value="" required="">
+                                    <input class="hidden_doi_tool" type="hidden" name="doi_tool" value="" required="">
 
                                     <div class="form-group">
                                         <div class="row g-gs">
@@ -159,7 +234,16 @@
                                     <input class="hidden_description" type="hidden" name="description" value="" required="">
                                     <input class="hidden_email" type="hidden" name="email" value="" required="">
                                     <input class="hidden_authors" type="hidden" name="authors" value="" required="">
-                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
+
+                                    <input class="hidden_type_journal" type="hidden" name="type_journal" value="" required="">
+                                    <input class="hidden_type_conference" type="hidden" name="type_conference" value="" required="">
+                                    <input class="hidden_type_workshop" type="hidden" name="type_workshop" value="" required="">
+                                    <input class="hidden_type_tool" type="hidden" name="type_tool" value="" required="">
+
+                                    <input class="hidden_doi_journal" type="hidden" name="doi_journal" value="" required="">
+                                    <input class="hidden_doi_conference" type="hidden" name="doi_conference" value="" required="">
+                                    <input class="hidden_doi_workshop" type="hidden" name="doi_workshop" value="" required="">
+                                    <input class="hidden_doi_tool" type="hidden" name="doi_tool" value="" required="">
 
                                     <div class="row g-gs">
                                         <x-input col="6" label="GitHub repository" attr="github" placeholder="Enter your GitHub repository to clone" value="{{old('title')}}"/>
@@ -198,7 +282,16 @@
                                     <input class="hidden_description" type="hidden" name="description" value="" required="">
                                     <input class="hidden_email" type="hidden" name="email" value="" required="">
                                     <input class="hidden_authors" type="hidden" name="authors" value="" required="">
-                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
+
+                                    <input class="hidden_type_journal" type="hidden" name="type_journal" value="" required="">
+                                    <input class="hidden_type_conference" type="hidden" name="type_conference" value="" required="">
+                                    <input class="hidden_type_workshop" type="hidden" name="type_workshop" value="" required="">
+                                    <input class="hidden_type_tool" type="hidden" name="type_tool" value="" required="">
+
+                                    <input class="hidden_doi_journal" type="hidden" name="doi_journal" value="" required="">
+                                    <input class="hidden_doi_conference" type="hidden" name="doi_conference" value="" required="">
+                                    <input class="hidden_doi_workshop" type="hidden" name="doi_workshop" value="" required="">
+                                    <input class="hidden_doi_tool" type="hidden" name="doi_tool" value="" required="">
 
                                     <div class="row g-gs">
                                         <div class="form-group">
@@ -246,10 +339,19 @@
                                     <input class="hidden_description" type="hidden" name="description" value="" required="">
                                     <input class="hidden_email" type="hidden" name="email" value="" required="">
                                     <input class="hidden_authors" type="hidden" name="authors" value="" required="">
-                                    <input class="hidden_doi_url" type="hidden" name="doi_url" value="" required="">
+
+                                    <input class="hidden_type_journal" type="hidden" name="type_journal" value="" required="">
+                                    <input class="hidden_type_conference" type="hidden" name="type_conference" value="" required="">
+                                    <input class="hidden_type_workshop" type="hidden" name="type_workshop" value="" required="">
+                                    <input class="hidden_type_tool" type="hidden" name="type_tool" value="" required="">
+
+                                    <input class="hidden_doi_journal" type="hidden" name="doi_journal" value="" required="">
+                                    <input class="hidden_doi_conference" type="hidden" name="doi_conference" value="" required="">
+                                    <input class="hidden_doi_workshop" type="hidden" name="doi_workshop" value="" required="">
+                                    <input class="hidden_doi_tool" type="hidden" name="doi_tool" value="" required="">
 
                                     <div class="row g-gs mt-12">
-                                        <x-textarea col="6" label="Feature model description" attr="description" placeholder="Enter your Feature Model in a text format" value="{{old('description')}}"/>
+                                        <x-textarea col="6" label="Feature model description" attr="textplain" placeholder="Enter your Feature Model in a text format" value="{{old('textplain')}}"/>
                                     </div>
 
                                     <div class="row g-gs">
@@ -320,7 +422,18 @@
                 $(".hidden_description").val($("#description").val());
                 $(".hidden_email").val($("#email").val());
                 $(".hidden_authors").val(authors);
-                $(".hidden_doi_url").val($("#doi_url").val());
+
+                // verification checkboxes
+                $(".hidden_type_journal").val($("#type_journal").val());
+                $(".hidden_type_conference").val($("#type_conference").val());
+                $(".hidden_type_workshop").val($("#type_workshop").val());
+                $(".hidden_type_tool").val($("#type_tool").val());
+
+                // verification doi urls
+                $(".hidden_doi_journal").val($("#doi_journal").val());
+                $(".hidden_doi_conference").val($("#doi_conference").val());
+                $(".hidden_doi_workshop").val($("#doi_workshop").val());
+                $(".hidden_doi_tool").val($("#doi_tool").val());
 
                 return true;
 
@@ -369,6 +482,11 @@
         function remove_author(identificator)
         {
             $("#"+identificator).remove();
+        }
+
+        function toggle(identificator)
+        {
+            $("#"+identificator).toggle();
         }
 
         // Filepond plugins

@@ -7,6 +7,7 @@ use App\Models\Deposition;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -219,27 +220,50 @@ class DepositionService extends Service
         return $deposition;
     }
 
-    public function unzip($request)
+    public function save_zip($request)
     {
         $token = $request->session()->token();
         $zip_file = $request->file('zip');
-        $path = Storage::putFileAs('/tmp/'.$token.'/', $zip_file, $zip_file->getClientOriginalName());
+        return Storage::putFileAs('/tmp/'.$token.'/', $zip_file, $zip_file->getClientOriginalName());
+    }
+
+    public function unzip($zenodo_deposition, $request)
+    {
+        $zip_file = $request->file('zip');
+        $deposition_id = $zenodo_deposition['id'];
 
         try {
             $zip = new ZipArchive;
             if ($zip->open($zip_file) === TRUE) {
-                $zip->extractTo(storage_path('app/tmp').'/'.$token);
+                $zip->extractTo(storage_path('app/dataset').'/deposition_'.$deposition_id);
                 $zip->close();
-                echo 'ok';
+                echo "<br>extraccion correcta";
             } else {
-                echo 'failed';
+                echo "Error during the unzip";
             }
         }catch(\Exception $e){
             echo $e;
         }
+    }
 
-        // delete Zip folder
-        Storage::delete($path);
+    public function upload_zip_to_zenodo($zenodo_deposition, $zip_path)
+    {
+        // get ZIP information
+        $deposition_id = $zenodo_deposition['id'];
+        $name = pathinfo($zip_path, PATHINFO_FILENAME);
+        $extension = pathinfo($zip_path, PATHINFO_EXTENSION);
+        $file = Storage::get($zip_path);
+        $file_data = ['name' => $name.'.'.$extension];
+
+        // upload zip to Zenodo
+        $this->zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
+
+    }
+
+    public function delete_tmp_folder($request)
+    {
+        $token = $request->session()->token();
+        Storage::deleteDirectory('/tmp/'.$token);
     }
 
 }

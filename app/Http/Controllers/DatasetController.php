@@ -6,6 +6,8 @@ use App\Http\Services\DatasetService;
 use App\Http\Services\DepositionService;
 use App\Models\Deposition;
 use App\Models\Dataset;
+use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use ZanySoft\Zip\Zip;
@@ -73,18 +75,41 @@ class DatasetController extends Controller
 
     }
 
-    public function upload_github(Request $request){
+    public function upload_github(Request $request)
+    {
 
-        $request->validate([
-            'title' => '',
-            'description' => '',
-            'g-recaptcha-response' => 'required|captcha',
-        ]);
+        $this->deposition_service->validate();
 
-        $zenodo = new \Zenodo();
-        $github_repo = $request->input('github');
+        // basic deposition data
+        $deposition_data = $this->deposition_service->create_deposition_data($request);
 
-        shell_exec(('cd ./storage/app/ & git clone '.$github_repo));
+        // upload deposition to Zenodo through REST API
+        $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
+
+        // upload deposition to REPO
+        $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
+
+        // download GIT and save in REPO
+        $zip_path = $this->deposition_service->download_and_save_github_repository($request);
+
+        // upload ZIP to Zenodo
+        $this->deposition_service->upload_zip_to_zenodo($zenodo_deposition, $zip_path, $request);
+
+        // extract ZIP
+        $this->deposition_service->unzip_from_github_zip($zenodo_deposition, $zip_path, $request);
+
+        // publish deposition in Zenodo
+        $this->deposition_service->publish($repo_deposition);
+
+        // delete temporary folder
+        $this->deposition_service->delete_tmp_folder($request);
+
+        // request for review
+        $dataset = $repo_deposition->dataset;
+        $data = $request->all();
+        $this->dataset_service->create_request_for_review($dataset,$data);
+
+        return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
 
     }
 
@@ -105,7 +130,7 @@ class DatasetController extends Controller
         $zip_path = $this->deposition_service->save_zip($request);
 
         // upload ZIP to Zenodo
-        $this->deposition_service->upload_zip_to_zenodo($zenodo_deposition, $zip_path);
+        $this->deposition_service->upload_zip_to_zenodo($zenodo_deposition, $zip_path, $request);
 
         // extract ZIP
         $this->deposition_service->unzip($zenodo_deposition, $request);

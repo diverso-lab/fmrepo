@@ -5,6 +5,8 @@ namespace App\Http\Services;
 use App\Models\Dataset;
 use App\Models\Deposition;
 use Carbon\Carbon;
+use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -23,7 +25,7 @@ class DepositionService extends Service
         parent::set_validation_rules([
             'title' => 'required',
             'description' => 'required',
-            'g-recaptcha-response' => 'required|captcha',
+            //'g-recaptcha-response' => 'required|captcha',
         ]);
 
         $this->zenodo = new \Zenodo();
@@ -110,7 +112,6 @@ class DepositionService extends Service
     public function create_deposition_data($request)
     {
         // TODO: Hay que iterar sobre los autores con un splitter (;)
-        // TODO: No va lo de poner el publisher de "FMREPO" con references, mirar API R.
 
         $authors = $request->input('authors');
         $authors_array = explode(";", $authors);
@@ -220,6 +221,53 @@ class DepositionService extends Service
         return $deposition;
     }
 
+    public function get_branch_name_from_github_repository($request)
+    {
+        $github_repo = $request->input('github');
+        $github_repo = parse_url($github_repo)["path"];
+        $branch_name = "";
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'accept' => 'application/vnd.github.v3+json'
+        ];
+
+        $client = new Client([
+            'headers' => $headers,
+            'base_uri' => 'https://api.github.com/'
+        ]);
+
+        try {
+            $response = $client->request('GET', 'repos'.$github_repo.'/branches');
+            $branch_name = json_decode($response->getBody(), true)[0]["name"];
+        }catch (Exception $e)
+        {
+            return 401;
+        }
+
+        return $branch_name;
+    }
+
+    public function download_and_save_github_repository($request)
+    {
+        // info about repo
+        $github_repo = $request->input('github');
+        $github_repo = str_replace(".git", "", $github_repo);
+        $token = $request->session()->token();
+        $branch_name = $this->get_branch_name_from_github_repository($request);
+
+        // create temporary folder to download GitHub repository
+        Storage::makeDirectory("tmp/".$token);
+        $destination_zip = "/".storage_path('app/tmp/'.$token)."/".$branch_name.".zip";
+
+        // download GitHub repository in temporary folder zip
+        file_put_contents($destination_zip,
+            file_get_contents($github_repo."/archive/refs/heads/".$branch_name.".zip")
+        );
+
+        return $destination_zip;
+    }
+
     public function save_zip($request)
     {
         $token = $request->session()->token();
@@ -246,17 +294,43 @@ class DepositionService extends Service
         }
     }
 
-    public function upload_zip_to_zenodo($zenodo_deposition, $zip_path)
+    public function unzip_from_github_zip($zenodo_deposition, $zip_path, $request)
     {
         // get ZIP information
+        $token = $request->session()->token();
         $deposition_id = $zenodo_deposition['id'];
         $name = pathinfo($zip_path, PATHINFO_FILENAME);
         $extension = pathinfo($zip_path, PATHINFO_EXTENSION);
-        $file = Storage::get($zip_path);
+        $zip_file = Storage::get("tmp/".$token."/".$name.".".$extension);
+
+        try {
+            $zip = new ZipArchive;
+            if ($zip->open($zip_path) === TRUE) {
+                $zip->extractTo(storage_path('app/dataset').'/deposition_'.$deposition_id);
+                $zip->close();
+                echo "<br>extraccion correcta";
+            } else {
+                echo "Error during the unzip";
+            }
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    public function upload_zip_to_zenodo($zenodo_deposition, $zip_path, $request)
+    {
+        // get ZIP information
+        $token = $request->session()->token();
+        $deposition_id = $zenodo_deposition['id'];
+        $name = pathinfo($zip_path, PATHINFO_FILENAME);
+        $extension = pathinfo($zip_path, PATHINFO_EXTENSION);
+        $file = Storage::get("tmp/".$token."/".$name.".".$extension);
         $file_data = ['name' => $name.'.'.$extension];
 
         // upload zip to Zenodo
         $this->zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
+
+        return 0;
 
     }
 
@@ -264,6 +338,8 @@ class DepositionService extends Service
     {
         $token = $request->session()->token();
         Storage::deleteDirectory('/tmp/'.$token);
+
+        return 0;
     }
 
 }

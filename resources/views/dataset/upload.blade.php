@@ -351,9 +351,7 @@
                                     <input class="hidden_doi_tool" type="hidden" name="doi_tool" value="" required="">
 
                                     <div class="row g-gs mt-12">
-                                        <x-textarea col="6" label="Feature model description" attr="textplain" placeholder="Enter your Feature Model in a text format" value="{{old('textplain')}}"/>
-                                    </div>
-
+                                        <x-textarea_simple col="12" id="" label="Feature model description" attr="textplain" placeholder="Enter your Feature Model in a text format" value="{{old('textplain')}}"/>
                                     <div class="row g-gs">
 
                                         <div class="col-lg-6">

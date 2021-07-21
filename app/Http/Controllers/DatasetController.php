@@ -149,4 +149,41 @@ class DatasetController extends Controller
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
 
     }
+
+    public function upload_textplain(Request $request)
+    {
+
+        $this->deposition_service->validate();
+
+        // basic deposition data
+        $deposition_data = $this->deposition_service->create_deposition_data($request);
+
+        // upload deposition to Zenodo through REST API
+        $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
+
+        // upload deposition to REPO
+        $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
+
+        // save textplain in tmp
+        $this->deposition_service->save_textplain($request);
+
+        // upload textplain to Zenodo
+        $this->deposition_service->upload_textplain_to_zenodo($zenodo_deposition, $request);
+
+        // move into Repo
+        $this->deposition_service->save_textplain_in_repo($zenodo_deposition, $request);
+
+        // publish deposition in Zenodo
+        $this->deposition_service->publish($repo_deposition);
+
+        // delete temporary folder
+        $this->deposition_service->delete_tmp_folder($request);
+
+        // request for review
+        $dataset = $repo_deposition->dataset;
+        $data = $request->all();
+        $this->dataset_service->create_request_for_review($dataset,$data);
+
+        return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
+    }
 }

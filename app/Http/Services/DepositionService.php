@@ -342,4 +342,32 @@ class DepositionService extends Service
         return 0;
     }
 
+    public function save_textplain($request)
+    {
+        $token = $request->session()->token();
+        $textplain = $request->input('textplain');
+        Storage::put('tmp/'.$token.'/textplain.txt', $textplain);
+    }
+
+    public function upload_textplain_to_zenodo($zenodo_deposition, $request)
+    {
+        $token = $request->session()->token();
+        $file = Storage::get("tmp/".$token."/textplain.txt");
+        $file_data = ['name' => "textplain.txt"];
+
+        $deposition_id = $zenodo_deposition['id'];
+        $this->zenodo->post_file_in_deposition($deposition_id,$file_data,$file);
+    }
+
+    public function save_textplain_in_repo($zenodo_deposition, $request)
+    {
+        $token = $request->session()->token();
+        $deposition_id = $zenodo_deposition['id'];
+        $old_directory = "tmp/".$token."/textplain.txt";
+        $new_directory = '/dataset/deposition_'.$deposition_id.'/textplain.txt';
+
+        // move into local storage
+        Storage::move($old_directory, $new_directory);
+    }
+
 }

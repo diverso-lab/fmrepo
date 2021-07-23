@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 abstract class Service
 {
@@ -21,13 +22,7 @@ abstract class Service
 
     public function validate()
     {
-        $validator = Validator::make($this->request->all(), $this->validation_rules);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+        $this->request->validate($this->validation_rules);
     }
 
     protected function set_validation_rules($array)

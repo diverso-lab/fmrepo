@@ -40,6 +40,8 @@ Route::get('dataset/upload',[DatasetController::class,'upload'])->name('dataset.
 // Upload dataset
 Route::post('dataset/upload/computer',[DatasetController::class,'upload_computer'])->name('dataset.upload.computer');
 Route::post('dataset/upload/github',[DatasetController::class,'upload_github'])->name('dataset.upload.github');
+Route::post('dataset/upload/zip',[DatasetController::class,'upload_zip'])->name('dataset.upload.zip');
+Route::post('dataset/upload/textplain',[DatasetController::class,'upload_textplain'])->name('dataset.upload.textplain');
 
 // Upload and download files from local storage
 Route::post('dataset/upload/file',[UploadController::class,'process'])->name('dataset.upload.file');

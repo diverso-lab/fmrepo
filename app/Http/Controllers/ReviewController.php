@@ -35,9 +35,10 @@ class ReviewController extends Controller
     {
         $review = Review::create([
             'request_review_id' => $request->input('request_review_id'),
-            'verificate' => true
+            'verificate' => true,
+            'comments' => $request->input('comments')
         ]);
 
-        return $review;
+        return redirect()->route('reviewer.review.request')->with('success','Review verificated successfully');
     }
 }

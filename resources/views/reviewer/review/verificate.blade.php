@@ -39,21 +39,76 @@
                                 <div class="form-group row">
 
                                     <div class="col-12">
+
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1">Option 1</label>
+                                            <input type="checkbox" {{ $request_review->type_journal ? "checked" : "" }} disabled class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Journal paper</label>
                                         </div>
+                                        <br>
+
+                                        @if($request_review->type_journal)
+                                            <a href="{{$request_review->doi_journal}}" target="_blank">{{$request_review->doi_journal}}</a>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" {{ $request_review->type_conference ? "checked" : "" }} disabled class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Conference paper</label>
+                                        </div>
+                                        <br>
+
+                                        @if($request_review->type_conference)
+                                            <a href="{{$request_review->doi_conference}}" target="_blank">{{$request_review->doi_conference}}</a>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" {{ $request_review->type_workshop ? "checked" : "" }} disabled class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Workshop paper</label>
+                                        </div>
+                                        <br>
+
+                                        @if($request_review->type_workshop)
+                                            <a href="{{$request_review->doi_workshop}}" target="_blank">{{$request_review->doi_workshop}}</a>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" {{ $request_review->type_tool ? "checked" : "" }} disabled class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Tool paper</label>
+                                        </div>
+                                        <br>
+
+                                        @if($request_review->type_tool)
+                                            <a href="{{$request_review->doi_tool}}" target="_blank">{{$request_review->doi_tool}}</a>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+
                                     </div>
 
                                 </div>
 
+                                <div class="form-group row">
+                                    <x-textarea col="6" label="Comments" id="comments" attr="comments" value="{{old('comments')}}"/>
+                                </div>
 
 
                                 <div class="form-group row">
 
                                     <div class="col-lg-12">
-                                        <button class="btn btn-success" type="submit" value="Verificate">Verificate</button>
-
+                                        <button class="btn btn-success" type="submit" value="Verificate"><i class="fas fa-check"></i> &nbsp;&nbsp; Verificate</button>
                                     </div>
 
                                 </div>

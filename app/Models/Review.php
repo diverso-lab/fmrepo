@@ -13,7 +13,8 @@ class Review extends Model
 
     protected $fillable = [
         'request_review_id',
-        'verificate'
+        'verificate',
+        'comments'
     ];
 
     public function request_review()

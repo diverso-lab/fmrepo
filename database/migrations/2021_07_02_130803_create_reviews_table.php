@@ -17,6 +17,7 @@ class CreateReviewsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->boolean('verificate');
+            $table->text('comments')->nullable();
             $table->foreignId('request_review_id');
         });
     }

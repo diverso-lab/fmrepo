@@ -422,10 +422,10 @@
                 $(".hidden_authors").val(authors);
 
                 // verification checkboxes
-                $(".hidden_type_journal").val($("#type_journal").val());
-                $(".hidden_type_conference").val($("#type_conference").val());
-                $(".hidden_type_workshop").val($("#type_workshop").val());
-                $(".hidden_type_tool").val($("#type_tool").val());
+                $(".hidden_type_journal").val(journal_selected);
+                $(".hidden_type_conference").val(conference_selected);
+                $(".hidden_type_workshop").val(workshop_selected);
+                $(".hidden_type_tool").val(tool_selected);
 
                 // verification doi urls
                 $(".hidden_doi_journal").val($("#doi_journal").val());
@@ -482,8 +482,46 @@
             $("#"+identificator).remove();
         }
 
+        var journal_selected = false;
+        var conference_selected = false;
+        var workshop_selected = false;
+        var tool_selected = false;
+
         function toggle(identificator)
         {
+
+            if(identificator == "doi_journal"){
+                if(journal_selected){
+                    journal_selected = false;
+                }else{
+                    journal_selected = true;
+                }
+            }
+
+            if(identificator == "doi_conference"){
+                if(conference_selected){
+                    conference_selected = false;
+                }else{
+                    conference_selected = true;
+                }
+            }
+
+            if(identificator == "doi_workshop"){
+                if(workshop_selected){
+                    workshop_selected = false;
+                }else{
+                    workshop_selected = true;
+                }
+            }
+
+            if(identificator == "doi_tool"){
+                if(tool_selected){
+                    tool_selected = false;
+                }else{
+                    tool_selected = true;
+                }
+            }
+
             $("#"+identificator).toggle();
         }
 

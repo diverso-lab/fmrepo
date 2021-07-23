@@ -44,10 +44,7 @@
                             @if(Auth::check())
                                 @if(Auth::user()->has_role('REVIEWER'))
 
-                                    <a href="{{route('reviewer.review.request.verificate',$dataset->request_review->id)}}" class="btn btn-success"><i class="fas fa-check"></i> &nbsp;&nbsp; <span>Verificate</span> </a>
-
-                                    <a href="#" class="btn btn-gray"><i class="fas fa-check"></i> &nbsp;&nbsp; <span>Discard</span> </a>
-
+                                    <a href="{{route('reviewer.review.request.verificate',$dataset->request_review->id)}}" class="btn btn-success"> <span>Verificate</span> </a>
 
                                 @endif
 

@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\DeveloperToken');
     }
 
+    public function admin_community()
+    {
+        return $this->hasOne('App\Models\AdminCommunity');
+    }
+
     public function has_role($rol_param): bool
     {
         try {

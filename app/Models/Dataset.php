@@ -29,4 +29,9 @@ class Dataset extends Model
     {
         return $this->hasOne('App\Models\RequestReview');
     }
+
+    public function dataset_community()
+    {
+        return $this->hasOne('App\Models\DataSetCommunity');
+    }
 }

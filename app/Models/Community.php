@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Community extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'organisation',
+        'info',
+        'number_of_members',
+        'number_of_datasets'
+    ];
+
+    public function admins()
+    {
+        return $this->hasMany('App\Models\AdminCommunity');
+    }
+
+    public function datasets_community()
+    {
+        return $this->hasMany('App\Models\DataSetCommunity');
+    }
 }

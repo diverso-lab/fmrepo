@@ -10,7 +10,7 @@ class Community extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
+        'name',
         'organisation',
         'info',
         'number_of_members',

@@ -16,11 +16,11 @@ class CreateCommunitiesTable extends Migration
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title');
+            $table->string('name');
             $table->string('organisation');
             $table->text('info');
-            $table->integer('number_of_members');
-            $table->integer('number_of_datasets');
+            $table->integer('number_of_members')->default(0);
+            $table->integer('number_of_datasets')->default(0);
         });
     }
 

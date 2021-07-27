@@ -19,11 +19,16 @@ class Community extends Model
 
     public function admins()
     {
-        return $this->hasMany('App\Models\AdminCommunity');
+        return $this->belongsToMany('App\Models\CommunityAdmin','communityadmin_community');
     }
 
-    public function datasets_community()
+    public function members()
     {
-        return $this->hasMany('App\Models\DataSetCommunity');
+        return  $this->hasMany('App\Models\CommunityMember');
+    }
+
+    public function datasets()
+    {
+        return $this->hasMany('App\Models\CommunityDataset');
     }
 }

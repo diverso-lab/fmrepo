@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminCommunity extends Model
+class CommunityDatasetOwner extends Model
 {
     use HasFactory;
 
-    protected $table = "admincommunities";
-
-    public function community()
-    {
-        return $this->belongsTo('App\Models\Community');
-    }
+    protected $table = "communitydatasetowners";
 
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
 
-
+    public function community_dataset()
+    {
+        return $this->belongsTo('App\Models\CommunityDataset');
+    }
 }

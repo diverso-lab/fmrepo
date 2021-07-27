@@ -25,7 +25,7 @@ class DepositionService extends Service
         parent::set_validation_rules([
             'title' => 'required',
             'description' => 'required',
-            //'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
 
         $this->zenodo = new \Zenodo();

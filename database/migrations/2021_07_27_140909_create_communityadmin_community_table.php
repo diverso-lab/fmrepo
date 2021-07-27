@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDatasetcommunityTable extends Migration
+class CreateCommunityadminCommunityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateDatasetcommunityTable extends Migration
      */
     public function up()
     {
-        Schema::create('datasetscommunity', function (Blueprint $table) {
+        Schema::create('communityadmin_community', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('community_admin_id');
             $table->foreignId('community_id');
-            $table->foreignId('dataset_id');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateDatasetcommunityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datasetscommunity');
+        Schema::dropIfExists('communityadmin_community');
     }
 }

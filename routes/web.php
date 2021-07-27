@@ -47,16 +47,19 @@ Route::post('dataset/upload/textplain',[DatasetController::class,'upload_textpla
 Route::post('dataset/upload/file',[UploadController::class,'process'])->name('dataset.upload.file');
 Route::delete('dataset/upload/file',[UploadController::class,'delete'])->name('dataset.upload.remove');
 
-// Researcher routes
+// Communities
+Route::get('community/list',[CommunityController::class,'list'])->name('community.list');
+Route::get('community/view/{id}',[CommunityController::class,'view'])->name('community.view');
 
+// Researcher routes
 Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
         // Communities
-        Route::get('community/list',[CommunityController::class,'list'])->name('community.list');
         Route::get('community/create',[CommunityController::class,'create'])->name('community.create');
         Route::post('community/create/p',[CommunityController::class,'create_p'])->name('community.create.p');
         Route::get('community/mine',[CommunityController::class,'mine'])->name('community.mine');
+        Route::get('community/join/{id}',[CommunityController::class,'join'])->name('community.join');
 
     });
 });

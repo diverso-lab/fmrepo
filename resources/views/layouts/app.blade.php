@@ -184,6 +184,7 @@
                         <x-li name="Home" route="home" icon="ni ni-home"/>
                         <x-li name="Datasets" route="dataset.list" icon="ni ni-network"/>
                         <x-li name="Upload dataset" route="dataset.upload" icon="ni ni-upload"/>
+                        <x-li name="Communities" route="community.list" icon="ni ni-users-fill"/>
 
                         @if(Auth::check())
 

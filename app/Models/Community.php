@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Community extends Model
 {
@@ -24,11 +25,42 @@ class Community extends Model
 
     public function members()
     {
-        return  $this->hasMany('App\Models\CommunityMember');
+        return  $this->belongsToMany('App\Models\CommunityMember', 'community_communitymember');
     }
 
     public function datasets()
     {
         return $this->hasMany('App\Models\CommunityDataset');
+    }
+
+    public function I_belong_to_this_community()
+    {
+        return $this->I_am_member() || $this->I_am_admin();
+    }
+
+    public function I_am_admin()
+    {
+        $me = Auth::user();
+        $res = false;
+        foreach($this->admins()->get() as $admin){
+            if($admin->user_id == $me->id){
+                $res = true;
+                break;
+            }
+        }
+        return $res;
+    }
+
+    public function I_am_member()
+    {
+        $me = Auth::user();
+        $res = false;
+        foreach($this->members()->get() as $member){
+            if($member->user_id == $me->id){
+                $res = true;
+                break;
+            }
+        }
+        return $res;
     }
 }

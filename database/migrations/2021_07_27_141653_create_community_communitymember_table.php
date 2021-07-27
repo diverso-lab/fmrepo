@@ -16,7 +16,7 @@ class CreateCommunityCommunitymemberTable extends Migration
         Schema::create('community_communitymember', function (Blueprint $table) {
             $table->id();
             $table->foreignId('community_id');
-            $table->foreignId('communitymember_id');
+            $table->foreignId('community_member_id');
         });
     }
 

@@ -13,6 +13,6 @@ class CommunityMember extends Model
 
     public function communities()
     {
-        return $this->belongsToMany('App\Models\Community');
+        return $this->belongsToMany('App\Models\Community', 'community_communitymember');
     }
 }

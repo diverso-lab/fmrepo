@@ -18,7 +18,6 @@ class CreateCommunitydatasetsTable extends Migration
             $table->timestamps();
             $table->foreignId('community_id');
             $table->foreignId('dataset_id');
-            //$table->foreignId('user')
         });
     }
 

@@ -3,8 +3,6 @@
 
 namespace App\Http\Services;
 
-
-use App\Models\AdminCommunity;
 use App\Models\Community;
 use App\Models\CommunityAdmin;
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +37,13 @@ class CommunityService extends Service
 
     public function my_communities()
     {
+        $res = collect();
         $me = Auth::user();
         $community_admin = $me->community_admin();
-        return $community_admin->first()->communities()->get();
+        if($community_admin->first() != null){
+            $res = $community_admin->first()->communities()->get();
+        }
+        return $res;
     }
 
 }

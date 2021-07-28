@@ -37,6 +37,7 @@ class CreateDepositionsTable extends Migration
 
             // foreign id
             $table->foreignId('dataset_id')->nullable();
+            $table->foreignId('user_id')->nullable();
         });
     }
 

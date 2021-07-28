@@ -4,7 +4,8 @@
         <h6 class="overline-title text-primary-alt">Researcher</h6>
     </li>
 
-    <x-li name="Create community" route="community.create" icon="ni ni-users-fill"/>
+    <x-li name="My datasets" route="dataset.mine" icon="ni ni-network"/>
     <x-li name="My communities" route="community.mine" icon="ni ni-users-fill"/>
+    <x-li name="Create community" route="community.create" icon="ni ni-users-fill"/>
 
 @endif

@@ -15,11 +15,6 @@ class Dataset extends Model
         'user_id'
     ];
 
-    public function user()
-    {
-        $this->belongsTo('App\Models\User');
-    }
-
     public function deposition()
     {
         return $this->hasOne('App\Models\Deposition')->orderByDesc('modified');

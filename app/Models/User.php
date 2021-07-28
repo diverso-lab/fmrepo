@@ -52,9 +52,9 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\ZenodoToken');
     }
 
-    public function feature_models()
+    public function depositions()
     {
-        return $this->hasMany('App\Models\FeatureModel');
+        return $this->hasMany('App\Models\Deposition');
     }
 
     public function developer_tokens()

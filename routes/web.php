@@ -55,6 +55,9 @@ Route::get('community/view/{id}',[CommunityController::class,'view'])->name('com
 Route::middleware(['checkroles:RESEARCHER'])->group(function () {
     Route::prefix('researcher')->group(function () {
 
+        // Datasets
+        Route::get('dataset/mine',[DatasetController::class,'mine'])->name('dataset.mine');
+
         // Communities
         Route::get('community/create',[CommunityController::class,'create'])->name('community.create');
         Route::post('community/create/p',[CommunityController::class,'create_p'])->name('community.create.p');

@@ -22,7 +22,7 @@
 
         <div class="row g-gs">
 
-            <div class="col-lg-12">
+            <div class="col-lg-8">
 
                 <div class="nk-block nk-block-lg">
 
@@ -57,6 +57,20 @@
 
                 </div>
 
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="nk-block nk-block-lg">
+
+                    <div class="card card-preview">
+                        <div class="card-inner">
+
+                            Options
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -57,17 +57,25 @@
 
                             <a href="{{route('community.view',$community->id)}}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;View</span></a>
 
-                            @if(!$community->I_belong_to_this_community())
+                            @auth
+                                @if(!$community->I_belong_to_this_community())
+                                    <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Join</span></a>
+                                @endif
+
+                                @if($community->I_am_member())
+                                    <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Open</span></a>
+                                @endif
+
+                                @if($community->I_am_admin())
+                                    <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Admin</span></a>
+                                @endif
+                            @endauth
+
+                            @guest
                                 <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Join</span></a>
-                            @endif
+                            @endguest
 
-                            @if($community->I_am_member())
-                                <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Open</span></a>
-                            @endif
 
-                            @if($community->I_am_admin())
-                                <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Admin</span></a>
-                            @endif
 
                         </div>
                     </div><!-- .card -->

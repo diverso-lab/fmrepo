@@ -11,6 +11,11 @@ class CommunityDataset extends Model
 
     protected $table = "communitydatasets";
 
+    protected $fillable = [
+        'dataset_id',
+        'community_id'
+    ];
+
     public function community()
     {
         return $this->belongsTo('App\Models\Community');
@@ -19,5 +24,10 @@ class CommunityDataset extends Model
     public function dataset()
     {
         return $this->belongsTo('App\Models\Dataset');
+    }
+
+    public function community_dataset_owner()
+    {
+        return $this->hasOne('App\Models\CommunityDatasetOwner');
     }
 }

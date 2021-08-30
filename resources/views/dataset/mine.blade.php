@@ -73,7 +73,7 @@
             </div>
 
         </div><!-- .row -->
-    </div><!-- .nk-block -->
+    </div>
 
 @endsection
 

@@ -43,7 +43,7 @@
                         </div>
                         <div class="nk-header-app-name">
                             <div class="nk-header-app-info">
-                                <span class="lead-text">FEATURE MODELS REPOSITORY</span>
+                                <span class="lead-text">FaMaREPO</span>
                             </div>
                         </div>
                         <div class="nk-header-menu is-light">
@@ -91,7 +91,6 @@
                         <div class="nk-header-tools">
                             <ul class="nk-quick-nav">
 
-
                                 <li class="dropdown user-dropdown">
 
                                     @if(Auth::guest())
@@ -128,18 +127,31 @@
                                             <div class="user-avatar sm">
                                                 <em class="icon ni ni-user-alt"></em>
                                             </div>
+
+                                            <div class="user-info d-none d-md-block">
+                                                <div class="user-name dropdown-indicator">{{Auth::user()->name}} {{Auth::user()->surname}}</div>
+                                            </div>
+
                                         </div>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+
                                         <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                             <div class="user-card">
-
+                                                <div class="user-avatar">
+                                                    <em class="icon ni ni-user-alt"></em>
+                                                </div>
+                                                <div class="user-info">
+                                                    <span class="lead-text">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
+                                                    <span class="sub-text">{{Auth::user()->email}}</span>
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="dropdown-inner">
                                             <ul class="link-list">
-                                                <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
-                                                <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
+                                                <li><a href="#"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
+                                                <li><a href="#"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
                                                 <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
                                             </ul>
                                         </div>
@@ -184,7 +196,7 @@
                         <x-li name="Home" route="home" icon="ni ni-home"/>
                         <x-li name="Datasets" route="dataset.list" icon="ni ni-network"/>
                         <x-li name="Upload dataset" route="dataset.upload" icon="ni ni-upload"/>
-                        <x-li name="Communities" route="community.list" icon="ni ni-users-fill"/>
+                        <x-li name="Communities" route="community.list" secondaries="community.view,researcher.community.dataset.add" icon="ni ni-users-fill"/>
 
                         @if(Auth::check())
 
@@ -285,6 +297,14 @@
 <script src="{{asset('js/filepond.js')}}"></script>
 <script src="{{asset('js/libs/editors/summernote.js')}}"></script>
 <script src="{{asset('js/editors.js')}}"></script>
+
+<script>
+    $('#selectAll').click(function(e){
+        console.log("llega");
+        var table= $(e.target).closest('table');
+        $('td input:checkbox',table).prop('checked',this.checked);
+    });
+</script>
 
 @yield('scripts')
 

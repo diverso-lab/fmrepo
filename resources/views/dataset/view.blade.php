@@ -38,7 +38,7 @@
                             </p>
 
                             <p>
-                                {{$dataset->deposition->description}}
+                                {!! $dataset->deposition->description !!}
                             </p>
 
                             @if(Auth::check())

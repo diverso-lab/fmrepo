@@ -120,7 +120,7 @@
                         </div>
 
                         <div class="row g-gs">
-                            <x-input col="6" label="Email" id="email" description="Your dataset will be reviewed by our work team. If you want us to notify you of its acceptance, tell us your email." attr="Email" placeholder="Enter your email" value="{{old('email')}}"/>
+                            <x-input col="8" label="Email" id="email" description="Your dataset will be reviewed by our work team. If you want us to notify you of its acceptance, tell us your email." attr="Email" placeholder="Enter your email" value="{{old('email')}}"/>
                         </div>
 
 

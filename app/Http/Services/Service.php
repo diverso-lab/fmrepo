@@ -73,4 +73,14 @@ abstract class Service
         return $this->model::all();
     }
 
+    public function all_sorted_by($field)
+    {
+        return $this->model::all()->sortBy($field);
+    }
+
+    public function all_sorted_by_desc($field)
+    {
+        return $this->model::all()->sortByDesc($field);
+    }
+
 }

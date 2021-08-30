@@ -58,16 +58,23 @@
                             <h5 class="mb-3">Add members</h5>
 
                             <p>
-                                You can invite new members by searching by username or email. If the user is not in the system,
-                                you can send him an invitation email to register in FMREPO.
+                                You can invite new members by searching by name, surname or username
                             </p>
 
                             <div class="row g-gs">
 
-                                <div class="form-group col-lg-6 ">
-                                    TO DO
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Add members</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select" multiple="multiple" name="users[]" data-placeholder="Search users">
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->surname}}, {{$user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-
 
                             </div>
 

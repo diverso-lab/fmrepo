@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <div class="card-amount">
-                                <span class="amount"> {{$community->name}}</span>
+                                <span class="amount">  <a href="{{route('community.view',$community->id)}}">{{$community->name}}</a></span>
                                 <span class="change up text-light">{{$community->number_of_members}} members</span>
                             </div>
                             <div class="invest-data">

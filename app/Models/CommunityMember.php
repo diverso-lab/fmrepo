@@ -11,8 +11,17 @@ class CommunityMember extends Model
 
     protected $table = "communitymembers";
 
+    protected $fillable = [
+        'user_id'
+    ];
+
     public function communities()
     {
         return $this->belongsToMany('App\Models\Community', 'community_communitymember');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 }

@@ -11,6 +11,11 @@ class CommunityDatasetOwner extends Model
 
     protected $table = "communitydatasetowners";
 
+    protected $fillable = [
+      'user_id',
+      'community_dataset_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');

@@ -17,7 +17,7 @@ class CreateCommunitydatasetownersTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id');
-            $table->foreignId('communitydataset_id');
+            $table->foreignId('community_dataset_id');
         });
     }
 

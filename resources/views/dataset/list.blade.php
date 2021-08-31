@@ -26,13 +26,21 @@
                 <div class="nk-block nk-block-lg">
                     <div class="card card-preview">
                         <div class="card-inner">
+
                             <table id="depositions" class="datatable-init table">
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th class="nk-tb-col nk-tb-col-check sorting_asc" rowspan="1" colspan="1">
+                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                            <input type="checkbox" class="custom-control-input" id="selectAll">
+                                            <label class="custom-control-label" for="selectAll"></label>
+                                        </div>
+                                    </th>
+                                    <th>Verificated</th>
+                                    <th>Title</th>
                                     <th>DOI</th>
                                     <th>DOI URL</th>
-                                    <th>Title</th>
+
                                     <th>Options</th>
                                 </tr>
                                 </thead>
@@ -40,6 +48,14 @@
 
                                 @foreach($datasets as $dataset)
                                     <tr>
+
+                                        <td class="nk-tb-col nk-tb-col-check sorting_1">
+                                            <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input" value="{{$dataset->id}}" id="id_{{$dataset->id}}" name="datasets[]">
+                                                <label class="custom-control-label" for="id_{{$dataset->id}}"></label>
+                                            </div>
+                                        </td>
+
                                         <td>
 
                                             @if(isset($dataset->request_review->review))
@@ -51,13 +67,20 @@
                                             @endif
 
                                         </td>
+                                        <td>
+                                            <a href="{{route('dataset.view',$dataset->id)}}">{{$dataset->deposition->title ?? ''}}</a>
+                                        </td>
                                         <td>{{$dataset->deposition->doi ?? ''}}</td>
                                         <td><a target="_blank" href="{{$dataset->deposition->doi_url ?? ''}}">{{$dataset->deposition->doi_url ?? ''}}</a></td>
-                                        <td>{{$dataset->deposition->title ?? ''}}</td>
+
                                         <td>
 
                                             <div class="tb-odr-btns d-none d-md-inline">
-                                                <a href="{{route('dataset.view',$dataset->id)}}" class="btn btn-sm btn-primary">View</a>
+                                                <a href="{{route('dataset.view',$dataset->id)}}" class="btn btn-sm btn-primary"><em class="icon ni ni-download"></em></a>
+                                            </div>
+
+                                            <div class="tb-odr-btns d-none d-md-inline">
+                                                <a href="" class="btn btn-sm btn-primary"><em class="icon ni ni-file-docs"></em></a>
                                             </div>
 
                                         </td>
@@ -66,14 +89,28 @@
 
                                 </tbody>
                             </table>
+
+                            <br>
+
+                            <div class="tb-odr-btns d-none d-md-inline">
+                                <a href="" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download datasets</a>
+                            </div>
+
+                            <div class="tb-odr-btns d-none d-md-inline">
+                                <a href="" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
+                            </div>
+
+
+
+
                         </div>
-                    </div><!-- .card-preview -->
-                </div> <!-- nk-block -->
+                    </div>
+                </div>
 
             </div>
 
-        </div><!-- .row -->
-    </div><!-- .nk-block -->
+        </div>
+    </div>
 
 @endsection
 

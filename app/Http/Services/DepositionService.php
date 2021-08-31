@@ -25,7 +25,7 @@ class DepositionService extends Service
         parent::set_validation_rules([
             'title' => 'required',
             'description' => 'required',
-            //'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
 
         $this->zenodo = new \Zenodo();
@@ -147,6 +147,14 @@ class DepositionService extends Service
 
     public function post_deposition_to_repo($zenodo_deposition)
     {
+
+        // user_id (if you are logged in)
+        $user_id = null;
+        $user = Auth::user();
+        if($user != null){
+            $user_id = $user->id;
+        }
+
         // create Dataset into FMPREPO
         $new_dataset = Dataset::create();
 
@@ -166,7 +174,8 @@ class DepositionService extends Service
             'description' => $zenodo_deposition['metadata']['description'],
             'license' => $zenodo_deposition['metadata']['license'] ?? '',
             'upload_type' => $zenodo_deposition['metadata']['upload_type'],
-            'dataset_id' => $new_dataset->id
+            'dataset_id' => $new_dataset->id,
+            'user_id' => $user_id
         ]);
 
         return $repo_deposition;
@@ -368,6 +377,12 @@ class DepositionService extends Service
 
         // move into local storage
         Storage::move($old_directory, $new_directory);
+    }
+
+    public function my_depositions()
+    {
+        $me = Auth::user();
+        return $me->depositions()->get();
     }
 
 }

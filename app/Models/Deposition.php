@@ -38,4 +38,9 @@ class Deposition extends Model
     {
         return $this->hasMany('App\Models\DepositionFile');
     }
+
+    public function user()
+    {
+        $this->belongsTo('App\Models\User');
+    }
 }

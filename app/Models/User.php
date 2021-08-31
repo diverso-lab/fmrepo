@@ -52,14 +52,29 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\ZenodoToken');
     }
 
-    public function feature_models()
+    public function depositions()
     {
-        return $this->hasMany('App\Models\FeatureModel');
+        return $this->hasMany('App\Models\Deposition');
     }
 
     public function developer_tokens()
     {
         return $this->hasMany('App\Models\DeveloperToken');
+    }
+
+    public function community_admin()
+    {
+        return $this->hasOne('App\Models\CommunityAdmin');
+    }
+
+    public function community_member()
+    {
+        return $this->hasOne('App\Models\CommunityMember');
+    }
+
+    public function community_dataset_owner()
+    {
+        return $this->hasOne('App\Models\CommunityDatasetOwner');
     }
 
     public function has_role($rol_param): bool

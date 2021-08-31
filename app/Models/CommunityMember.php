@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CommunityAdmin extends Model
+class CommunityMember extends Model
 {
     use HasFactory;
 
-    protected $table = "communityadmins";
+    protected $table = "communitymembers";
 
     protected $fillable = [
         'user_id'
@@ -17,7 +17,7 @@ class CommunityAdmin extends Model
 
     public function communities()
     {
-        return $this->belongsToMany('App\Models\Community','communityadmin_community');
+        return $this->belongsToMany('App\Models\Community', 'community_communitymember');
     }
 
     public function user()

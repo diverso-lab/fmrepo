@@ -16,13 +16,14 @@ class li extends Component
     public $route;
     public $icon;
     public $name;
-    public $sec;
+    public $secondaries;
 
-    public function __construct(?string $icon, string $name, string $route)
+    public function __construct(?string $icon, string $name, string $route, string $secondaries = "")
     {
         $this->route = $route;
         $this->icon = $icon;
         $this->name = $name;
+        $this->secondaries = $secondaries;
     }
 
     /**

@@ -30,6 +30,12 @@ class DatasetController extends Controller
         return view('dataset.list', ['datasets' => $datasets]);
     }
 
+    public function mine()
+    {
+        $depositions = $this->deposition_service->my_depositions();
+        return view('dataset.mine', ['depositions' => $depositions]);
+    }
+
     public function view($id)
     {
         $dataset = $this->dataset_service->find_or_fail($id);

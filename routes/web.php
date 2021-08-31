@@ -69,10 +69,18 @@ Route::middleware(['checkroles:RESEARCHER'])->group(function () {
 
         // Communities
         Route::prefix('community')->group(function () {
-            Route::get('create',[CommunityController::class,'create'])->name('community.create');
-            Route::post('create/p',[CommunityController::class,'create_p'])->name('community.create.p');
-            Route::get('mine',[CommunityController::class,'mine'])->name('community.mine');
-            Route::get('join/{id}',[CommunityController::class,'join'])->name('community.join');
+            Route::get('create',[CommunityController::class,'create'])->name('researcher.community.create');
+            Route::post('create/p',[CommunityController::class,'create_p'])->name('researcher.community.create.p');
+            Route::get('mine',[CommunityController::class,'mine'])->name('researcher.community.mine');
+
+            Route::get('join/{id}',[CommunityController::class,'join'])->name('researcher.community.join');
+            Route::post('join',[CommunityController::class,'join_p'])->name('researcher.community.join_p');
+            Route::get('{id}/joinrequests',[CommunityController::class,'joinrequests'])->name('researcher.community.joinrequests');
+            Route::post('join_accept',[CommunityController::class,'join_accept'])->name('researcher.community.join_accept');
+            Route::post('join_decline',[CommunityController::class,'join_decline'])->name('researcher.community.join_decline');
+
+            Route::get('{id}/manage',[CommunityController::class,'manage'])->name('researcher.community.manage');
+
             Route::get('{id}/dataset/add',[CommunityController::class,'dataset_add'])->name('researcher.community.dataset.add');
             Route::post('dataset/add',[CommunityController::class,'dataset_add_p'])->name('researcher.community.dataset.add_p');
         });

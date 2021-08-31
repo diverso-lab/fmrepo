@@ -8,6 +8,7 @@ use App\Models\CommunityAdmin;
 use App\Models\CommunityDataset;
 use App\Models\CommunityDatasetOwner;
 use App\Models\CommunityMember;
+use App\Models\JoinRequest;
 use Illuminate\Support\Facades\Auth;
 
 class CommunityService extends Service
@@ -104,6 +105,32 @@ class CommunityService extends Service
            'user_id' => $me->id,
             'community_dataset_id' =>  $community_dataset->id
         ]);
+    }
+
+    public function join($community)
+    {
+        $me = Auth::user();
+        return JoinRequest::create([
+            'user_id' => $me->id,
+            'community_id' => $community->id
+        ]);
+    }
+
+    public function join_accept($join_request_id)
+    {
+        $join_request = JoinRequest::findOrFail($join_request_id);
+
+        $community_member = $this->create_community_member_by_user_id($join_request->user->id);
+        $this->add_community_member($join_request->community, $community_member->id);
+        $this->increase_number_of_members($join_request->community);
+
+        $join_request->delete();
+    }
+
+    public function join_decline($join_request_id)
+    {
+        $join_request = JoinRequest::findOrFail($join_request_id);
+        $join_request->delete();
     }
 
 }

@@ -5,7 +5,7 @@
     </li>
 
     <x-li name="My datasets" route="dataset.mine" icon="ni ni-network"/>
-    <x-li name="My communities" route="community.mine" icon="icon ni ni-user-list-fill"/>
-    <x-li name="Create community" route="community.create" icon="icon ni ni-note-add-fill"/>
+    <x-li name="My communities" route="researcher.community.mine" secondaries="researcher.community.joinrequests" icon="icon ni ni-user-list-fill"/>
+    <x-li name="Create community" route="researcher.community.create" icon="icon ni ni-note-add-fill"/>
 
 @endif

@@ -55,11 +55,22 @@
 
                             <br>
 
-                            <a href="{{route('community.view',$community->id)}}" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;View</span></a>
-
                             @auth
                                 @if(!$community->I_belong_to_this_community())
-                                    <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Join</span></a>
+
+                                    @if($community->I_am_pending_to_be_accepted())
+                                        <a href="{{route('researcher.community.join',$community->id)}}" class="btn btn-sm btn-info disabled">
+                                            <em class="icon ni ni-user-add-fill"></em> &nbsp;&nbsp;Pending to be accepted
+                                        </a>
+
+                                    @else
+                                        <a href="{{route('researcher.community.join',$community->id)}}" class="btn btn-sm btn-info">
+                                            <em class="icon ni ni-user-add-fill"></em> &nbsp;&nbsp;Join
+                                        </a>
+
+                                    @endif
+
+
                                 @endif
 
                                 @if($community->I_am_member())
@@ -67,18 +78,12 @@
                                 @endif
 
                                 @if($community->I_am_admin())
-                                    <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Admin</span></a>
-                                @endif
+                                        <a href="{{route('researcher.community.manage',$community->id)}}" class="btn btn-sm btn-primary">
+                                            <em class="icon ni ni-account-setting-fill"></em>&nbsp;Manage</a>                                @endif
                             @endauth
 
-                            @guest
-                                <a href="#" class="btn btn-white btn-dim btn-outline-primary"><i class="fas fa-sign-in-alt"></i><span> &nbsp;&nbsp;Join</span></a>
-                            @endguest
-
-
-
                         </div>
-                    </div><!-- .card -->
+                    </div>
                 </div>
             @endforeach
 

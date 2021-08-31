@@ -64,13 +64,17 @@ class CommunityController extends Controller
         $this->community_service->increase_number_of_members($community);
 
         // add members
-        foreach ($request->input('users') as $user_id) {
-            $community_member = $this->community_service->create_community_member_by_user_id($user_id);
-            $this->community_service->add_community_member($community, $community_member->id);
-            $this->community_service->increase_number_of_members($community);
+        $users = $request->input('users');
+        if($users != null){
+            foreach ($users as $user_id) {
+                $community_member = $this->community_service->create_community_member_by_user_id($user_id);
+                $this->community_service->add_community_member($community, $community_member->id);
+                $this->community_service->increase_number_of_members($community);
+            }
         }
 
-        return redirect()->route('community.mine')->with('success','Community created successfully');
+
+        return redirect()->route('researcher.community.mine')->with('success','Community created successfully');
     }
 
     public function dataset_add($id)
@@ -83,7 +87,7 @@ class CommunityController extends Controller
     public function dataset_add_p(Request $request)
     {
         $community_id = $request->input('community_id');
-        $community = $this->community_service->find($community_id);
+        $community = $this->community_service->find_or_fail($community_id);
         $datasets = $request->input('datasets');
 
         foreach($datasets as $dataset_id) {
@@ -94,5 +98,45 @@ class CommunityController extends Controller
 
         return redirect()->route('community.view',$community_id)->with('success','Datasets added successfully');
 
+    }
+
+    public function join($id)
+    {
+        $community = $this->community_service->find_or_fail($id);
+        return view('community.join',['community' => $community]);
+    }
+
+    public function join_p(Request $request)
+    {
+        $community_id = $request->input('community_id');
+        $community = $this->community_service->find_or_fail($community_id);
+        $this->community_service->join($community);
+
+        return redirect()->route('community.list')->with('success','Invitation request sent successfully');
+    }
+
+    public function joinrequests($id)
+    {
+        $community = $this->community_service->find_or_fail($id);
+
+        return view('community.joinrequests',['community' => $community]);
+    }
+
+    public function join_accept(Request $request)
+    {
+        $join_request_id = $request->input('join_request_id');
+
+        $this->community_service->join_accept($join_request_id);
+
+        return redirect()->route('researcher.community.mine')->with('success','Invitation request has been accepted successfully');
+    }
+
+    public function join_decline(Request $request)
+    {
+        $join_request_id = $request->input('join_request_id');
+
+        $this->community_service->join_decline($join_request_id);
+
+        return redirect()->route('researcher.community.mine')->with('success','Invitation request has been declined successfully');
     }
 }

@@ -19,7 +19,7 @@
 
     <div class="nk-block">
 
-        <form method="POST" action="{{route('community.create.p')}}">
+        <form method="POST" action="{{route('researcher.community.create.p')}}">
 
         <div class="row g-gs">
 

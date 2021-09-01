@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Dataset;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -65,6 +67,37 @@ class Filepond
         return $collection;
 
     }
+}
+
+class Utilities
+{
+
+    public static function isDatasetCookiesDefined()
+    {
+        return self::getDatasetCookies()->count() != 0;
+    }
+
+    public static function getDatasetCookies()
+    {
+
+        $res = collect();
+
+        if(isset($_COOKIE['datasets'])){
+            $datasets = $_COOKIE['datasets'];
+
+            $datasets_array = explode(",", $datasets);
+
+            foreach($datasets_array as $dataset_id){
+                $dataset = Dataset::where('id',intval($dataset_id))->first();
+                if($dataset != null)
+                    $res->push($dataset);
+            }
+        }
+
+        return $res;
+
+    }
+
 }
 
 

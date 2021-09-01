@@ -83,7 +83,7 @@
                                             </div>
 
                                             <div class="tb-odr-btns d-none d-md-inline">
-                                                <a href="" class="btn btn-sm btn-primary"><em class="icon ni ni-file-docs"></em></a>
+                                                <a href="#" onclick="add_dataset({{$dataset->id}})" class="btn btn-sm btn-primary"><em class="icon ni ni-file-docs"></em></a>
                                             </div>
 
                                         </td>

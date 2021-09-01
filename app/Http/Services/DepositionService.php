@@ -399,6 +399,9 @@ class DepositionService extends Service
         $zip = new ZipArchive();
         $zip->open($zipcreated, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
+        // Add root folder
+        $zip->addEmptyDir('deposition_'.$record_id);
+
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($rootPath),
             RecursiveIteratorIterator::LEAVES_ONLY
@@ -414,7 +417,7 @@ class DepositionService extends Service
                 $relativePath = substr($filePath, strlen($rootPath) + 1);
 
                 // Add current file to archive
-                $zip->addFile($filePath, $relativePath);
+                $zip->addFile($filePath, 'deposition_'.$record_id.'/'.$relativePath);
             }
         }
 
@@ -440,7 +443,9 @@ class DepositionService extends Service
             // Record ID
             $deposition = Deposition::where('dataset_id',$dataset_id)->first();
             $record_id = $deposition->record_id;
-            echo "record_id: ".$record_id."<br>";
+
+            // Add root folder
+            $zip->addEmptyDir('deposition_'.$record_id);
 
             $rootPath = realpath(storage_path('app/dataset').'/deposition_'.$record_id);
 
@@ -459,7 +464,7 @@ class DepositionService extends Service
                     $relativePath = substr($filePath, strlen($rootPath) + 1);
 
                     // Add current file to archive
-                    $zip->addFile($filePath, $relativePath);
+                    $zip->addFile($filePath, 'deposition_'.$record_id.'/'.$relativePath);
                 }
             }
 

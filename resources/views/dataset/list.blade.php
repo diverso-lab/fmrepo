@@ -25,7 +25,10 @@
 
                 <div class="nk-block nk-block-lg">
                     <div class="card card-preview">
-                        <div class="card-inner">
+                        <form method="post" action="{{route('dataset.massive_download')}}">
+
+                            @csrf
+                            <div class="card-inner">
 
                             <table id="depositions" class="datatable-init table">
                                 <thead>
@@ -76,7 +79,7 @@
                                         <td>
 
                                             <div class="tb-odr-btns d-none d-md-inline">
-                                                <a href="{{route('dataset.view',$dataset->id)}}" class="btn btn-sm btn-primary"><em class="icon ni ni-download"></em></a>
+                                                <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-sm btn-primary"><em class="icon ni ni-download"></em></a>
                                             </div>
 
                                             <div class="tb-odr-btns d-none d-md-inline">
@@ -93,17 +96,20 @@
                             <br>
 
                             <div class="tb-odr-btns d-none d-md-inline">
-                                <a href="" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download datasets</a>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <em class="icon ni ni-download"></em>&nbsp; Download datasets
+                                </button>
+
                             </div>
 
                             <div class="tb-odr-btns d-none d-md-inline">
                                 <a href="" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
                             </div>
 
-
-
-
                         </div>
+
+                        </form>
                     </div>
                 </div>
 

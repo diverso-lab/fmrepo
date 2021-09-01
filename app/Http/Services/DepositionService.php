@@ -7,10 +7,15 @@ use App\Models\Deposition;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
+use http\Exception\BadMessageException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use ZipArchive;
 
 class DepositionService extends Service
@@ -383,6 +388,91 @@ class DepositionService extends Service
     {
         $me = Auth::user();
         return $me->depositions()->get();
+    }
+
+    public function zip_single_deposition($record_id)
+    {
+
+        $rootPath = realpath(storage_path('app/dataset').'/deposition_'.$record_id);
+        $zipcreated = storage_path('app/dataset').'/deposition_'.$record_id.'.zip';
+
+        $zip = new ZipArchive();
+        $zip->open($zipcreated, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($rootPath),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        foreach ($files as $name => $file)
+        {
+            // Skip directories (they would be added automatically)
+            if (!$file->isDir())
+            {
+                // Get real and relative path for current file
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+                // Add current file to archive
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+
+        $zip->close();
+
+    }
+
+    public function download_zip_by_record_id($record_id)
+    {
+        return response()->download(storage_path('app/'.'/dataset/deposition_'.$record_id.'.zip'))->deleteFileAfterSend(true);
+    }
+
+    public function zip_multiple_deposition($datasets)
+    {
+
+        $zip_name = 'famarepo_'.\Random::getRandomString().'.zip';
+        $zip_path = storage_path('app/dataset').'/'.$zip_name;
+        $zip = new ZipArchive();
+        $zip->open($zip_path,ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+        foreach($datasets as $dataset_id) {
+
+            // Record ID
+            $deposition = Deposition::where('dataset_id',$dataset_id)->first();
+            $record_id = $deposition->record_id;
+            echo "record_id: ".$record_id."<br>";
+
+            $rootPath = realpath(storage_path('app/dataset').'/deposition_'.$record_id);
+
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($rootPath),
+                RecursiveIteratorIterator::LEAVES_ONLY
+            );
+
+            foreach ($files as $name => $file)
+            {
+                // Skip directories (they would be added automatically)
+                if (!$file->isDir())
+                {
+                    // Get real and relative path for current file
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+                    // Add current file to archive
+                    $zip->addFile($filePath, $relativePath);
+                }
+            }
+
+        }
+
+        $zip->close();
+
+        return $zip_name;
+    }
+
+    public function download_zip_by_name($zip_name)
+    {
+        return response()->download(storage_path('app/'.'/dataset/'.$zip_name))->deleteFileAfterSend(true);
     }
 
 }

@@ -50,7 +50,7 @@
 
                             @endif
 
-                            <a href="" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download dataset</a>
+                            <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download dataset</a>
 
                             <a href="" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
 

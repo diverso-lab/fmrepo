@@ -91,6 +91,52 @@
                         <div class="nk-header-tools">
                             <ul class="nk-quick-nav">
 
+                                <li class="dropdown notification-dropdown mr-n1">
+                                    <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown">
+                                        <div class="icon-status icon-status-info"><em class="icon ni ni-file-docs"></em></div>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
+                                        <div class="dropdown-body">
+                                            <div class="nk-notification">
+
+
+                                                @forelse(Utilities::getDatasetCookies() as $dataset)
+                                                    <div class="nk-notification-item dropdown-inner" id="dataset_{{$dataset->id}}">
+                                                        <div class="nk-notification-icon" onclick="remove_dataset({{$dataset->id}})" onmouseover="" style="cursor: pointer;">
+                                                            <em class="icon icon-circle bg-info-dim ni ni-trash"></em>
+                                                        </div>
+                                                        <div class="nk-notification-content">
+                                                            <div class="nk-notification-text">
+                                                                <a href="{{route('dataset.view',$dataset->id)}}">{{$dataset->deposition->title}}</a>
+                                                            </div>
+                                                            <div class="nk-notification-time">
+                                                                {{$dataset->deposition->doi}}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                @empty
+                                                    <div class="nk-notification-item dropdown-inner">
+                                                        <div class="nk-notification-content">
+                                                            <div class="nk-notification-text">
+                                                                Your download queue is empty. Why don't you try adding some dataset?
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                @endforelse
+
+
+                                            </div>
+                                        </div>
+                                        @if(Utilities::isDatasetCookiesDefined())
+                                            <div class="dropdown-foot center">
+                                                <a href="#"><em class="icon ni ni-download"></em>&nbsp; Download datasets</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </li>
+
                                 <li class="dropdown user-dropdown">
 
                                     @if(Auth::guest())
@@ -194,7 +240,7 @@
                         </li>
 
                         <x-li name="Home" route="home" icon="ni ni-home"/>
-                        <x-li name="Datasets" route="dataset.list" icon="ni ni-network"/>
+                        <x-li name="Datasets" route="dataset.list" secondaries="dataset.view" icon="ni ni-network"/>
                         <x-li name="Upload dataset" route="dataset.upload" icon="ni ni-upload"/>
                         <x-li name="Communities" route="community.list" secondaries="community.view,researcher.community.dataset.add,researcher.community.join" icon="ni ni-users-fill"/>
 
@@ -297,13 +343,48 @@
 <script src="{{asset('js/filepond.js')}}"></script>
 <script src="{{asset('js/libs/editors/summernote.js')}}"></script>
 <script src="{{asset('js/editors.js')}}"></script>
+<script src="{{asset('js/js.cookie.js')}}"></script>
 
 <script>
+
     $('#selectAll').click(function(e){
-        console.log("llega");
         var table= $(e.target).closest('table');
         $('td input:checkbox',table).prop('checked',this.checked);
     });
+
+    function add_dataset(id){
+        let datasets = Cookies.get('datasets');
+        let datasets_array = [];
+
+        if (typeof(datasets)  === 'undefined'){
+            datasets_array.push(parseInt(id, 10));
+        }else{
+            datasets_array = datasets.split`,`.map(x=>+x);
+
+            if(datasets_array.indexOf(parseInt(id, 10)) == -1){
+                datasets_array.push(parseInt(id, 10));
+            }
+
+        }
+
+        datasets = datasets_array.join(",");
+        Cookies.set('datasets',datasets);
+
+        console.log(Cookies.get('datasets'));
+    }
+
+    function remove_dataset(id){
+        let datasets = Cookies.get('datasets');
+        let datasets_array = datasets.split`,`.map(x=>+x);
+        let index = datasets_array.indexOf(parseInt(id, 10));
+
+        datasets_array.splice(index,1);
+        datasets = datasets_array.join(",");
+        Cookies.set('datasets',datasets);
+
+        $("#dataset_"+id).remove();
+    }
+
 </script>
 
 @yield('scripts')

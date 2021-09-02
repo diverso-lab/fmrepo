@@ -28,6 +28,7 @@
                         <form method="post" action="{{route('dataset.massive_download')}}">
 
                             @csrf
+
                             <div class="card-inner">
 
                             <table id="depositions" class="datatable-init table">
@@ -97,14 +98,14 @@
 
                             <div class="tb-odr-btns d-none d-md-inline">
 
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" name="download" value="massive" class="btn btn-primary">
                                     <em class="icon ni ni-download"></em>&nbsp; Download datasets
                                 </button>
 
-                            </div>
+                                <button type="submit" name="download" value="queue" class="btn btn-primary">
+                                    <em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue
+                                </button>
 
-                            <div class="tb-odr-btns d-none d-md-inline">
-                                <a href="" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
                             </div>
 
                         </div>

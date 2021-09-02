@@ -480,4 +480,48 @@ class DepositionService extends Service
         return response()->download(storage_path('app/'.'/dataset/'.$zip_name))->deleteFileAfterSend(true);
     }
 
+    public function add_to_queue($datasets)
+    {
+
+        $datasets_array = array();
+
+        if(isset($_COOKIE['datasets'])){
+            $datasets_array = array_map('intval', explode(',', $_COOKIE['datasets']));
+        }
+
+        foreach($datasets as $dataset_id) {
+            if(!in_array(intval($dataset_id), $datasets_array)){
+
+                $dataset = Dataset::where('id',intval($dataset_id))->first();
+
+                // add to queue only if dataset exists
+                if($dataset != null){
+                    array_push($datasets_array, intval($dataset_id));
+                }
+
+            }
+        }
+
+        $datasets_string = implode(",", $datasets_array);
+
+        setcookie('datasets',$datasets_string, 0, "/");
+
+    }
+
+    public function get_datasets_from_cookie()
+    {
+        $datasets_array = array();
+
+        if(isset($_COOKIE['datasets'])){
+            $datasets_array = array_map('intval', explode(',', $_COOKIE['datasets']));
+        }
+
+        return $datasets_array;
+    }
+
+    public function clear_queue()
+    {
+        setcookie('datasets','', 0, "/");
+    }
+
 }

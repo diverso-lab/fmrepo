@@ -203,11 +203,38 @@ class DatasetController extends Controller
     {
         $datasets = $request->input('datasets');
 
+        if($request->input('download') == "massive") {
+            $zip_name = $this->deposition_service->zip_multiple_deposition($datasets);
+
+            // limpiar búfer de salida
+            ob_end_clean();
+
+            return $this->deposition_service->download_zip_by_name($zip_name);
+        }
+
+        if($request->input('download') == "queue") {
+            $this->deposition_service->add_to_queue($datasets);
+            return redirect()->route('dataset.list')->with('success','Datasets added to the queue successfully');
+        }
+
+
+    }
+
+    public function queue_download(Request $request)
+    {
+        $datasets = $this->deposition_service->get_datasets_from_cookie();
         $zip_name = $this->deposition_service->zip_multiple_deposition($datasets);
 
         // limpiar búfer de salida
         ob_end_clean();
 
         return $this->deposition_service->download_zip_by_name($zip_name);
+
+    }
+
+    public function queue_clean(Request $request)
+    {
+        $this->deposition_service->clear_queue();
+        return redirect()->route('dataset.list')->with('success','Download queue has been cleaned successfully');
     }
 }

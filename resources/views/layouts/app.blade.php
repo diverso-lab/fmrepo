@@ -130,8 +130,29 @@
                                             </div>
                                         </div>
                                         @if(Utilities::isDatasetCookiesDefined())
+
                                             <div class="dropdown-foot center">
-                                                <a href="#"><em class="icon ni ni-download"></em>&nbsp; Download datasets</a>
+
+                                                <form method="post" action="{{route('dataset.queue_download')}}">
+                                                    @csrf
+
+                                                    <button type="submit" class="btn btn-sm btn-light">
+                                                        <em class="icon ni ni-download"></em>&nbsp; Download all datasets
+                                                    </button>
+
+                                                </form>
+
+                                                &nbsp;&nbsp;
+
+                                                <form method="post" action="{{route('dataset.queue_clean')}}">
+                                                    @csrf
+
+                                                    <button type="submit" class="btn btn-sm btn-light">
+                                                        <em class="icon ni ni-trash"></em>&nbsp; Clear
+                                                    </button>
+
+                                                </form>
+
                                             </div>
                                         @endif
                                     </div>

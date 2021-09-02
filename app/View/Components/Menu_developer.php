@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class menu_developer extends Component
+class Menu_developer extends Component
 {
     /**
      * Create a new component instance.

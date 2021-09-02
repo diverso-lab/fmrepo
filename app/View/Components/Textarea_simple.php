@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class textarea extends Component
+class Textarea_simple extends Component
 {
     public $col;
     public $label;
@@ -40,13 +40,8 @@ class textarea extends Component
 
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
     public function render()
     {
-        return view('components.textarea');
+        return view('components.textarea_simple');
     }
 }

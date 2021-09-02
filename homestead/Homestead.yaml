@@ -1,0 +1,17 @@
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 2
+provider: virtualbox
+
+folders:
+    - map: ../
+      to: /home/vagrant/fmrepo
+
+sites:
+
+    - map: fmrepo.test
+      to: /home/vagrant/fmrepo/public
+
+databases:
+    - fmrepo

@@ -4,14 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\DatasetService;
 use App\Http\Services\DepositionService;
-use App\Models\Deposition;
-use App\Models\Dataset;
-use Exception;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use ZanySoft\Zip\Zip;
-use ZipArchive;
 
 class DatasetController extends Controller
 {
@@ -191,5 +185,29 @@ class DatasetController extends Controller
         $this->dataset_service->create_request_for_review($dataset,$data);
 
         return redirect()->route('dataset.list')->with('success','Dataset uploaded successfully');
+    }
+
+    public function download($id)
+    {
+        $dataset = $this->dataset_service->find_or_fail($id);
+        $record_id = $dataset->deposition->record_id;
+        $this->deposition_service->zip_single_deposition($record_id);
+
+        // limpiar búfer de salida
+        ob_end_clean();
+
+        return $this->deposition_service->download_zip_by_record_id($record_id)->deleteFileAfterSend(true);;
+    }
+
+    public function massive_download(Request $request)
+    {
+        $datasets = $request->input('datasets');
+
+        $zip_name = $this->deposition_service->zip_multiple_deposition($datasets);
+
+        // limpiar búfer de salida
+        ob_end_clean();
+
+        return $this->deposition_service->download_zip_by_name($zip_name);
     }
 }

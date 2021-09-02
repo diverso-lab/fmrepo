@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Dataset;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +18,20 @@ class StringUtilities
         }
 
         return $res;
+    }
+}
+
+class Random
+{
+    public static function getRandomString($length = 16)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
 
@@ -52,5 +68,37 @@ class Filepond
 
     }
 }
+
+class Utilities
+{
+
+    public static function isDatasetCookiesDefined()
+    {
+        return self::getDatasetCookies()->count() != 0;
+    }
+
+    public static function getDatasetCookies()
+    {
+
+        $res = collect();
+
+        if(isset($_COOKIE['datasets'])){
+            $datasets = $_COOKIE['datasets'];
+
+            $datasets_array = explode(",", $datasets);
+
+            foreach($datasets_array as $dataset_id){
+                $dataset = Dataset::where('id',intval($dataset_id))->first();
+                if($dataset != null)
+                    $res->push($dataset);
+            }
+        }
+
+        return $res;
+
+    }
+
+}
+
 
 ?>

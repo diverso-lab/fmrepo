@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class li extends Component
+class Li extends Component
 {
     /**
      * Create a new component instance.

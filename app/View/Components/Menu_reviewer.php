@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class menu_researcher extends Component
+class Menu_reviewer extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class menu_researcher extends Component
      */
     public function render()
     {
-        return view('components.menu_researcher');
+        return view('components.menu_reviewer');
     }
 }

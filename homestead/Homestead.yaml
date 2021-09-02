@@ -8,10 +8,5 @@ folders:
     - map: ../
       to: /home/vagrant/fmrepo
 
-sites:
-
-    - map: fmrepo.test
-      to: /home/vagrant/fmrepo/public
-
 databases:
-    - fmrepo
+    - homestead

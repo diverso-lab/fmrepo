@@ -50,8 +50,8 @@ class fmrepostart extends Command
         exec('echo "APP_DEBUG=true" >> .env');
         exec('echo "APP_URL=http://localhost" >> .env');
         exec('echo "" >> .env');
-        exec('echo "NOCAPTCHA_SECRET=stack" >> .env');
-        exec('echo "NOCAPTCHA_SITEKEY=stack" >> .env');
+        exec('echo "NOCAPTCHA_SECRET=" >> .env');
+        exec('echo "NOCAPTCHA_SITEKEY=" >> .env');
         exec('echo "" >> .env');
         exec('echo "LOG_CHANNEL=stack" >> .env');
         exec('echo "" >> .env');
@@ -97,6 +97,10 @@ class fmrepostart extends Command
         exec('echo "MIX_PUSHER_APP_CLUSTER=\"${PUSHER_APP_CLUSTER}\"" >> .env');
         exec('echo "" >> .env');
         $this->line('Setting environment file ... [OK]');
+
+        $this->line('Generating empty tokens file');
+        exec("cat /dev/null > .tokens");
+        $this->line('Generating empty tokens file ... [OK]');
 
         $this->line('Generating key');
         exec("php artisan config:cache");

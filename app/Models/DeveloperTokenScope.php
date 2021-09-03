@@ -9,9 +9,14 @@ class DeveloperTokenScope extends Model
 {
     protected $table = 'developertokenscopes';
 
+    protected $fillable = [
+        'scope',
+        'developer_token_id'
+    ];
+
     use HasFactory;
 
-    public function token()
+    public function developer_token()
     {
         return $this->belongsTo('App\Models\DeveloperToken');
     }

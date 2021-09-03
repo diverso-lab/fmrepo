@@ -15,7 +15,8 @@ class CreateDevelopertokenscopesTable extends Migration
     {
         Schema::create('developertokenscopes', function (Blueprint $table) {
             $table->id();
-            $table->enum('actions',['GET','POST','PUT']);
+            $table->enum('scope',['GET','POST','PUT','DELETE']);
+            $table->foreignId('developer_token_id');
             $table->timestamps();
         });
     }

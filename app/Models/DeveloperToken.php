@@ -12,7 +12,9 @@ class DeveloperToken extends Model
     protected $table = 'developertokens';
 
     protected $fillable = [
-        'token'
+        'token',
+        'name',
+        'user_id'
     ];
 
     public function user()

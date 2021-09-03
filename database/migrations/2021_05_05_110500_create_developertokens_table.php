@@ -16,6 +16,8 @@ class CreateDevelopertokensTable extends Migration
         Schema::create('developertokens', function (Blueprint $table) {
             $table->id();
             $table->string('token');
+            $table->string('name');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

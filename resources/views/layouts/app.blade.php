@@ -264,6 +264,7 @@
                         <x-li name="Datasets" route="dataset.list" secondaries="dataset.view" icon="ni ni-network"/>
                         <x-li name="Upload dataset" route="dataset.upload" icon="ni ni-upload"/>
                         <x-li name="Communities" route="community.list" secondaries="community.view,researcher.community.dataset.add,researcher.community.join" icon="ni ni-users-fill"/>
+                        <x-li name="REST API Docs" route="api.docs" icon="ni ni-book-fill"/>
 
                         @if(Auth::check())
 

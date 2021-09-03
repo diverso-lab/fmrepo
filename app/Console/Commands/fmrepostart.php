@@ -45,7 +45,7 @@ class fmrepostart extends Command
         $this->line('Setting environment file');
         exec("cat /dev/null > .env");
         exec('echo "APP_NAME=Laravel" >> .env');
-        exec('echo "APP_ENV=localhost.local" >> .env');
+        exec('echo "APP_ENV=local" >> .env');
         exec('echo "APP_KEY=" >> .env');
         exec('echo "APP_DEBUG=true" >> .env');
         exec('echo "APP_URL=http://localhost" >> .env');

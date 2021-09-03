@@ -216,7 +216,7 @@ class DatasetController extends Controller
             $this->deposition_service->add_to_queue($datasets);
             return redirect()->route('dataset.list')->with('success','Datasets added to the queue successfully');
         }
-        
+
     }
 
     public function queue_download(Request $request)

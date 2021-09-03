@@ -14,8 +14,11 @@
                     <div class="card-inner">
                         <div class="card-title-group pb-3 g-2">
                             <div class="card-title card-title-sm">
-                                <h6 class="title">Title</h6>
-                                <p>Subtitle.</p>
+                                <h6 class="title">Hello, &#60;developer&#62;</h6>
+                                <p>
+                                    We provide a REST API for developers who want to extend the functionality of FaMaREPO.
+                                    You can find the available operations in the <a href="{{route('api.docs')}}">official documentation</a>.
+                                </p>
                             </div>
                         </div>
 

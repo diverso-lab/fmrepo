@@ -99,6 +99,8 @@ Route::middleware(['checkroles:DEVELOPER'])->group(function () {
 
         // API token
         Route::get('token/get', [DeveloperController::class, 'get_token'])->name('developer.token.get');
+        Route::post('token/get_p', [DeveloperController::class, 'get_token_p'])->name('developer.token.get_p');
+        Route::get('token/list', [DeveloperController::class, 'list'])->name('developer.token.list');
 
     });
 });
@@ -117,6 +119,12 @@ Route::middleware(['checkroles:REVIEWER'])->group(function () {
 
 
     });
+});
+
+// REST API routes
+
+Route::prefix('api')->group(function () {
+    Route::get('docs', [APIController::class, 'docs'])->name('api.docs');
 });
 
 

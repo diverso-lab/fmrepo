@@ -39,6 +39,8 @@ Route::prefix('dataset')->group(function () {
     Route::get('list', [DatasetController::class, 'list'])->name('dataset.list');
     Route::get('download/{id}', [DatasetController::class, 'download'])->name('dataset.download');
     Route::post('massive_download', [DatasetController::class, 'massive_download'])->name('dataset.massive_download');
+    Route::post('queue_download', [DatasetController::class, 'queue_download'])->name('dataset.queue_download');
+    Route::post('queue_clean', [DatasetController::class, 'queue_clean'])->name('dataset.queue_clean');
 
     // Upload dataset
     Route::prefix('upload')->group(function () {

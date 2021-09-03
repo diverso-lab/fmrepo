@@ -115,36 +115,6 @@ class APIController extends Controller
 
             return response()->json(['datasets' => $data]);
 
-            $post_data = array(
-                'item' => array(
-                    'item_type_id' => 2,
-                    'string_key' => 2,
-                    'string_value' => 2,
-                    'string_extra' => 2,
-                    'is_public' => 2,
-                    'is_public_for_contacts' => 2
-                )
-            );
-
-            //$post_data = json_encode($post_data);
-
-            return response()->json(['post_data' => $post_data]);
-
-            return json_encode($post_data);
-
-            $depositions = $this->deposition_service->all();
-
-            return $depositions;
-
-            $datasets = $this->dataset_service->all();
-
-            $datasets = $datasets->makeHidden(['user_id']);
-
-            $depositions = $datasets->map(function ($item, $key) {
-                return $item * 2;
-            });
-
-            return $datasets;
         }
 
         return $response;

@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\RegisterDeveloperController;
-use App\Http\Controllers\RegisterResearcherController;
+use App\Http\Controllers\APIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('prueba', [RegisterResearcherController::class, 'register'])->name('prueba');
-
-Route::prefix('api')->group(function () {
-
-
-
-});
+Route::get('datasets', [APIController::class, 'dataset_list'])->name('api.dataset.list');

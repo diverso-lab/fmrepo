@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\APIService;
 use App\Http\Services\CommunityService;
 use App\Http\Services\DatasetService;
 use App\Http\Services\DepositionService;
+use App\Models\Community;
+use App\Models\Dataset;
+use App\Models\Deposition;
 use App\Models\DeveloperToken;
 use App\Models\DeveloperTokenScope;
 use Illuminate\Http\Request;
@@ -14,12 +18,14 @@ class APIController extends Controller
     private $dataset_service;
     private $deposition_service;
     private $community_service;
+    private $api_service;
 
     public function __construct()
     {
         $this->dataset_service = new DatasetService();
         $this->deposition_service = new DepositionService();
         $this->community_service = new CommunityService();
+        $this->api_service = new APIService();
     }
 
     public function docs()
@@ -71,6 +77,10 @@ class APIController extends Controller
         return response()->json(['success' => 'OK.']);
     }
 
+    /*
+     *  API END POINTS
+     */
+
     public function dataset_list(Request $request)
     {
 
@@ -81,35 +91,9 @@ class APIController extends Controller
             $data = array();
 
             $depositions = $this->deposition_service->all();
-
             foreach ($depositions as $deposition){
 
-                $files = array();
-
-                foreach ($deposition->files as $file) {
-                    $file = array(
-                        'file_name' => $file->filename,
-                        'file_size' => $file->filesize,
-                        'zenodo_download_link' => $file->download_link,
-                        'checksum' => $file->checksum
-                    );
-                    array_push($files,$file);
-                }
-
-                $dataset = array(
-                    'id' => $deposition->dataset->id,
-                    'created_at' => $deposition->created_at,
-                    'updated_at' => $deposition->updated_at,
-                    'doi' => $deposition->doi,
-                    'doi_url' => $deposition->doi_url,
-                    'zenodo_id' => $deposition->record_id,
-                    'access_right' => $deposition->access_right,
-                    'title' => $deposition->title,
-                    'description' => $deposition->description,
-                    'download_url' => route('dataset.download',$deposition->dataset->id),
-                    'files' => $files
-                );
-
+                $dataset = $this->api_service->dataset_array($deposition);
                 array_push($data, $dataset);
             }
 
@@ -119,5 +103,159 @@ class APIController extends Controller
 
         return $response;
 
+    }
+
+    public function dataset_get(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $dataset_id = $request->route('id');
+            $dataset = Dataset::find($dataset_id);
+
+            if($dataset == null){
+                return response()->json(['error' => '400 Bad Request. Check that the dataset id is correct.'], 400);
+            }
+
+            $data = $this->api_service->dataset_array($dataset->deposition);
+
+            return response()->json(['dataset' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function dataset_files(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $dataset_id = $request->route('id');
+            $dataset = Dataset::find($dataset_id);
+
+            if($dataset == null){
+                return response()->json(['error' => '400 Bad Request. Check that the dataset id is correct.'], 400);
+            }
+
+            $data = $this->api_service->files_array($dataset->deposition);
+
+            return response()->json(['files' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function communities_list(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $data = array();
+
+            $communities = $this->community_service->all();
+            foreach ($communities as $community){
+
+                $community_array = $this->api_service->community_array($community);
+                array_push($data, $community_array);
+            }
+
+            return response()->json(['communities' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function community_get(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $community_id = $request->route('id');
+            $community = Community::find($community_id);
+
+            if($community == null){
+                return response()->json(['error' => '400 Bad Request. Check that the community id is correct.'], 400);
+            }
+
+            $data = $this->api_service->community_array($community);
+
+            return response()->json(['community' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function community_members(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $community_id = $request->route('id');
+            $community = Community::find($community_id);
+
+            if($community == null){
+                return response()->json(['error' => '400 Bad Request. Check that the community id is correct.'], 400);
+            }
+
+            $data = $this->api_service->members_array($community);
+
+            return response()->json(['members' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function community_admins(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $community_id = $request->route('id');
+            $community = Community::find($community_id);
+
+            if($community == null){
+                return response()->json(['error' => '400 Bad Request. Check that the community id is correct.'], 400);
+            }
+
+            $data = $this->api_service->admins_array($community);
+
+            return response()->json(['admins' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function community_datasets(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $community_id = $request->route('id');
+            $community = Community::find($community_id);
+
+            if($community == null){
+                return response()->json(['error' => '400 Bad Request. Check that the community id is correct.'], 400);
+            }
+
+            $data = $this->api_service->datasets_array($community);
+
+            return response()->json(['datasets' => $data]);
+
+        }
+
+        return $response;
     }
 }

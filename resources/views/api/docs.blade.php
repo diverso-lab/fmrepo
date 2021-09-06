@@ -41,37 +41,30 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabItem1">
 
+                                            <div class="row g-gs">
 
-                                    <div class="code-block">
+                                                <div class="col-md-4">
+                                                    <ul class="nav link-list-menu border border-light round m-0">
 
-                                        <h5>
-                                            <span class="badge badge-success">GET</span>
-                                            List all datasets
-                                        </h5>
+                                                        <li>
+                                                            <a class="active" data-toggle="tab" href="#get_all_datasets">Get all datasets &nbsp;&nbsp;</a>
+                                                        </li>
 
-                                        <br>
+                                                        <li>
+                                                            <a data-toggle="tab" href="#get_dataset">Get a dataset &nbsp;&nbsp;</a>
+                                                        </li>
 
-<h6 class="overline-title title">Required parameters</h6>
+                                                    </ul>
+                                                </div>
 
-<pre class="prettyprint lang-html" id="npmi">
-access_token : your_api_access_token
-</pre>
+                                                <div class="col-md-8">
+                                                    <div class="tab-content">
 
-<br>
+                                                        <div class="tab-pane active" id="get_all_datasets">
 
-<h6 class="overline-title title">Request sample</h6>
+                                                            <div class="row">
 
-<pre class="prettyprint lang-html" id="npmi">
-GET api/datasets
-</pre>
-
-<br>
-
-<h6 class="overline-title title">Response sample</h6>
-
-<p>Content type: application/json</p>
-
-<pre class="prettyprint lang-html" id="npmi">
+<x-api_item name="Get all datasets" verb="GET" endpoint="api/datasets">
 {
     "datasets": [
         {
@@ -87,17 +80,70 @@ GET api/datasets
             "download_url": ...,
             "files": [
                 {
-                    "file_name": ...,
-                    "file_size": ...,
-                    "zenodo_download_link": ...,
-                    "checksum": ...
+                "file_name": ...,
+                "file_size": ...,
+                "zenodo_download_link": ...,
+                "checksum": ...
                 }
             ]
         }
     ]
 }
-</pre>
+</x-api_item>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="tab-pane" id="get_dataset">
+
+                                                            <div class="row">
+
+<x-api_item name="Get a dataset" verb="GET" endpoint="api/datasets/<b>id</b>" parameters="id : dataset_id">
+    {
+        "datasets": [
+            {
+                "id": ...,
+                "created_at": ...,
+                "updated_at": ...,
+                "doi": ...,
+                "doi_url": ...,
+                "zenodo_id": ...,
+                "access_right": ...,
+                "title": ...,
+                "description": ...,
+                "download_url": ...,
+                "files": [
+                    {
+                    "file_name": ...,
+                    "file_size": ...,
+                    "zenodo_download_link": ...,
+                    "checksum": ...
+                    }
+                ]
+            }
+        ]
+    }
+</x-api_item>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    <div class="row">
+
+
+
+
+
                                     </div>
+
+                                    <div class="row">
+                                    </div>
+
+
                                 </div>
                                 <div class="tab-pane" id="tabItem2">
 

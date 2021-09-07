@@ -8,10 +8,9 @@ use App\Http\Services\DatasetService;
 use App\Http\Services\DepositionService;
 use App\Models\Community;
 use App\Models\Dataset;
-use App\Models\Deposition;
 use App\Models\DeveloperToken;
-use App\Models\DeveloperTokenScope;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
 {
@@ -77,6 +76,13 @@ class APIController extends Controller
         return response()->json(['success' => 'OK.']);
     }
 
+    private function get_user_by_token($request)
+    {
+        $access_token = $request->input('access_token');
+        $token = DeveloperToken::where('token',$access_token)->first();
+        return $token->user;
+    }
+
     /*
      *  API END POINTS
      */
@@ -121,6 +127,118 @@ class APIController extends Controller
             $data = $this->api_service->dataset_array($dataset->deposition);
 
             return response()->json(['dataset' => $data]);
+
+        }
+
+        return $response;
+    }
+
+    public function dataset_post(Request $request)
+    {
+        $response = $this->access_token_validate($request, "PUT");
+
+        if($response->status() == 200){
+
+            // Rules need to be redefined because the API does not need a g-recaptcha-response
+            $validation_rules = [
+                'title' => 'required',
+                'description' => 'required'
+            ];
+
+            $validator = Validator::make($request->all(), $validation_rules);
+            if ($validator->passes()) {
+
+                try{
+                    // basic deposition data
+                    $deposition_data = $this->deposition_service->create_deposition_data($request);
+
+                    // upload deposition to Zenodo through REST API
+                    $zenodo_deposition = $this->deposition_service->post_deposition_to_zenodo($deposition_data);
+
+                    // upload deposition to REPO
+                    $repo_deposition = $this->deposition_service->post_deposition_to_repo($zenodo_deposition);
+
+                    // add token owner user
+                    $user = $this->get_user_by_token($request);
+                    $repo_deposition->user_id = $user->id;
+                    $repo_deposition->save();
+
+                    // return to API request
+                    $dataset_array = $this->api_service->dataset_array($repo_deposition);
+                    return response()->json(['dataset' => $dataset_array], 201);
+
+                }catch(\Exception $e){
+                    return response()->json(['error' => '500 Internal Server Error. There seems to be a problem uploading your dataset. Please try again later or contact us.'], 500);
+                }
+
+            } else {
+                return response()->json(['errors' => $validator->errors()->all()], 400);
+            }
+
+        }
+
+        return $response;
+    }
+
+    public function dataset_publish(Request $request)
+    {
+        $response = $this->access_token_validate($request);
+
+        if($response->status() == 200){
+
+            $user = $this->get_user_by_token($request);
+            $dataset_id = $request->route('id');
+            $dataset = Dataset::find($dataset_id);
+
+            if($dataset == null){
+                return response()->json(['error' => '400 Bad Request. Check that the dataset id is correct.'], 400);
+            }
+
+            // if dataset is not from my property
+            if($dataset->deposition->user_id != $user->id){
+                return response()->json(['error' => '403 Forbidden. Check that the dataset is one that you created.'], 403);
+            }
+
+
+            // if the dataset has no files
+            if($dataset->deposition->files->count() == 0){
+                return response()->json(['error' => '400 Bad Request. Minimum one file must be provided before publishing the dataset.'], 400);
+            }
+
+            // it is already published
+            if($dataset->deposition->state == "done"){
+                return response()->json(['error' => '400 Bad Request. The dataset has already been published.'], 400);
+            }
+
+            // publish deposition in Zenodo
+            try{
+                $deposition = $this->deposition_service->publish($dataset->deposition);
+                $dataset_array = $this->api_service->dataset_array($deposition);
+                return response()->json(['dataset' => $dataset_array]);
+            }catch (\Exception $e){
+                return response()->json(['error' => '500 Internal Server Error. There seems to be a problem publishing your dataset. Please try again later or contact us.'], 500);
+            }
+
+            /*
+
+            // request for review
+            $data = array(
+                'dataset_id' => $dataset->id,
+                'email' => $request->input('email') ?? '',
+                'type_journal' => !empty($request->input('doi_conference') ? $request->input('doi_conference') : '0'),
+                'type_conference' => $request->input('type_conference') === 'true' ?? '',
+                'type_workshop' => $request->input('type_workshop') === 'true' ?? '',
+                'type_tool' => $request->input('type_tool') === 'true' ?? '',
+                'doi_journal' => $request->input('doi_journal') ?? '',
+                'doi_conference' => $request->input('doi_conference') ?? '',
+                'doi_workshop' => $request->input('doi_workshop') ?? '',
+                'doi_tool' => $request->input('doi_tool') ?? ''
+            );
+            $this->dataset_service->create_request_for_review($dataset,$data);
+
+            */
+
+
 
         }
 

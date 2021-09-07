@@ -2,9 +2,44 @@
     <div class="code-block">
 
         <h5>
-            <span class="badge badge-success">{{$verb}}</span>
+
+            @if($verb == "GET")
+                <span class="badge badge-success">{{$verb}}</span>
+            @endif
+
+            @if($verb == "POST")
+                <span class="badge badge-info">{{$verb}}</span>
+            @endif
+
+            @if($verb == "PUT" || $verb == "PATCH")
+                <span class="badge badge-warning">{{$verb}}</span>
+            @endif
+
+            @if($verb == "DELETE")
+                <span class="badge badge-danger">{{$verb}}</span>
+            @endif
+
             {{$name}}
+
         </h5>
+
+        @if($info_message != "")
+            <br>
+            <div class="row g-gs">
+
+                <div class="col-lg-12">
+                    <div class="alert alert-fill alert-info alert-icon">
+                        <em class="icon ni ni-alert-circle"></em>
+                        <strong>
+                            {{$info_message}}
+                        </strong>
+                    </div>
+                </div>
+
+            </div>
+        @endif
+
+
 
         <br>
 
@@ -20,6 +55,18 @@ access_token : your_api_access_token
 </pre>
 
         <br>
+
+        @if($body_request != "")
+            <h6 class="overline-title title">Request body</h6>
+
+<pre class="prettyprint lang-html" id="npmi">
+{{$body_request}}
+</pre>
+
+            <br>
+        @endif
+
+
 
         <h6 class="overline-title title">Request sample</h6>
 

@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('datasets', [APIController::class, 'dataset_list'])->name('api.dataset.list');
 Route::get('datasets/{id}', [APIController::class, 'dataset_get'])->name('api.dataset.get');
+Route::post('datasets', [APIController::class, 'dataset_post'])->name('api.dataset.post');
+Route::put('datasets/{id}/publish', [APIController::class, 'dataset_publish'])->name('api.dataset.publish');
 
 Route::get('datasets/{id}/files', [APIController::class, 'dataset_files'])->name('api.dataset.files.list');
 

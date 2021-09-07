@@ -16,13 +16,17 @@ class APIItem extends Component
     public $verb;
     public $endpoint;
     public $parameters;
+    public $body_request;
+    public $info_message;
 
-    public function __construct($name, $verb = "GET", $parameters = "", $endpoint )
+    public function __construct($name, $verb = "GET", $parameters = "", $body_request = "", $info_message = "", $endpoint )
     {
         $this->name = $name;
         $this->verb = $verb;
         $this->endpoint = $endpoint;
         $this->parameters = $parameters;
+        $this->body_request = $body_request;
+        $this->info_message = $info_message;
     }
 
     /**

@@ -54,6 +54,14 @@
                                                             <a data-toggle="tab" href="#get_dataset">Get a dataset &nbsp;&nbsp;</a>
                                                         </li>
 
+                                                        <li>
+                                                            <a data-toggle="tab" href="#create_dataset">Create a dataset &nbsp;&nbsp;</a>
+                                                        </li>
+
+                                                        <li>
+                                                            <a data-toggle="tab" href="#publish_dataset">Publish a dataset &nbsp;&nbsp;</a>
+                                                        </li>
+
                                                     </ul>
                                                 </div>
 
@@ -101,7 +109,85 @@
 <x-api_item name="Get a dataset" verb="GET" endpoint="api/datasets/<b>id</b>" parameters="id : dataset_id">
 {
     "dataset": {
-        "id": 1,
+        "id": ...,
+        "created_at": ...,
+        "updated_at": ...,
+        "doi": ...,
+        "doi_url": ...,
+        "zenodo_id": ...,
+        "access_right": ...,
+        "title": ...,
+        "description": ...,
+        "download_url": ...,
+        "files": [
+            {
+                "file_name": ...,
+                "file_size": ...,
+                "zenodo_download_link": ...,
+                "checksum": ...
+            }
+        ]
+    }
+}
+</x-api_item>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="tab-pane" id="create_dataset">
+
+                                                            <div class="row">
+
+                                                                <x-api_item name="Create a dataset" verb="POST" endpoint="api/datasets">
+<x-slot name="body_request">
+
+{
+    "title" : ...,
+    "description" : ...,
+    "creators" : [
+        {
+            "name" : "Doe, John
+        }
+    ]
+}
+
+</x-slot>
+
+{
+    "dataset": {
+        "id": ...,
+        "created_at": ...,
+        "updated_at": ...,
+        "doi": "",
+        "doi_url": ...,
+        "zenodo_id": ...,
+        "access_right": ...,
+        "title": ...,
+        "description": ...,
+        "download_url": ...,
+        "files": []
+    }
+}
+
+                                                                </x-api_item>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="tab-pane" id="publish_dataset">
+
+                                                            <div class="row">
+
+                                                                <x-api_item name="Publish a dataset" verb="PUT" endpoint="api/datasets/<b>id</b>/publish" parameters="id : dataset_id">
+
+                                                                    <x-slot name="info_message">
+
+                                                                        To publish a dataset and obtain a DOI, it is necessary that it has at least one associated file
+
+</x-slot>
+{
+    "dataset": {
+        "id": ...,
         "created_at": ...,
         "updated_at": ...,
         "doi": ...,

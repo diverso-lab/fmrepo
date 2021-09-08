@@ -1,7 +1,6 @@
 <li class="nk-menu-item
 
     @isset($secondaries)
-        {{$secondaries}}
         @foreach(explode(',', $secondaries) as $secondary)
 
             @if(Route::currentRouteName() == $secondary)

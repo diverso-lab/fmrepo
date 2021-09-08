@@ -30,6 +30,11 @@ abstract class Service
         $this->validation_rules = $array;
     }
 
+    public function validation_rules()
+    {
+        return $this->validation_rules;
+    }
+
     public function create($array)
     {
         $this->validate();

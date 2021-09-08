@@ -12,7 +12,7 @@
     <title>@yield('title') | FMREPO</title>
 
     <!-- StyleSheets  -->
-    <link rel="stylesheet" href="{{ asset('css/dashlite.css?ver=2.4.0')}}">
+    <link rel="stylesheet" href="{{ asset('css/dashlite.css')}}">
     <link rel="stylesheet" href="{{ asset('css/theme.css?ver=2.4.0')}}">
 
     <!-- Font awesome -->

@@ -299,7 +299,6 @@ class DepositionService extends Service
             if ($zip->open($zip_file) === TRUE) {
                 $zip->extractTo(storage_path('app/dataset').'/deposition_'.$deposition_id);
                 $zip->close();
-                echo "<br>extraccion correcta";
             } else {
                 echo "Error during the unzip";
             }
@@ -322,7 +321,6 @@ class DepositionService extends Service
             if ($zip->open($zip_path) === TRUE) {
                 $zip->extractTo(storage_path('app/dataset').'/deposition_'.$deposition_id);
                 $zip->close();
-                echo "<br>extraccion correcta";
             } else {
                 echo "Error during the unzip";
             }
@@ -522,6 +520,22 @@ class DepositionService extends Service
     public function clear_queue()
     {
         setcookie('datasets','', 0, "/");
+    }
+
+    public function is_the_deposition_from_me($deposition)
+    {
+        $me = Auth::user();
+        return $deposition->user_id ==  $me->id;
+    }
+
+    public function is_the_deposition_from_this_user($deposition,$user)
+    {
+        return $deposition->user_id ==  $user->id;
+    }
+
+    public function is_deposition_published($deposition)
+    {
+        return $deposition->state == "done";
     }
 
 }

@@ -18,6 +18,7 @@ class APIController extends Controller
     private $deposition_service;
     private $community_service;
     private $api_service;
+    private $zenodo;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class APIController extends Controller
         $this->deposition_service = new DepositionService();
         $this->community_service = new CommunityService();
         $this->api_service = new APIService();
+        $this->zenodo = new \Zenodo();
     }
 
     public function docs()
@@ -247,9 +249,63 @@ class APIController extends Controller
 
     public function dataset_files_upload_simple(Request $request)
     {
-        $request->files;
-        $file = $request->file('file');
-        return response()->json(['file' => $file->extension()], 200);
+        $response = $this->access_token_validate($request, "POST");
+
+        if($response->status() == 200){
+
+            $dataset_id = $request->route('id');
+            $dataset = Dataset::find($dataset_id);
+
+            // Check dataset
+            if($dataset == null){
+                return response()->json(['error' => '400 Bad Request. Check that the dataset id is correct.'], 400);
+            }
+
+            // Check published deposition
+            if($this->deposition_service->is_deposition_published($dataset->deposition)){
+                return response()->json(['error' => '403 Forbidden. This deposition has already been published and it is not possible to add new files'], 403);
+            }
+
+            $me = $this->get_user_by_token($request);
+
+            // Check user
+            if(!$this->deposition_service->is_the_deposition_from_this_user($dataset->deposition,$me)){
+                return response()->json(['error' => '403 Forbidden. Verify that the user associated with this token is the original creator of the dataset'], 403);
+            }
+
+            $file = $request->file('file');
+
+            // Check file
+            if($file == null){
+                return response()->json(['error' => '400 Bad Request. Check that your file has the name "file"'], 400);
+            }
+
+            $file_data = ['name' => $file->getClientOriginalName()];
+
+            $new_file = $this->zenodo->post_file_in_deposition($dataset->deposition->record_id,$file_data,$file);
+
+            // TODO: Check that file already exists
+
+            // TODO: Add file to Deposition files
+            /*
+            $repo_deposition->files()->create([
+                'checksum' => $new_file['checksum'],
+                'filename' => $new_file['filename'],
+                'filesize' => $new_file['filesize'],
+                'file_id' => $new_file['id'],
+                'download_link' => $new_file['links']['download'],
+                'self_link' => $new_file['links']['self']
+            ]);
+            */
+
+            // TODO: Save file in local storage
+
+            return response()->json(['file' => $new_file], 200);
+
+        }
+
+        return $response;
+
     }
 
     public function dataset_files(Request $request)

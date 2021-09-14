@@ -245,6 +245,13 @@ class APIController extends Controller
         return $response;
     }
 
+    public function dataset_files_upload_simple(Request $request)
+    {
+        $request->files;
+        $file = $request->file('file');
+        return response()->json(['file' => $file->extension()], 200);
+    }
+
     public function dataset_files(Request $request)
     {
         $response = $this->access_token_validate($request);

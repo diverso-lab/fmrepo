@@ -21,7 +21,7 @@
 
         <div class="row g-gs">
 
-            <div class="col-lg-8">
+            <div class="col-lg-12">
 
                 <div class="nk-block nk-block-lg">
                     <div class="card card-preview">
@@ -182,7 +182,7 @@
 
                                                                     <x-slot name="info_message">
 
-                                                                        To publish a dataset and obtain a DOI, it is necessary that it has at least one associated file
+                                                                        To publish a dataset in Zenodo and obtain a DOI, it is necessary that it has at least one associated file
 
 </x-slot>
 {

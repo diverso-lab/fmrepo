@@ -47,7 +47,7 @@
                                                     <ul class="nav link-list-menu border border-light round m-0">
 
                                                         <li>
-                                                            <a class="active" data-toggle="tab" href="#get_all_datasets">Get all datasets &nbsp;&nbsp;</a>
+                                                            <a class="active" data-toggle="tab" href="#get_all_datasets">Get all datasets &nbsp;&nbsp;<br></a>
                                                         </li>
 
                                                         <li>
@@ -228,6 +228,10 @@
                                                     <a class="active" data-toggle="tab" href="#get_files_from_dataset">Get files from dataset &nbsp;&nbsp;</a>
                                                 </li>
 
+                                                <li>
+                                                    <a data-toggle="tab" href="#add_file_to_dataset">Add file to dataset &nbsp;&nbsp;</a>
+                                                </li>
+
                                             </ul>
                                         </div>
 
@@ -256,6 +260,36 @@
     ]
 }
 </x-api_item>
+
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="tab-pane" id="add_file_to_dataset">
+
+                                                    <div class="row">
+
+<x-api_item name="Add file to dataset" verb="POST" endpoint="api/datasets/<b>id</b>/files/upload/simple" parameters="id : dataset_id">
+
+<x-slot name="body_request">
+{
+    "file" : your_file
+}
+</x-slot>
+
+{
+    "file":
+            {
+            "file_name": ...,
+            "file_size": ...,
+            "zenodo_download_link": ...,
+            "checksum": ...
+        }
+}
+                                                        </x-api_item>
+
                                                     </div>
 
                                                 </div>

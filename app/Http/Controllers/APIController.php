@@ -10,6 +10,7 @@ use App\Models\Community;
 use App\Models\Dataset;
 use App\Models\DeveloperToken;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
@@ -280,15 +281,17 @@ class APIController extends Controller
                 return response()->json(['error' => '400 Bad Request. Check that your file has the name "file"'], 400);
             }
 
-            $file_data = ['name' => $file->getClientOriginalName()];
+            // Check that file already exists
+            if($this->deposition_service->has_deposition_this_file($dataset->deposition, $file->getClientOriginalName())){
+                return response()->json(['error' => '400 Bad Request. This file has already been uploaded to this dataset'], 400);
+            }
 
+            // Upload file to Zenodo
+            $file_data = ['name' => $file->getClientOriginalName()];
             $new_file = $this->zenodo->post_file_in_deposition($dataset->deposition->record_id,$file_data,$file);
 
-            // TODO: Check that file already exists
-
-            // TODO: Add file to Deposition files
-            /*
-            $repo_deposition->files()->create([
+            // Upload file in local storage
+            $repo_file = $dataset->deposition->files()->create([
                 'checksum' => $new_file['checksum'],
                 'filename' => $new_file['filename'],
                 'filesize' => $new_file['filesize'],
@@ -296,11 +299,11 @@ class APIController extends Controller
                 'download_link' => $new_file['links']['download'],
                 'self_link' => $new_file['links']['self']
             ]);
-            */
+            $path = Storage::putFileAs('/dataset/deposition_'.$dataset->deposition->record_id.'/', $file, $file->getClientOriginalName());
 
-            // TODO: Save file in local storage
+            $repo_file_array = $this->api_service->file_array($repo_file);
 
-            return response()->json(['file' => $new_file], 200);
+            return response()->json(['file' => $repo_file_array]);
 
         }
 

@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Dataset;
 use App\Models\Deposition;
+use App\Models\DepositionFile;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
@@ -536,6 +537,12 @@ class DepositionService extends Service
     public function is_deposition_published($deposition)
     {
         return $deposition->state == "done";
+    }
+
+    public function has_deposition_this_file($deposition, $name)
+    {
+        $file = DepositionFile::where(['deposition_id' => $deposition->id, 'filename' => $name])->first();
+        return $file != null;
     }
 
 }

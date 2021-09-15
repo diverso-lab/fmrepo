@@ -54,10 +54,12 @@
                                     <tr>
 
                                         <td class="nk-tb-col nk-tb-col-check sorting_1">
+                                            @if(!$dataset->deposition->is_deposition_empty())
                                             <div class="custom-control custom-control-sm custom-checkbox notext">
                                                 <input type="checkbox" class="custom-control-input" value="{{$dataset->id}}" id="id_{{$dataset->id}}" name="datasets[]">
                                                 <label class="custom-control-label" for="id_{{$dataset->id}}"></label>
                                             </div>
+                                                @endif
                                         </td>
 
                                         <td>
@@ -79,13 +81,22 @@
 
                                         <td>
 
-                                            <div class="tb-odr-btns d-none d-md-inline">
-                                                <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-sm btn-primary"><em class="icon ni ni-download"></em></a>
-                                            </div>
+                                            @if(!$dataset->deposition->is_deposition_empty())
+                                                <div class="tb-odr-btns d-none d-md-inline">
+                                                    <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-sm btn-primary"><em class="icon ni ni-download"></em></a>
+                                                </div>
 
-                                            <div class="tb-odr-btns d-none d-md-inline">
-                                                <a href="#" onclick="add_dataset({{$dataset->id}})" class="btn btn-sm btn-primary"><em class="icon ni ni-file-docs"></em></a>
-                                            </div>
+                                                <div class="tb-odr-btns d-none d-md-inline">
+                                                    <a href="#" onclick="add_dataset({{$dataset->id}})" class="btn btn-sm btn-primary"><em class="icon ni ni-file-docs"></em></a>
+                                                </div>
+
+                                            @else
+
+                                                No associated files
+
+                                            @endif
+
+
 
                                         </td>
                                     </tr>

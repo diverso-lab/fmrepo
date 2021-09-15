@@ -45,10 +45,13 @@ Route::prefix('dataset')->group(function () {
     // Upload dataset
     Route::prefix('upload')->group(function () {
         Route::get('',[DatasetController::class,'upload'])->name('dataset.upload');
-        Route::post('computer',[DatasetController::class,'upload_computer'])->name('dataset.upload.computer');
-        Route::post('github',[DatasetController::class,'upload_github'])->name('dataset.upload.github');
-        Route::post('zip',[DatasetController::class,'upload_zip'])->name('dataset.upload.zip');
-        Route::post('textplain',[DatasetController::class,'upload_textplain'])->name('dataset.upload.textplain');
+
+        Route::middleware(['checkdatasetfiles'])->group(function () {
+            Route::post('computer',[DatasetController::class,'upload_computer'])->name('dataset.upload.computer');
+            Route::post('github',[DatasetController::class,'upload_github'])->name('dataset.upload.github');
+            Route::post('zip',[DatasetController::class,'upload_zip'])->name('dataset.upload.zip');
+            Route::post('textplain',[DatasetController::class,'upload_textplain'])->name('dataset.upload.textplain');
+        });
 
         // Upload and download files from local storage
         Route::post('file',[UploadController::class,'process'])->name('dataset.upload.file');

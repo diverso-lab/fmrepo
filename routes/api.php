@@ -25,6 +25,8 @@ Route::post('datasets', [APIController::class, 'dataset_post'])->name('api.datas
 Route::put('datasets/{id}/publish', [APIController::class, 'dataset_publish'])->name('api.dataset.publish');
 
 Route::get('datasets/{id}/files', [APIController::class, 'dataset_files'])->name('api.dataset.files.list');
+Route::post('datasets/{id}/files/upload/simple', [APIController::class, 'dataset_files_upload_simple'])->name('api.dataset.files.upload.simple');
+
 
 Route::get('communities', [APIController::class, 'communities_list'])->name('api.dataset.communities');
 Route::get('communities/{id}', [APIController::class, 'community_get'])->name('api.communities.get');

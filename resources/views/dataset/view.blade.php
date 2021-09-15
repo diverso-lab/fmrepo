@@ -50,9 +50,13 @@
 
                             @endif
 
-                            <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download dataset</a>
+                            @if(!$dataset->deposition->is_deposition_empty())
+                                <a href="{{route('dataset.download',$dataset->id)}}" class="btn btn-primary"><em class="icon ni ni-download"></em>&nbsp; Download dataset</a>
 
-                            <a href="" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
+                                <a href="#" onclick="add_dataset({{$dataset->id}})" class="btn btn-primary"><em class="icon ni ni-file-docs"></em>&nbsp; Add to download queue</a>
+
+                            @endif
+
 
                         </div>
                     </div>

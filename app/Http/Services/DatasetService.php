@@ -10,9 +10,12 @@ use App\Models\RequestReview;
 class DatasetService extends Service
 {
 
+    private $deposition_service;
+
     public function __construct()
     {
         parent::__construct(Dataset::class);
+        $this->deposition_service = new DepositionService();
     }
 
     public function create_request_for_review($dataset,$data)
@@ -30,6 +33,18 @@ class DatasetService extends Service
             'doi_tool' => $data['doi_tool'] ?? ''
         ]);
         return $request_review;
+    }
+
+    public function all_published_dataset()
+    {
+        $datasets = $this->all();
+
+        $filtered = $datasets->reject(function ($dataset, $key) {
+            return $dataset->deposition->state == "unsubmitted";
+        });
+
+        return $filtered->all();
+
     }
 
 }

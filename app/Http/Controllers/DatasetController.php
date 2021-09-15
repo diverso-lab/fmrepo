@@ -20,7 +20,7 @@ class DatasetController extends Controller
 
     public function list()
     {
-        $datasets = $this->dataset_service->all();
+        $datasets = $this->dataset_service->all_published_dataset();
         return view('dataset.list', ['datasets' => $datasets]);
     }
 
@@ -38,6 +38,12 @@ class DatasetController extends Controller
 
     public function upload()
     {
+
+        if(!file_exists(base_path('.tokens'))){
+            return response()->view('errors.500', ['title' => 'The file ".tokens" could not be found',
+                'message' => "There must be a \".tokens\" file in the root of the project with the Zenodo API tokens (one per line)"], 500);
+        }
+
         return view('dataset.upload');
     }
 

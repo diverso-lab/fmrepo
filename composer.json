@@ -39,7 +39,7 @@
         },
         "files": [
             "app/Zenodo.php",
-            "app/helpers.php",
+            "app/Helpers.php",
             "app/Http/Services/DepositionService.php",
             "app/Http/Services/DatasetService.php",
             "app/Http/Services/CommunityService.php",

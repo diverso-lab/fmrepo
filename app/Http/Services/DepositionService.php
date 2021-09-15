@@ -117,16 +117,18 @@ class DepositionService extends Service
 
     public function create_deposition_data($request)
     {
-        // TODO: Hay que iterar sobre los autores con un splitter (;)
 
         $authors = $request->input('authors');
         $authors_array = explode(";", $authors);
         $authors_associative_array = array();
 
         foreach ($authors_array as $value){
-            //$array = array("name" => $value);
-            //array_push($authors_associative_array, $array);
-            $this->array_push_assoc($authors_associative_array,"name",$value);
+            if($value != ""){
+                $array = array("name" => $value);
+                array_push($authors_associative_array, $array);
+                $this->array_push_assoc($authors_associative_array,"name",$value);
+            }
+
         }
 
         return [
@@ -135,9 +137,7 @@ class DepositionService extends Service
                 'publication_date' => Carbon::now()->format('Y-m-d'),
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
-                'creators' => [
-                    ["name" => "Doe, John"]
-                ],
+                'creators' => $authors_associative_array,
                 'access_right' => 'open',
                 'license' => 'cc-zero',
                 'prereserve_doi' => true
@@ -439,33 +439,38 @@ class DepositionService extends Service
 
         foreach($datasets as $dataset_id) {
 
-            // Record ID
-            $deposition = Deposition::where('dataset_id',$dataset_id)->first();
-            $record_id = $deposition->record_id;
+            try{
+                // Record ID
+                $deposition = Deposition::where('dataset_id',$dataset_id)->first();
+                $record_id = $deposition->record_id;
 
-            // Add root folder
-            $zip->addEmptyDir('deposition_'.$record_id);
+                // Add root folder
+                $zip->addEmptyDir('deposition_'.$record_id);
 
-            $rootPath = realpath(storage_path('app/dataset').'/deposition_'.$record_id);
+                $rootPath = realpath(storage_path('app/dataset').'/deposition_'.$record_id);
 
-            $files = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($rootPath),
-                RecursiveIteratorIterator::LEAVES_ONLY
-            );
+                $files = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($rootPath),
+                    RecursiveIteratorIterator::LEAVES_ONLY
+                );
 
-            foreach ($files as $name => $file)
-            {
-                // Skip directories (they would be added automatically)
-                if (!$file->isDir())
+                foreach ($files as $name => $file)
                 {
-                    // Get real and relative path for current file
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($rootPath) + 1);
+                    // Skip directories (they would be added automatically)
+                    if (!$file->isDir())
+                    {
+                        // Get real and relative path for current file
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen($rootPath) + 1);
 
-                    // Add current file to archive
-                    $zip->addFile($filePath, 'deposition_'.$record_id.'/'.$relativePath);
+                        // Add current file to archive
+                        $zip->addFile($filePath, 'deposition_'.$record_id.'/'.$relativePath);
+                    }
                 }
+            }catch(\Error $e){
+                continue;
             }
+
 
         }
 
@@ -543,6 +548,11 @@ class DepositionService extends Service
     {
         $file = DepositionFile::where(['deposition_id' => $deposition->id, 'filename' => $name])->first();
         return $file != null;
+    }
+
+    public function is_deposition_empty($deposition)
+    {
+        return count($deposition->files) == 0;
     }
 
 }

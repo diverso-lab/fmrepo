@@ -43,4 +43,9 @@ class Deposition extends Model
     {
         $this->belongsTo('App\Models\User');
     }
+
+    public function is_deposition_empty()
+    {
+        return count($this->files) == 0;
+    }
 }

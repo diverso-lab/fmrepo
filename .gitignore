@@ -24,3 +24,5 @@ storage/*.key
 
 .tokens
 /homestead/.vagrant/
+
+homestead/

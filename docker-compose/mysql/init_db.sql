@@ -1,0 +1,3 @@
+DROP DATABASE  IF EXISTS `fmrepo`;
+
+CREATE DATABASE `fmrepo`;

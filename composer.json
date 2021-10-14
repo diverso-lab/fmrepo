@@ -14,8 +14,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "livewire/livewire": "^2.4",
-        "zanysoft/laravel-zip": "^1.0",
-        "ext-zip": "*"
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -40,3 +40,6 @@ RUN composer install
 
 # Run migrations
 RUN php artisan migrate
+
+# Create tokens file
+RUN touch .tokens

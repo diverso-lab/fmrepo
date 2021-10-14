@@ -19,7 +19,7 @@ class APIItem extends Component
     public $body_request;
     public $info_message;
 
-    public function __construct($name, $verb = "GET", $parameters = "", $body_request = "", $info_message = "", $endpoint )
+    public function __construct($name,$endpoint, $verb = "GET", $parameters = "", $body_request = "", $info_message = "" )
     {
         $this->name = $name;
         $this->verb = $verb;

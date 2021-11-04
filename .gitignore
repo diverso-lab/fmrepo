@@ -22,5 +22,3 @@ storage/*.key
 .idea
 .DS_Store
 
-.tokens
-/homestead/.vagrant/
